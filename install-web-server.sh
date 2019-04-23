@@ -1,14 +1,15 @@
 #!/bin/bash
 # =================== YOUR DATA ========================
-SERVER_NAME="redstone.trustaking.com"
+read -p " Which Fork (redstone, x42, impleum)?" response
+SERVER_NAME="$response.trustaking.com"
+USER="$response-web"
+SUDO_PASSWORD="$response-web"
+MYSQL_ROOT_PASSWORD="$response-web"
+COINSERVICEBASHFILE="bash <( curl -s https://raw.githubusercontent.com/trustaking/server-install/master/install-$response.sh )"
 SERVER_IP=$(curl --silent ipinfo.io/ip)
-USER="redstone-web"
-SUDO_PASSWORD="redstone-web"
-MYSQL_ROOT_PASSWORD="redstone-web"
-WEBSERVERBASHFILE="bash <( curl -s https://raw.githubusercontent.com/thecrypt0hunter/redstone-trustaking/master/scripts/install-web-server.sh )"
-COINSERVICEBASHFILE="bash <( curl -s https://raw.githubusercontent.com/thecrypt0hunter/redstone-trustaking/master/scripts/install-redstone-node.sh )"
-HOTWALLETSETUPBASHFILE= "bash <( curl -s https://raw.githubusercontent.com/thecrypt0hunter/redstone-trustaking/master/scripts/hot-wallet-setup.sh )"
-WEBFILE="https://github.com/thecrypt0hunter/redstone-trustaking.git"
+WEBSERVERBASHFILE="bash <( curl -s https://raw.githubusercontent.com/trustaking/server-install/master/install-web-server.sh )"
+HOTWALLETSETUPBASHFILE= "bash <( curl -s https://raw.githubusercontent.com/trustaking/trustaking-server/master/scripts/hot-wallet-setup.sh )"
+WEBFILE="https://github.com/trustaking/trustaking-server.git"
 
 # SSH access via password will be disabled. Use keys instead.
 PUBLIC_SSH_KEYS="# Home
