@@ -1,14 +1,14 @@
 #!/bin/bash
 # =================== YOUR DATA ========================
+WEBSERVERBASHFILE="wget https://raw.githubusercontent.com/trustaking/server-install/master/install-web-server.sh )"
 read -p " Which Fork (redstone, x42, impleum)?" response
 SERVER_NAME="$response.trustaking.com"
 USER="$response-web"
 SUDO_PASSWORD="$response-web"
 MYSQL_ROOT_PASSWORD="$response-web"
-COINSERVICEBASHFILE="bash <( curl -s https://raw.githubusercontent.com/trustaking/server-install/master/install-$response.sh )"
+COINSERVICEBASHFILE="https://raw.githubusercontent.com/trustaking/server-install/master/install-$response.sh"
 SERVER_IP=$(curl --silent ipinfo.io/ip)
-WEBSERVERBASHFILE="bash <( curl -s https://raw.githubusercontent.com/trustaking/server-install/master/install-web-server.sh )"
-HOTWALLETSETUPBASHFILE= "bash <( curl -s https://raw.githubusercontent.com/trustaking/trustaking-server/master/scripts/hot-wallet-setup.sh )"
+HOTWALLETSETUPBASHFILE= "https://raw.githubusercontent.com/trustaking/trustaking-server/master/scripts/hot-wallet-setup.sh"
 WEBFILE="https://github.com/trustaking/trustaking-server.git"
 
 # SSH access via password will be disabled. Use keys instead.
@@ -306,21 +306,21 @@ usermod -a -G www-data $USER
 id $USER
 groups $USER
 
-# Install Node.js
-#curl --silent --location https://deb.nodesource.com/setup_5.x | bash -
+### Install Node.js
+#curl --silent --location https://deb.nodesource.com/setup_8.x | bash -
 #apt-get update
 #sudo apt-get install -y --force-yes nodejs
 #npm install -g pm2
 #npm install -g gulp
-# Set The Automated Root Password
 
-export DEBIAN_FRONTEND=noninteractive
+### Set The Automated Root Password
 
-debconf-set-selections <<< "mysql-community-server mysql-community-server/data-dir select ''"
-debconf-set-selections <<< "mysql-community-server mysql-community-server/root-pass password $MYSQL_ROOT_PASSWORD"
-debconf-set-selections <<< "mysql-community-server mysql-community-server/re-root-pass password $MYSQL_ROOT_PASSWORD"
+#export DEBIAN_FRONTEND=noninteractive
+#debconf-set-selections <<< "mysql-community-server mysql-community-server/data-dir select ''"
+#debconf-set-selections <<< "mysql-community-server mysql-community-server/root-pass password $MYSQL_ROOT_PASSWORD"
+#debconf-set-selections <<< "mysql-community-server mysql-community-server/re-root-pass password $MYSQL_ROOT_PASSWORD"
 
-## Install MySQL
+### Install MySQL
 #apt-get install -y mysql-server
 
 ## Configure Password Expiration
@@ -360,7 +360,7 @@ git clone ${WEBFILE} ${SERVER_NAME}
 chown ${USER} /home/${USER}/${SERVER_NAME} -R
 
 # Install Coins Service
-${COINSERVICEBASHFILE}
+bash <( curl -s ${COINSERVICEBASHFILE})
 
 # Install hot wallet setup
-${HOTWALLETSETUPBASHFILE}
+bash <( curl -s ${HOTWALLETSETUPBASHFILE})
