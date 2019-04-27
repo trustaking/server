@@ -1,7 +1,7 @@
 #!/bin/bash
 # =================== YOUR DATA ========================
 WEBSERVERBASHFILE="wget https://raw.githubusercontent.com/trustaking/server-install/master/install-web-server.sh )"
-read -p " Which Fork (redstone, x42, impleum)?" response
+read -p " Which Fork (redstone, x42, impleum, city)?" response
 SERVER_NAME="$response.trustaking.com"
 USER="$response-web"
 SUDO_PASSWORD="$response-web"
