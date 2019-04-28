@@ -1,6 +1,6 @@
 #!/bin/bash
 # =================== YOUR DATA ========================
-WEBSERVERBASHFILE="wget https://raw.githubusercontent.com/trustaking/server-install/master/install-web-server.sh )"
+WEBSERVERBASHFILE="wget https://raw.githubusercontent.com/trustaking/server-install/master/install-web-server.sh"
 SERVER_IP=$(curl --silent ipinfo.io/ip)
 
 read -p " Which Fork (redstone, x42, impleum, city)?" response
@@ -10,7 +10,7 @@ USER="$response-web"
 SUDO_PASSWORD="$response-web"
 MYSQL_ROOT_PASSWORD="$response-web"
 COINSERVICEBASHFILE="https://raw.githubusercontent.com/trustaking/server-install/master/install-$response.sh"
-HOTWALLETSETUPBASHFILE="https://raw.githubusercontent.com/trustaking/trustaking-server/master/scripts/hot-wallet-setup.sh"
+HOTWALLETSETUPBASHFILE="https://raw.githubusercontent.com/trustaking/server-install/master/hot-wallet-setup.sh"
 WEBFILE="https://github.com/trustaking/trustaking-server.git"
 
 # SSH access via password will be disabled. Use keys instead.
@@ -364,7 +364,7 @@ git clone ${WEBFILE} ${SERVER_NAME}
 chown ${USER} /home/${USER}/${SERVER_NAME} -R
 
 # Install Coins Service
-bash <( curl -s ${COINSERVICEBASHFILE})
+bash <( curl -s ${COINSERVICEBASHFILE} )
 
 # Install hot wallet setup
-bash <( curl -s ${HOTWALLETSETUPBASHFILE})
+bash <( curl -s ${HOTWALLETSETUPBASHFILE} )
