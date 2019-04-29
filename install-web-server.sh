@@ -314,7 +314,7 @@ server {
 
     location / {
         index index.php;
-        try_files $uri $uri/ $uri.php;
+        try_files \$uri \$uri/ \$uri.php;
     }
 
     location = /favicon.ico { access_log off; log_not_found off; }
