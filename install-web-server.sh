@@ -3,15 +3,62 @@
 WEBSERVERBASHFILE="wget https://raw.githubusercontent.com/trustaking/server-install/master/install-web-server.sh"
 SERVER_IP=$(curl --silent ipinfo.io/ip)
 
-read -p " Which Fork (redstone, x42, impleum, city)?" response
+read -p " Which Fork (redstone, x42, impleum, city)?" fork
+read -p " Mainnet (m) or Testnet (t)?" net
 
-SERVER_NAME="$response.trustaking.com" ## If not using domain name set to >> ${SERVER_IP}
-USER="$response-web"
-SUDO_PASSWORD="$response-web"
-MYSQL_ROOT_PASSWORD="$response-web"
-COINSERVICEBASHFILE="https://raw.githubusercontent.com/trustaking/server-install/master/install-$response.sh"
+SERVER_NAME="$fork.trustaking.com"
+USER="$fork-web"
+SUDO_PASSWORD="$fork-web"
+MYSQL_ROOT_PASSWORD="$fork-web"
+COINSERVICEBASHFILE="https://raw.githubusercontent.com/trustaking/server-install/master/install-$fork.sh"
 HOTWALLETSETUPBASHFILE="https://raw.githubusercontent.com/trustaking/server-install/master/hot-wallet-setup.sh"
 WEBFILE="https://github.com/trustaking/trustaking-server.git"
+
+if [[ "$net" =~ ^([tT])+$ ]]; then
+    case $fork in
+         redstone)
+            apiport="38222"; # "37222" <Main Redstone
+            ;;
+        x42)
+           apiport="42220"; # "42221" <Main X42
+           ;;
+        city)
+           apiport="24335"; # "4335" <Main City
+        ;; 
+        impleum)
+           apiport="38222"; # "39222" <Main Impleum
+            ;;
+         *)
+           echo "$fork has not been configured."
+           exit
+           ;;
+    esac
+else 
+    case $fork in
+         redstone)
+            apiport="37222";
+            ;;
+         x42)
+            apiport="42221";
+            ;;
+         city)
+            apiport="4335";
+            ;; 
+         impleum)
+            apiport="39222";
+            ;;
+         *)
+            echo "$fork has not been configured."
+            exit
+            ;;
+    esac
+fi
+
+read -p " Are you using DNS(y) or IP(n)?" response
+
+if [[ "$response" =~ ^([yY])+$ ]]; then
+    SERVER_NAME=$(curl --silent ipinfo.io/ip)
+fi
 
 # SSH access via password will be disabled. Use keys instead.
 PUBLIC_SSH_KEYS="# Home
@@ -261,9 +308,8 @@ cat > /etc/nginx/sites-available/${USER} << EOF
 server {
     listen 80;
     server_name ${SERVER_NAME};
-    root /home/${USER}/${SERVER_NAME};
+    root /home/${USER}/${SERVER_NAME}/;
     index index.html index.htm index.php;
-
     charset utf-8;
 
     location / {
@@ -359,9 +405,18 @@ groups $USER
 mkdir /home/${USER}/${SERVER_NAME}
 cd /home/${USER}/
 git clone ${WEBFILE} ${SERVER_NAME}
-## TODO: Generate the config files in /include/config.php & /include/config.sh
-## TODO: Work out a way to inject ${user} into /scripts/trustaking-*.sh files
-chown ${USER} /home/${USER}/${SERVER_NAME} -R
+chown ${USER}:www-data /home/${USER}/${SERVER_NAME} -R
+chmod g+rw /home/${USER}/${SERVER_NAME} -R
+chmod g+s /home/${USER}/${SERVER_NAME} -R
+## Inject apiport & ticker into /include/config.php
+sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/config.php
+sed -i "s/^\(\$apiport='\).*/\1$apiport';/" /home/${USER}/${SERVER_NAME}/include/config.php
+## Inject apiport into /scripts/trustaking-*.sh files
+sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-add-funds.sh
+sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-balance.sh
+sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-setup.sh
+sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-withdraw-funds.sh
+sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 # Install Coins Service
 bash <( curl -s ${COINSERVICEBASHFILE} )
