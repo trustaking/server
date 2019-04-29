@@ -1,10 +1,10 @@
 #!/bin/bash
 # =================== YOUR DATA ========================
-WEBSERVERBASHFILE="wget https://raw.githubusercontent.com/trustaking/server-install/master/install-web-server.sh"
+WEBSERVERBASHFILE="bash <( curl -s https://raw.githubusercontent.com/trustaking/server-install/master/install-web-server.sh )"
 SERVER_IP=$(curl --silent ipinfo.io/ip)
 
-read -p " Which Fork (redstone, x42, impleum, city)?" fork
-read -p " Mainnet (m) or Testnet (t)?" net
+read -p "Which Fork (redstone, x42, impleum, city)? " fork
+read -p "Mainnet (m) or Testnet (t)? " net
 
 SERVER_NAME="$fork.trustaking.com"
 USER="$fork-web"
@@ -54,7 +54,7 @@ else
     esac
 fi
 
-read -p " Are you using DNS(y) or IP(n)?" response
+read -p " Are you using IP(y) or DNS(n)?" response
 
 if [[ "$response" =~ ^([yY])+$ ]]; then
     SERVER_NAME=$(curl --silent ipinfo.io/ip)
