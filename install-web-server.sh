@@ -7,11 +7,11 @@ read -p "Which Fork (redstone, x42, impleum, city)? " fork
 read -p "Mainnet (m) or Testnet (t)? " net
 
 SERVER_NAME="$fork.trustaking.com"
+DNS_NAME="$fork.trustaking.com"
 USER="$fork-web"
 SUDO_PASSWORD="$fork-web"
 MYSQL_ROOT_PASSWORD="$fork-web"
 COINSERVICEBASHFILE="https://raw.githubusercontent.com/trustaking/server-install/master/install-$fork.sh"
-HOTWALLETSETUPBASHFILE="https://raw.githubusercontent.com/trustaking/server-install/master/hot-wallet-setup.sh"
 WEBFILE="https://github.com/trustaking/trustaking-server.git"
 
 if [[ "$net" =~ ^([tT])+$ ]]; then
@@ -54,10 +54,10 @@ else
     esac
 fi
 
-read -p " Are you using IP(y) or DNS(n)?" response
+read -p "Are you using IP(y) or DNS(n)?" response
 
 if [[ "$response" =~ ^([yY])+$ ]]; then
-    SERVER_NAME=$(curl --silent ipinfo.io/ip)
+    DNS_NAME=$(curl --silent ipinfo.io/ip)
 fi
 
 # SSH access via password will be disabled. Use keys instead.
@@ -116,9 +116,9 @@ service ssh restart
 
 # Set The Hostname If Necessary
 
-echo "$SERVER_NAME" > /etc/hostname
-sed -i "s/127\.0\.0\.1.*localhost/127.0.0.1	$SERVER_NAME localhost/" /etc/hosts
-hostname $SERVER_NAME
+echo "${SERVER_NAME}" > /etc/hostname
+sed -i "s/127\.0\.0\.1.*localhost/127.0.0.1	${SERVER_NAME} localhost/" /etc/hosts
+hostname ${SERVER_NAME}
 
 # Set The Timezone
 
@@ -307,7 +307,7 @@ ln -s /etc/nginx/sites-available/catch-all /etc/nginx/sites-enabled/catch-all
 cat > /etc/nginx/sites-available/${USER} << EOF
 server {
     listen 80;
-    server_name ${SERVER_NAME};
+    server_name ${DNS_NAME};
     root /home/${USER}/${SERVER_NAME}/;
     index index.html index.htm index.php;
     charset utf-8;
@@ -422,4 +422,4 @@ sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-
 bash <( curl -s ${COINSERVICEBASHFILE} )
 
 # Install hot wallet setup
-bash <( curl -s ${HOTWALLETSETUPBASHFILE} )
+/home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
