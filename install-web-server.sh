@@ -17,6 +17,9 @@ WEBFILE="https://github.com/trustaking/trustaking-server.git"
 
 if [[ "$net" =~ ^([tT])+$ ]]; then
     case $fork in
+         stratis)
+            apiport="38221"; # "37221" <Main Stratis
+            ;;
          redstone)
             apiport="38222"; # "37222" <Main Redstone
             ;;
@@ -36,6 +39,9 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
     esac
 else 
     case $fork in
+        stratis)
+            apiport="37221";
+            ;;
          redstone)
             apiport="37222";
             ;;
