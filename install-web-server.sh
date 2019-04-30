@@ -3,7 +3,7 @@
 WEBSERVERBASHFILE="bash <( curl -s https://raw.githubusercontent.com/trustaking/server-install/master/install-web-server.sh )"
 SERVER_IP=$(curl --silent ipinfo.io/ip)
 
-read -p "Which Fork (redstone, x42, impleum, city)? " fork
+read -p "Which Fork (redstone, x42, impleum, city, stratis)? " fork
 read -p "Mainnet (m) or Testnet (t)? " net
 
 SERVER_NAME="$fork.trustaking.com"
@@ -12,7 +12,7 @@ USER="$fork-web"
 SUDO_PASSWORD="$fork-web"
 MYSQL_ROOT_PASSWORD="$fork-web"
 COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustaking/server-install/master/install-fork.sh"
-COINSERVICECONFIG="https://raw.githubusercontent.com/trustaking/server-install/master/config-$fork.sh"
+COINSERVICECONFIG="https://raw.githubusercontent.com/trustaking/server-install/master/config/config-$fork.sh"
 WEBFILE="https://github.com/trustaking/trustaking-server.git"
 
 if [[ "$net" =~ ^([tT])+$ ]]; then

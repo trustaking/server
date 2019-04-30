@@ -20,7 +20,7 @@ COINAPIPORT=42221
 
 function setGeneralVars() {
 ## set general variables
-COINRUNCMD="sudo dotnet ./x42.x42D.dll ${NETWORK} -datadir=/home/${NODE_USER}/.${FORK}node"  ## additional commands can be used here e.g. -testnet or -stake=1
+COINRUNCMD="sudo dotnet ./x42.x42D.dll ${NETWORK} -datadir=/home/${NODE_USER}/.${FORK}node -stake=1 -walletname=hot-wallet -walletpassword=hot-wallet"
 COINGITHUB=https://github.com/x42protocol/X42-FullNode-UI.git
 COINDSRC=/home/${NODE_USER}/code/X42-FullNode/src/x42.x42D
 CONF=release
