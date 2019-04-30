@@ -11,7 +11,7 @@ DNS_NAME="$fork.trustaking.com"
 USER="$fork-web"
 SUDO_PASSWORD="$fork-web"
 MYSQL_ROOT_PASSWORD="$fork-web"
-COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustaking/server-install/master/install-$fork.sh"
+COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustaking/server-install/master/install-fork.sh"
 COINSERVICECONFIG="https://raw.githubusercontent.com/trustaking/server-install/master/config-$fork.sh"
 WEBFILE="https://github.com/trustaking/trustaking-server.git"
 
