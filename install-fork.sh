@@ -14,57 +14,18 @@ ARCH="linux-x64"
 DATE_STAMP="$(date +%y-%m-%d-%s)"
 SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
 NODE_IP=$(curl --silent ipinfo.io/ip)
-FORK="city"
 
-function setMainVars() {
-## set network dependent variables
-NETWORK=""
-NODE_USER=city${NETWORK}
-COINCORE=home/${NODE_USER}/.citychain/city/CityMain
-COINPORT=4333
-COINRPCPORT=4334
-COINAPIPORT=4335
-DNSPORT=53
-}
+##TODO: Inject config
 
-function setTestVars() {
-## set network dependent variables
-NETWORK="-testnet"
-NODE_USER=city{NETWORK}
-COINCORE=home/${NODE_USER}/.citychain/city/CityTest
-COINPORT=24333
-COINRPCPORT=24334
-COINAPIPORT=24335
-DNSPORT=53
-}
+while getopts f: option
+do
+case "${option}"
+in
+f) FORK=${OPTARG};;
+esac
+done
 
-function setDNSVars() {
-## set DNS specific variables
-if [ "${NETWORK}" = "" ] ; then
-   DNS="-iprangefiltering=0 -externalip=${NODE_IP} -dnshostname=seed.${FORK}.trustaking.com -dnsnameserver=dns1.seed.${FORK}.trustaking.com -dnsmailbox=admin@trustaking.com -dnsfullnode=1 -dnslistenport=${DNSPORT}"
- else
-   DNS="-iprangefiltering=0 -externalip=${NODE_IP} -dnshostname=seed.${FORK}.trustaking.com -dnsnameserver=testdns1.seed.${FORK}.trustaking.com -dnsmailbox=admin@trustaking.com -dnsfullnode=1 -dnslistenport=${DNSPORT}"
-fi
-## Stop port 53 from being used by systemd-resovled
-echo 'DNSStubListener=no' | sudo tee -a /etc/systemd/resolved.conf &>> ${SCRIPT_LOGFILE}
-sudo service systemd-resolved restart
-}
-
-function setGeneralVars() {
-## set general variables
-
-COINRUNCMD="sudo dotnet ./City.Chain.dll ${NETWORK} -datadir=/home/${NODE_USER}/.citychain -iprangefiltering=0 ${DNS}"  ## additional commands can be used here e.g. -testnet or -stake=1
-CONF=release
-COINGITHUB=https://github.com/CityChainFoundation/city-chain.git
-COINDAEMON=cityd
-COINCONFIG=city.conf
-COINSTARTUP=/home/${NODE_USER}/cityd
-COINDLOC=/home/${NODE_USER}/citynode
-COINDSRC=/home/${NODE_USER}/code/src/City.Chain
-COINSERVICELOC=/etc/systemd/system/
-COINSERVICENAME=${COINDAEMON}@${NODE_USER}
-SWAPSIZE="1024" ## =1GB
-}
+source config-${FORK}.sh
 
 function check_root() {
 if [ "$(id -u)" != "0" ]; then
@@ -281,15 +242,10 @@ echo -e "${BOLD}"
     check_root
 
 echo -e "${BOLD}"
-read -p " Do you want to setup on Mainnet (m), Testnet (t) or upgrade (u) your ${FORK} node. (m/t/u)?" response
+read -p " Do you want to setup on Mainnet (m), Testnet (t) or upgrade (u) your ${FORK} full node. (m/t/u)?" response
 
 if [[ "$response" =~ ^([mM])+$ ]]; then
     setMainVars
-    read -p " Do you want to setup your ${FORK} node as a DNS Server (y/n)?" response
-    echo -e "${NONE}"
-    if [[ "$response" =~ ^([yY])+$ ]]; then
-        setDNSVars
-    fi
     setGeneralVars
     echo -e "${BOLD} The log file can be monitored here: ${SCRIPT_LOGFILE}${NONE}"
     echo -e "${BOLD}"
@@ -315,11 +271,6 @@ echo -e "${GREEN} thecrypt0hunter(2019)${NONE}"
  else
     if [[ "$response" =~ ^([tT])+$ ]]; then
         setTestVars
-        read -p " Do you want to setup your ${FORK} node as a DNS Server (y/n)?" response
-        echo -e "${NONE}"
-        if [[ "$response" =~ ^([yY])+$ ]]; then
-           setDNSVars
-        fi
         setGeneralVars
         echo -e "${BOLD} The log file can be monitored here: ${SCRIPT_LOGFILE}${NONE}"
         echo -e "${BOLD}"

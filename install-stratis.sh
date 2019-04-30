@@ -14,7 +14,7 @@ ARCH="linux-x64"
 DATE_STAMP="$(date +%y-%m-%d-%s)"
 SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
 NODE_IP=$(curl --silent ipinfo.io/ip)
-FORK="city"
+FORK="stratis"
 
 function setMainVars() {
 ## set network dependent variables
@@ -60,7 +60,7 @@ COINDAEMON=cityd
 COINCONFIG=city.conf
 COINSTARTUP=/home/${NODE_USER}/cityd
 COINDLOC=/home/${NODE_USER}/citynode
-COINDSRC=/home/${NODE_USER}/code/src/City.Chain
+COINDSRC=/home/${NODE_USER}/city-chain/src/City.Chain
 COINSERVICELOC=/etc/systemd/system/
 COINSERVICENAME=${COINDAEMON}@${NODE_USER}
 SWAPSIZE="1024" ## =1GB
@@ -281,11 +281,11 @@ echo -e "${BOLD}"
     check_root
 
 echo -e "${BOLD}"
-read -p " Do you want to setup on Mainnet (m), Testnet (t) or upgrade (u) your ${FORK} node. (m/t/u)?" response
+read -p " Do you want to setup on Mainnet (m), Testnet (t) or upgrade (u) your ${FORK} full node. (m/t/u)?" response
 
 if [[ "$response" =~ ^([mM])+$ ]]; then
     setMainVars
-    read -p " Do you want to setup your ${FORK} node as a DNS Server (y/n)?" response
+    read -p " Do you want to setup your ${FORK} full node as a DNS Server (y/n)?" response
     echo -e "${NONE}"
     if [[ "$response" =~ ^([yY])+$ ]]; then
         setDNSVars
@@ -315,7 +315,7 @@ echo -e "${GREEN} thecrypt0hunter(2019)${NONE}"
  else
     if [[ "$response" =~ ^([tT])+$ ]]; then
         setTestVars
-        read -p " Do you want to setup your ${FORK} node as a DNS Server (y/n)?" response
+        read -p " Do you want to setup your ${FORK} full node as a DNS Server (y/n)?" response
         echo -e "${NONE}"
         if [[ "$response" =~ ^([yY])+$ ]]; then
            setDNSVars

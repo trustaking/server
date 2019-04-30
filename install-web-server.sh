@@ -11,7 +11,8 @@ DNS_NAME="$fork.trustaking.com"
 USER="$fork-web"
 SUDO_PASSWORD="$fork-web"
 MYSQL_ROOT_PASSWORD="$fork-web"
-COINSERVICEBASHFILE="https://raw.githubusercontent.com/trustaking/server-install/master/install-$fork.sh"
+COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustaking/server-install/master/install-$fork.sh"
+COINSERVICECONFIG="https://raw.githubusercontent.com/trustaking/server-install/master/config-$fork.sh"
 WEBFILE="https://github.com/trustaking/trustaking-server.git"
 
 if [[ "$net" =~ ^([tT])+$ ]]; then
@@ -20,7 +21,7 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
             apiport="38222"; # "37222" <Main Redstone
             ;;
         x42)
-           apiport="42220"; # "42221" <Main X42
+           apiport="42221"; # "42220" <Main X42
            ;;
         city)
            apiport="24335"; # "4335" <Main City
@@ -39,7 +40,7 @@ else
             apiport="37222";
             ;;
          x42)
-            apiport="42221";
+            apiport="42220";
             ;;
          city)
             apiport="4335";
@@ -410,7 +411,7 @@ chmod g+rw /home/${USER}/${SERVER_NAME} -R
 chmod g+s /home/${USER}/${SERVER_NAME} -R
 ## Inject apiport & ticker into /include/config.php
 sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$apiport='\).*/\1$apiport';/" /home/${USER}/${SERVER_NAME}/include/config.php
+sed -i "s/^\(\$api_port='\).*/\1$apiport';/" /home/${USER}/${SERVER_NAME}/include/config.php
 ## Inject apiport into /scripts/trustaking-*.sh files
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-add-funds.sh
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-balance.sh
@@ -419,7 +420,10 @@ sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trus
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 # Install Coins Service
-bash <( curl -s ${COINSERVICEBASHFILE} )
+wget ${COINSERVICEINSTALLER} -O /home/${USER}/install-${fork}.sh
+wget ${COINSERVICECONFIG} -O /home/${USER}/config-${fork}.sh
+chmod +x /home/${USER}/install-${fork}.sh
+/home/${USER}/install-$fork.sh -f ${fork}
 
 # Install hot wallet setup
 /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh

@@ -14,6 +14,7 @@ ARCH="linux-x64"
 DATE_STAMP="$(date +%y-%m-%d-%s)"
 SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
 NODE_IP=$(curl --silent ipinfo.io/ip)
+FORK="impleum"
 
 function setMainVars() {
 ## set network dependent variables
@@ -40,9 +41,9 @@ DNSPORT=53
 function setDNSVars() {
 ## set DNS specific variables
 if [ "${NETWORK}" = "" ] ; then
-   DNS="-iprangefiltering=0 -externalip=${NODE_IP} -dnshostname=seed.impleumcoin.com -dnsnameserver=dns1.seed.impleumcoin.com -dnsmailbox=admin@impleumplatform.com -dnsfullnode=1 -dnslistenport=${DNSPORT}"
+   DNS="-iprangefiltering=0 -externalip=${NODE_IP} -dnshostname=seed.${FORK}.trustaking.com -dnsnameserver=dns1.seed.${FORK}.trustaking.com -dnsmailbox=admin@trustaking.com -dnsfullnode=1 -dnslistenport=${DNSPORT}"
  else
-   DNS="-iprangefiltering=0 -externalip=${NODE_IP} -dnshostname=seed.impleumplatform.com -dnsnameserver=testdns1.seed.impleumplatform.com -dnsmailbox=admin@impleumplatform.com -dnsfullnode=1 -dnslistenport=${DNSPORT}"
+   DNS="-iprangefiltering=0 -externalip=${NODE_IP} -dnshostname=seed.${FORK}.trustaking.com -dnsnameserver=testdns1.seed.${FORK}.trustaking.com -dnsmailbox=admin@trustaking.com -dnsfullnode=1 -dnslistenport=${DNSPORT}"
 fi
 ## Stop port 53 from being used by systemd-resovled
 echo 'DNSStubListener=no' | sudo tee -a /etc/systemd/resolved.conf &>> ${SCRIPT_LOGFILE}
@@ -273,18 +274,18 @@ clear
 cd
 echo && echo
 echo -e "${PURPLE}**********************************************************************${NONE}"
-echo -e "${PURPLE}*    This script will install and configure your impleum node.      *${NONE}"
+echo -e "${PURPLE}*       This script will install and configure your full node.        *${NONE}"
 echo -e "${PURPLE}**********************************************************************${NONE}"
 echo -e "${BOLD}"
 
     check_root
 
 echo -e "${BOLD}"
-read -p " Do you want to setup on Mainnet (m), Testnet (t) or upgrade (u) your impleum node. (m/t/u)?" response
+read -p " Do you want to setup on Mainnet (m), Testnet (t) or upgrade (u) your ${FORK} node. (m/t/u)?" response
 
 if [[ "$response" =~ ^([mM])+$ ]]; then
     setMainVars
-    read -p " Do you want to setup your impleum node as a DNS Server (y/n)?" response
+    read -p " Do you want to setup your ${FORK} node as a DNS Server (y/n)?" response
     echo -e "${NONE}"
     if [[ "$response" =~ ^([yY])+$ ]]; then
         setDNSVars
@@ -314,7 +315,7 @@ echo -e "${GREEN} thecrypt0hunter(2019)${NONE}"
  else
     if [[ "$response" =~ ^([tT])+$ ]]; then
         setTestVars
-        read -p " Do you want to setup your impleum node as a DNS Server (y/n)?" response
+        read -p " Do you want to setup your ${FORK} node as a DNS Server (y/n)?" response
         echo -e "${NONE}"
         if [[ "$response" =~ ^([yY])+$ ]]; then
            setDNSVars
