@@ -68,8 +68,7 @@ if [[ "$response" =~ ^([yY])+$ ]]; then
 fi
 
 # SSH access via password will be disabled. Use keys instead.
-PUBLIC_SSH_KEYS="# Home
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrk0aWfKK8UqhMU/kY3PSgUDLwSU06zQGua2dsclElixMbmsbn/AM77WCGxHr05VTNyjX5WOlyW+RAC+IzFH1clFu7cd7wEVb3tCtpG4cN5FfY97/bgTuUM5qXPsD93hcolY8EHcWX+vdpOpHQ45YzpDZZbJB/BSzdi4+4vRL6pKMlY2INoaBpU7j8J2+nb8X49f+eN8xcLOtXQ/oR/eaJvlp2IsX/bopnmDGFTcgeqsd2ratCYkKqFQMiCRjGA7fF5n9aD1cSTvC2AVynYNsPbhrbd4DXsfo2uvyCI+D7iC4byfXpqL5DC4Hd7nihbs2F3Zib5kcEuraF+C5psxan thecryptohunter@my-laptop"
+PUBLIC_SSH_KEYS="""
 
 # if vps not contains swap file - create it
 SWAP_SIZE="1G"

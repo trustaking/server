@@ -20,7 +20,7 @@ COINAPIPORT=39222
 
 function setGeneralVars() {
 ## set general variables
-COINRUNCMD="sudo dotnet ./impleum.impleumFullNodeD.dll ${NETWORK} -datadir=/home/${NODE_USER}/.${FORK}node -stake=1 -walletname=hot-wallet -walletpassword=hot-wallet"
+COINRUNCMD="sudo dotnet ./impleum.impleumFullNodeD.dll ${NETWORK} -datadir=/home/${NODE_USER}/.${FORK}node #-stake=1 -walletname= -walletpassword="
 COINDSRC=/home/${NODE_USER}/code/src/Impleum.ImpleumD
 COINGITHUB=https://github.com/impleum/ImpleumBitcoinFullNode.git
 CONF=release
