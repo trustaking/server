@@ -68,7 +68,7 @@ if [[ "$response" =~ ^([yY])+$ ]]; then
 fi
 
 # SSH access via password will be disabled. Use keys instead.
-PUBLIC_SSH_KEYS="""
+PUBLIC_SSH_KEYS=""
 
 # if vps not contains swap file - create it
 SWAP_SIZE="1G"
@@ -92,7 +92,7 @@ apt-get install -y --force-yes software-properties-common
 
 apt-add-repository ppa:nginx/development -y
 #apt-add-repository ppa:chris-lea/redis-server -y
-apt-add-repository ppa:ondrej/apache2 -y
+#apt-add-repository ppa:ondrej/apache2 -y
 apt-add-repository ppa:ondrej/php -y
 
 # Update Package Lists

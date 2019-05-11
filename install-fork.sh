@@ -12,10 +12,7 @@ UNDERLINE='\033[4m'
 OS_VER="Ubuntu*"
 ARCH="linux-x64"
 DATE_STAMP="$(date +%y-%m-%d-%s)"
-SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
 NODE_IP=$(curl --silent ipinfo.io/ip)
-
-##TODO: Inject config
 
 while getopts f: option
 do
@@ -26,6 +23,8 @@ esac
 done
 
 source config-${FORK}.sh
+
+SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
 
 function check_root() {
 if [ "$(id -u)" != "0" ]; then
