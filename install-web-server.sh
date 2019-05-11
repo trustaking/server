@@ -92,7 +92,7 @@ apt-get install -y --force-yes software-properties-common
 
 apt-add-repository ppa:nginx/development -y
 #apt-add-repository ppa:chris-lea/redis-server -y
-#apt-add-repository ppa:ondrej/apache2 -y
+apt-add-repository ppa:ondrej/apache2 -y
 apt-add-repository ppa:ondrej/php -y
 
 # Update Package Lists
@@ -181,7 +181,6 @@ chmod 700 /home/$USER/.ssh/id_rsa
 # Setup Unattended Security Upgrades
 
 cat > /etc/apt/apt.conf.d/50unattended-upgrades << EOF
-Unattended-Upgrade::Allowed-Origins {
     "Ubuntu xenial-security";
 };
 Unattended-Upgrade::Package-Blacklist {
@@ -431,4 +430,9 @@ chmod +x /home/${USER}/install-${fork}.sh
 /home/${USER}/install-$fork.sh -f ${fork}
 
 # Install hot wallet setup
+sleep 60
 /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
+
+# Display information
+
+echo "Website URL: "${DNS_NAME}
