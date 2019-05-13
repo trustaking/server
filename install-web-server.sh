@@ -231,7 +231,7 @@ fi
 apt-get install -y --force-yes php7.0-cli php7.0-dev \
 php-sqlite3 php-gd \
 php-curl php7.0-curl php7.0-dev \
-php-imap php-mysql php-memcached php-mcrypt php-mbstring \
+php-imap php-mysql php-memcached php-php7.0-mcrypt php-mbstring \
 php-xml php-imagick php7.0-zip php7.0-bcmath php-soap \
 php7.0-intl php7.0-readline
 
@@ -413,6 +413,7 @@ git clone ${WEBFILE} ${SERVER_NAME}
 chown ${USER}:www-data /home/${USER}/${SERVER_NAME} -R
 chmod g+rw /home/${USER}/${SERVER_NAME} -R
 chmod g+s /home/${USER}/${SERVER_NAME} -R
+php /usr/local/bin/composer require btcpayserver/btcpayserver-php-client
 ## Inject apiport & ticker into /include/config.php
 sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$api_port='\).*/\1$apiport';/" /home/${USER}/${SERVER_NAME}/include/config.php
