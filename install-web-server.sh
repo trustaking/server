@@ -413,6 +413,7 @@ git clone ${WEBFILE} ${SERVER_NAME}
 chown ${USER}:www-data /home/${USER}/${SERVER_NAME} -R
 chmod g+rw /home/${USER}/${SERVER_NAME} -R
 chmod g+s /home/${USER}/${SERVER_NAME} -R
+cd /home/${USER}/${SERVER_NAME}
 php /usr/local/bin/composer require btcpayserver/btcpayserver-php-client
 ## Inject apiport & ticker into /include/config.php
 sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/config.php
@@ -437,3 +438,4 @@ sleep 60
 # Display information
 
 echo "Website URL: "${DNS_NAME}
+echo "Requires keys.php, btcpayserver.pri & pub in /var/secure/"
