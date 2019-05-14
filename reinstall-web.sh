@@ -1,6 +1,6 @@
 #!/bin/bash
 # =================== YOUR DATA ========================
-WEBSERVERBASHFILE="bash <( curl -s https://raw.githubusercontent.com/trustaking/server-install/master/reinstall-web.sh )"
+WEBSERVERBASHFILE="bash <( curl -s https://raw.githubusercontent.com/trustaking/server/master/reinstall-web.sh )"
 SERVER_IP=$(curl --silent ipinfo.io/ip)
 
 read -p "Which Fork (redstone, x42, impleum, city, stratis)? " fork
