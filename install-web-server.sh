@@ -2,11 +2,15 @@
 # =================== YOUR DATA ========================
 WEBSERVERBASHFILE="bash <( curl -s https://raw.githubusercontent.com/trustaking/server-install/master/install-web-server.sh )"
 SERVER_IP=$(curl --silent ipinfo.io/ip)
+SERVICE_DESC="12 months Trustaking service"
+PRICE="15\.00"
+# =================== YOUR DATA ========================
 
 read -p "Which Fork (redstone, x42, impleum, city, stratis)? " fork
 read -p "Mainnet (m) or Testnet (t)? " net
 
 SERVER_NAME="$fork.trustaking.com"
+REDIRECTURL="http:\/\/${SERVER_NAME}\/activate.php"
 DNS_NAME="$fork.trustaking.com"
 USER="$fork-web"
 SUDO_PASSWORD="$fork-web"
@@ -414,13 +418,14 @@ chown ${USER}:www-data /home/${USER}/${SERVER_NAME} -R
 chmod g+rw /home/${USER}/${SERVER_NAME} -R
 chmod g+s /home/${USER}/${SERVER_NAME} -R
 cd /home/${USER}/${SERVER_NAME}
-php /usr/local/bin/composer require trustaking/btcpayserver-php-client
+php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
 ## Inject apiport & ticker into /include/config.php
 sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$api_port='\).*/\1$apiport';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$service_desc='\).*/\1${SERVICE_DESC}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$price='\).*/\1${PRICE}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$redirectURL='\).*/\1${REDIRECTURL}';/" /home/${USER}/${SERVER_NAME}/include/config.php
+
 ## Inject apiport into /scripts/trustaking-*.sh files
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-add-funds.sh
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-balance.sh
@@ -439,6 +444,5 @@ sleep 60
 /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 # Display information
-
 echo "Website URL: "${DNS_NAME}
 echo "Requires keys.php, btcpayserver.pri & pub in /var/secure/"

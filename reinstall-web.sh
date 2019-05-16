@@ -2,11 +2,15 @@
 # =================== YOUR DATA ========================
 WEBSERVERBASHFILE="bash <( curl -s https://raw.githubusercontent.com/trustaking/server/master/reinstall-web.sh )"
 SERVER_IP=$(curl --silent ipinfo.io/ip)
+SERVICE_DESC="12 months Trustaking service"
+PRICE="15\.00"
+# =================== YOUR DATA ========================
 
 read -p "Which Fork (redstone, x42, impleum, city, stratis)? " fork
 read -p "Mainnet (m) or Testnet (t)? " net
 
 SERVER_NAME="$fork.trustaking.com"
+REDIRECTURL="http:\/\/${SERVER_NAME}\/activate.php"
 DNS_NAME="$fork.trustaking.com"
 USER="$fork-web"
 SUDO_PASSWORD="$fork-web"
@@ -14,9 +18,6 @@ MYSQL_ROOT_PASSWORD="$fork-web"
 COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustaking/server-install/master/install-fork.sh"
 COINSERVICECONFIG="https://raw.githubusercontent.com/trustaking/server-install/master/config/config-$fork.sh"
 WEBFILE="https://github.com/trustaking/trustaking-server.git"
-SERVICE_DESC="12 months Trustaking service"
-PRICE="15\.00"
-REDIRECTURL="http:\/\/${SERVER_NAME}\/activate.php"
 
 if [[ "$net" =~ ^([tT])+$ ]]; then
     case $fork in
@@ -79,7 +80,7 @@ chown ${USER}:www-data /home/${USER}/${SERVER_NAME} -R
 chmod g+rw /home/${USER}/${SERVER_NAME} -R
 chmod g+s /home/${USER}/${SERVER_NAME} -R
 cd /home/${USER}/${SERVER_NAME}
-php /usr/local/bin/composer require trustaking/btcpayserver-php-client
+php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
 ## Inject apiport & ticker into /include/config.php
 sed -i "s/^\(\$ticker='\).*/\1${fork}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$api_port='\).*/\1${apiport}';/" /home/${USER}/${SERVER_NAME}/include/config.php
