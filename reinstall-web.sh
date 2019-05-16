@@ -15,8 +15,8 @@ COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustaking/server-instal
 COINSERVICECONFIG="https://raw.githubusercontent.com/trustaking/server-install/master/config/config-$fork.sh"
 WEBFILE="https://github.com/trustaking/trustaking-server.git"
 SERVICE_DESC="12 months Trustaking service"
-PRICE="15.00"
-REDIRECTURL="http://${SERVER_NAME}/activate.php"
+PRICE=15.00
+REDIRECTURL=http://${SERVER_NAME}/activate.php
 
 if [[ "$net" =~ ^([tT])+$ ]]; then
     case $fork in
