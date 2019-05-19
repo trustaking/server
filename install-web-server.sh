@@ -5,10 +5,15 @@ SERVER_IP=$(curl --silent ipinfo.io/ip)
 SERVICE_DESC="12 months Trustaking service"
 PRICE="15\.00"
 # =================== YOUR DATA ========================
+if [ "$(id -u)" != "0" ]; then
+    echo -e "${RED}* Sorry, this script needs to be run as root. Do \"sudo su root\" and then re-run this script${NONE}"
+    exit 1
+    echo -e "${NONE}${GREEN}* All Good!${NONE}";
+fi
 
 read -p "Which Fork (redstone, x42, impleum, city, stratis)? " fork
 read -p "Mainnet (m) or Testnet (t)? " net
-
+# =================== YOUR DATA ========================
 SERVER_NAME="$fork.trustaking.com"
 REDIRECTURL="http:\/\/${SERVER_NAME}\/activate.php"
 DNS_NAME="$fork.trustaking.com"
@@ -18,6 +23,8 @@ MYSQL_ROOT_PASSWORD="$fork-web"
 COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustaking/server-install/master/install-fork.sh"
 COINSERVICECONFIG="https://raw.githubusercontent.com/trustaking/server-install/master/config/config-$fork.sh"
 WEBFILE="https://github.com/trustaking/trustaking-server.git"
+RPCUSER=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
+RPCPASS=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 
 if [[ "$net" =~ ^([tT])+$ ]]; then
     case $fork in
@@ -65,6 +72,8 @@ else
     esac
 fi
 
+# =================== YOUR DATA ========================
+
 read -p "Are you using IP(y) or DNS(n)?" response
 
 if [[ "$response" =~ ^([yY])+$ ]]; then
@@ -75,7 +84,7 @@ fi
 PUBLIC_SSH_KEYS=""
 
 # if vps not contains swap file - create it
-SWAP_SIZE="1G"
+SWAP_SIZE="2G"
 
 TIMEZONE="Etc/GMT+0" # list of avaiable timezones: ls -R --group-directories-first /usr/share/zoneinfo
 
@@ -218,14 +227,14 @@ service supervisor start
 
 # Configure Swap Disk
 
-if [ -f /swapfile ]; then
+if [ -f /var/node_swap.img ]; then
     echo "Swap exists."
 else
-    fallocate -l $SWAP_SIZE /swapfile
-    chmod 600 /swapfile
-    mkswap /swapfile
-    swapon /swapfile
-    echo "/swapfile none swap sw 0 0" >> /etc/fstab
+    fallocate -l $SWAP_SIZE /var/node_swap.img
+    chmod 600 /var/node_swap.img
+    mkswap /var/node_swap.img
+    swapon /var/node_swap.img
+    echo "/var/node_swap.img none swap sw 0 0" >> /etc/fstab
     echo "vm.swappiness=30" >> /etc/sysctl.conf
     echo "vm.vfs_cache_pressure=50" >> /etc/sysctl.conf
 fi
@@ -426,6 +435,10 @@ sed -i "s/^\(\$service_desc='\).*/\1${SERVICE_DESC}';/" /home/${USER}/${SERVER_N
 sed -i "s/^\(\$price='\).*/\1${PRICE}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$redirectURL='\).*/\1${REDIRECTURL}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 
+#Inject RPC username & password into config.php
+sed -i "s/^\(\$rpc_user='\).*/\1${RPCUSER}';/" /home/${USER}/${SERVER_NAME}/include/config.php
+sed -i "s/^\(\$rpc_pass='\).*/\1${RPCPASS}';/" /home/${USER}/${SERVER_NAME}/include/config.php
+
 ## Inject apiport into /scripts/trustaking-*.sh files
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-add-funds.sh
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-balance.sh
@@ -437,12 +450,15 @@ sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-
 wget ${COINSERVICEINSTALLER} -O /home/${USER}/install-${fork}.sh
 wget ${COINSERVICECONFIG} -O /home/${USER}/config-${fork}.sh
 chmod +x /home/${USER}/install-${fork}.sh
-/home/${USER}/install-$fork.sh -f ${fork}
+cd home/${USER}/
+./install-$fork.sh -f ${fork} -u ${RPCUSER} -p ${RPCPASS} -n ${NET}
 
 # Install hot wallet setup
 sleep 60
 /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 # Display information
+echo
 echo "Website URL: "${DNS_NAME}
-echo "Requires keys.php, btcpayserver.pri & pub in /var/secure/"
+sudo mkdir /var/secure 
+echo "Requires keys.php, btcpayserver.pri & pub in /var/secure/ - run transfer.sh"

@@ -14,13 +14,18 @@ ARCH="linux-x64"
 DATE_STAMP="$(date +%y-%m-%d-%s)"
 NODE_IP=$(curl --silent ipinfo.io/ip)
 
-while getopts f: option
-do
-case "${option}"
-in
-f) FORK=${OPTARG};;
-esac
+usage() { echo "Usage: $0 [-f coin name] [-u rpc username] [-p rpc password] [-n (m/t/u) main, test or upgrade]" 1>&2; exit 1; }
+
+while getopts ":f:u:p:n:" option; do
+    case "${option}" in
+        f) FORK=${OPTARG};;
+        u) RPCUSER=${OPTARG};;
+        p) RPCPASS=${OPTARG};;
+        n) NET=${OPTARG};;
+        *) usage ;;
+    esac
 done
+shift "$((OPTIND-1))"
 
 source config-${FORK}.sh
 
@@ -79,15 +84,15 @@ setupSwap() {
 #check if swap is available
     echo
     echo "* Creating Swap File. Please wait..."
-    if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/var/mnode_swap.img" ];then
+    if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/var/node_swap.img" ];then
     echo -e "${GREEN}* No proper swap, creating it.${NONE}";
     # needed because ant servers are ants
-    sudo rm -f /var/mnode_swap.img &>> ${SCRIPT_LOGFILE}
-    sudo dd if=/dev/zero of=/var/mnode_swap.img bs=1024k count=${SWAPSIZE} &>> ${SCRIPT_LOGFILE}
-    sudo chmod 0600 /var/mnode_swap.img &>> ${SCRIPT_LOGFILE}
-    sudo mkswap /var/mnode_swap.img &>> ${SCRIPT_LOGFILE}
-    sudo swapon /var/mnode_swap.img &>> ${SCRIPT_LOGFILE}
-    echo '/var/mnode_swap.img none swap sw 0 0' | sudo tee -a /etc/fstab &>> ${SCRIPT_LOGFILE}
+    sudo rm -f /var/node_swap.img &>> ${SCRIPT_LOGFILE}
+    sudo dd if=/dev/zero of=/var/node_swap.img bs=1024k count=${SWAPSIZE} &>> ${SCRIPT_LOGFILE}
+    sudo chmod 0600 /var/node_swap.img &>> ${SCRIPT_LOGFILE}
+    sudo mkswap /var/node_swap.img &>> ${SCRIPT_LOGFILE}
+    sudo swapon /var/node_swap.img &>> ${SCRIPT_LOGFILE}
+    echo '/var/node_swap.img none swap sw 0 0' | sudo tee -a /etc/fstab &>> ${SCRIPT_LOGFILE}
     echo 'vm.swappiness=10' | sudo tee -a /etc/sysctl.conf &>> ${SCRIPT_LOGFILE}
     echo 'vm.vfs_cache_pressure=50' | sudo tee -a /etc/sysctl.conf &>> ${SCRIPT_LOGFILE}
 else
