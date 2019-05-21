@@ -246,7 +246,7 @@ echo -e "${BOLD}"
 echo -e "${BOLD}"
 #read -p " Do you want to setup on Mainnet (m), Testnet (t) or upgrade (u) your ${FORK} full node. (m/t/u)?" response
 
-if [[ "$response" =~ ^([mM])+$ ]]; then
+if [[ "$NET" =~ ^([mM])+$ ]]; then
     setMainVars
     setGeneralVars
     echo -e "${BOLD} The log file can be monitored here: ${SCRIPT_LOGFILE}${NONE}"
@@ -271,7 +271,7 @@ echo -e "${GREEN} Installation complete. Check service with: journalctl -f -u ${
 echo -e "${GREEN} thecrypt0hunter(2019)${NONE}"
 
  else
-    if [[ "$response" =~ ^([tT])+$ ]]; then
+    if [[ "$NET" =~ ^([tT])+$ ]]; then
         setTestVars
         setGeneralVars
         echo -e "${BOLD} The log file can be monitored here: ${SCRIPT_LOGFILE}${NONE}"
@@ -295,7 +295,7 @@ echo
 echo -e "${GREEN} Installation complete. Check service with: journalctl -f -u ${COINSERVICENAME} ${NONE}"
 echo -e "${GREEN} thecrypt0hunter(2019)${NONE}"
  else
-    if [[ "$response" =~ ^([uU])+$ ]]; then
+    if [[ "$NET" =~ ^([uU])+$ ]]; then
         check_root
         ##TODO: Test for servicefile and only upgrade as required 
         #Stop Test Service
