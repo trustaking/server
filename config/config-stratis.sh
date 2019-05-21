@@ -2,7 +2,7 @@ function setMainVars() {
 ## set network dependent variables
 NETWORK=""
 NODE_USER=${FORK}${NETWORK}
-COINCORE=home/${NODE_USER}/.${FORK}node/${FORK}/StratisMain
+COINCORE=/home/${NODE_USER}/.${FORK}node/${FORK}/StratisMain
 COINPORT=16178
 COINRPCPORT=16174
 COINAPIPORT=37221
@@ -12,7 +12,7 @@ function setTestVars() {
 ## set network dependent variables
 NETWORK="-testnet"
 NODE_USER=${FORK}${NETWORK}
-COINCORE=home/${NODE_USER}/.${FORK}node/${FORK}/StratisTest
+COINCORE=/home/${NODE_USER}/.${FORK}node/${FORK}/StratisTest
 COINPORT=26178
 COINRPCPORT=26174
 COINAPIPORT=38221

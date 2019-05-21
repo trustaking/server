@@ -2,7 +2,7 @@ function setMainVars() {
 ## set network dependent variables
 NETWORK=""
 NODE_USER=${FORK}${NETWORK}
-COINCORE=home/${NODE_USER}/.${FORK}node/${FORK}/RedstoneMain
+COINCORE=/home/${NODE_USER}/.${FORK}node/${FORK}/RedstoneMain
 COINPORT=19056
 COINRPCPORT=19057
 COINAPIPORT=37222
@@ -12,7 +12,7 @@ function setTestVars() {
 ## set network dependent variables
 NETWORK="-testnet"
 NODE_USER=${FORK}${NETWORK}
-COINCORE=home/${NODE_USER}/.${FORK}node/${FORK}/RedstoneTest
+COINCORE=/home/${NODE_USER}/.${FORK}node/${FORK}/RedstoneTest
 COINPORT=19156
 COINRPCPORT=19157
 COINAPIPORT=38222

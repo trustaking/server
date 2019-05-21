@@ -455,7 +455,7 @@ sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-
 wget ${COINSERVICEINSTALLER} -O /home/${USER}/install-${fork}.sh
 wget ${COINSERVICECONFIG} -O /home/${USER}/config-${fork}.sh
 chmod +x /home/${USER}/install-${fork}.sh
-cd home/${USER}/
+cd /home/${USER}/
 ./install-$fork.sh -f ${fork} -u ${RPCUSER} -p ${RPCPASS} -n ${NET}
 
 # Install hot wallet setup
