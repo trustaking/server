@@ -22,7 +22,7 @@ DNS_NAME="$fork.trustaking.com"
 USER="$fork-web"
 SUDO_PASSWORD="$fork-web"
 MYSQL_ROOT_PASSWORD="$fork-web"
-COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustaking/server-install/master/install-fork.sh"
+COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustaking/server-install/master/install-coin.sh"
 COINSERVICECONFIG="https://raw.githubusercontent.com/trustaking/server-install/master/config/config-$fork.sh"
 WEBFILE="https://github.com/trustaking/trustaking-server.git"
 RPCUSER=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
@@ -452,11 +452,11 @@ sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trus
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 # Install Coins Service
-wget ${COINSERVICEINSTALLER} -O /home/${USER}/install-${fork}.sh
+wget ${COINSERVICEINSTALLER} -O /home/${USER}/install-coin.sh
 wget ${COINSERVICECONFIG} -O /home/${USER}/config-${fork}.sh
-chmod +x /home/${USER}/install-${fork}.sh
+chmod +x /home/${USER}/install-coin.sh
 cd /home/${USER}/
-./install-$fork.sh -f ${fork} -u ${RPCUSER} -p ${RPCPASS} -n ${NET}
+./install-coin.sh -f ${fork} -u ${RPCUSER} -p ${RPCPASS} -n ${NET}
 
 # Install hot wallet setup
 sleep 60

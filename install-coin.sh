@@ -59,7 +59,7 @@ function set_permissions() {
     chmod -R g=u ${COINCORE} ${COINSTARTUP} ${COINDLOC} ${COINSERVICELOC} &>> ${SCRIPT_LOGFILE}
 }
 
-checkOSVersion() {
+function checkOSVersion() {
    echo
    echo "* Checking OS version..."
     if [[ `cat /etc/issue.net`  == ${OS_VER} ]]; then
@@ -71,7 +71,7 @@ checkOSVersion() {
     fi
 }
 
-updateAndUpgrade() {
+function updateAndUpgrade() {
     echo
     echo "* Running update and upgrade. Please wait..."
     sudo DEBIAN_FRONTEND=noninteractive apt-get update -qq -y &>> ${SCRIPT_LOGFILE}
@@ -80,7 +80,7 @@ updateAndUpgrade() {
     echo -e "${GREEN}* Done${NONE}";
 }
 
-setupSwap() {
+function setupSwap() {
 #check if swap is available
     echo
     echo "* Creating Swap File. Please wait..."
@@ -100,7 +100,7 @@ else
 fi
 }
 
-installFail2Ban() {
+function installFail2Ban() {
     echo
     echo -e "* Installing fail2ban. Please wait..."
     sudo apt-get -y install fail2ban &>> ${SCRIPT_LOGFILE}
@@ -114,7 +114,7 @@ installFail2Ban() {
     echo -e "${NONE}${GREEN}* Done${NONE}";
 }
 
-installFirewall() {
+function installFirewall() {
     echo
     echo -e "* Installing UFW. Please wait..."
     sudo apt-get -y install ufw &>> ${SCRIPT_LOGFILE}
@@ -129,7 +129,7 @@ installFirewall() {
     echo -e "${NONE}${GREEN}* Done${NONE}";
 }
 
-installDependencies() {
+function installDependencies() {
     echo
     echo -e "* Installing dependencies. Please wait..."
     sudo timedatectl set-ntp no &>> ${SCRIPT_LOGFILE}
@@ -158,7 +158,7 @@ installDependencies() {
     fi
 }
 
-compileWallet() {
+function compileWallet() {
     echo
     echo -e "* Compiling wallet. Please wait, this might take a while to complete..."
     cd /home/${NODE_USER}/
@@ -171,7 +171,7 @@ compileWallet() {
     echo -e "${NONE}${GREEN}* Done${NONE}";
 }
 
-installWallet() {
+function installWallet() {
     echo
     echo -e "* Installing wallet. Please wait..."
     cd /home/${NODE_USER}/
@@ -185,26 +185,24 @@ installWallet() {
     echo -e "${NONE}${GREEN}* Done${NONE}";
 }
 
-configureWallet() {
+function configureWallet() {
     echo
     echo -e "* Configuring wallet. Please wait..."
     cd /home/${NODE_USER}/
-    rpcuser=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
-    rpcpass=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
     sudo mkdir -p $COINCORE
     echo -e "externalip=${NODE_IP}\ntxindex=1\nlisten=1\ndaemon=1\nmaxconnections=64" > $COINCONFIG
     sudo mv $COINCONFIG $COINCORE
     echo -e "${NONE}${GREEN}* Done${NONE}";
 }
 
-startWallet() {
+function startWallet() {
     echo
     echo -e "* Starting wallet daemon...${COINSERVICENAME}"
     sudo service ${COINSERVICENAME} start &>> ${SCRIPT_LOGFILE}
     sleep 2
     echo -e "${GREEN}* Done${NONE}";
 }
-stopWallet() {
+function stopWallet() {
     echo
     echo -e "* Stopping wallet daemon...${COINSERVICENAME}"
     sudo service ${COINSERVICENAME} stop &>> ${SCRIPT_LOGFILE}
@@ -226,7 +224,7 @@ function installUnattendedUpgrades() {
     echo -e "${GREEN}* Done${NONE}";
 }
 
-displayServiceStatus() {
+function displayServiceStatus() {
 	echo
 	echo
 	on="${GREEN}ACTIVE${NONE}"
@@ -246,7 +244,7 @@ echo -e "${BOLD}"
     check_root
 
 echo -e "${BOLD}"
-read -p " Do you want to setup on Mainnet (m), Testnet (t) or upgrade (u) your ${FORK} full node. (m/t/u)?" response
+#read -p " Do you want to setup on Mainnet (m), Testnet (t) or upgrade (u) your ${FORK} full node. (m/t/u)?" response
 
 if [[ "$response" =~ ^([mM])+$ ]]; then
     setMainVars
