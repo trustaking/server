@@ -452,11 +452,13 @@ sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trus
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 # Install Coins Service
+pause
 wget ${COINSERVICEINSTALLER} -O /home/${USER}/install-coin.sh
 wget ${COINSERVICECONFIG} -O /home/${USER}/config-${fork}.sh
 chmod +x /home/${USER}/install-coin.sh
 cd /home/${USER}/
 ./install-coin.sh -f ${fork} -u ${RPCUSER} -p ${RPCPASS} -n ${NET}
+pause
 
 # Install hot wallet setup
 sleep 60
