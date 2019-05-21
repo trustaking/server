@@ -3,7 +3,7 @@
 WEBSERVERBASHFILE="bash <( curl -s https://raw.githubusercontent.com/trustaking/server-install/master/install-web-server.sh )"
 SERVER_IP=$(curl --silent ipinfo.io/ip)
 SERVICE_END_DATE="2020-05-31"
-SERVICE_DESC=" Coldstake.co.in service. Service ends on "$SERVICE_END_DATE
+SERVICE_DESC=" trustaking.com service. Service ends on "$SERVICE_END_DATE
 ONLINE_DAYS=365
 PRICE="15\.00"
 # =================== YOUR DATA ========================
