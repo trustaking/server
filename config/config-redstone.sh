@@ -21,8 +21,8 @@ COINAPIPORT=38222
 function setGeneralVars() {
 ## set general variables
 COINRUNCMD="sudo dotnet ./Redstone.RedstoneFullNodeD.dll ${NETWORK} -datadir=/home/${NODE_USER}/.${FORK}node #-stake=1 -walletname= -walletpassword="
-#COINGITHUB=https://github.com/RedstonePlatform/Redstone.git
-COINGITHUB=https://github.com/spartacrypt/RedstoneServiceNode.git
+#TODO: Grab servicenode branch
+COINGITHUB=https://github.com/RedstonePlatform/Redstone.git
 COINDSRC=/home/${NODE_USER}/code/src/Redstone/Programs/Redstone.RedstoneFullNodeD
 CONF=release
 COINDAEMON=${FORK}d
