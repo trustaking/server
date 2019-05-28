@@ -454,14 +454,16 @@ wget ${COINSERVICEINSTALLER} -O ~/install-coin.sh
 wget ${COINSERVICECONFIG} -O ~/config-${fork}.sh
 chmod +x ~/install-coin.sh
 cd ~
+echo "-f ${fork} -n ${NET}"
 ~/install-coin.sh -f ${fork} -n ${NET}
 
 # Install hot wallet setup
 sleep 60
 /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
+##TODO:Inject hotwallet name in config.php
 
 # Display information
 echo
 echo "Website URL: "${DNS_NAME}
-sudo mkdir /var/secure 
-echo "Requires keys.php, btcpayserver.pri & pub in /var/secure/ - run transfer.sh"
+[ ! -d /var/secure ] && mkdir -p /var/secure 
+echo "Requires keys.php, btcpayserver.pri & pub in /var/secure/ - run transfer.sh
