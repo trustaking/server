@@ -213,7 +213,6 @@ EOF
 # Setup UFW Firewall
 
 ufw allow 22
-ufw allow 'Nginx HTTP'
 ufw allow 80
 ufw allow 443
 ufw --force enable
@@ -246,7 +245,7 @@ fi
 apt-get install -y --force-yes php7.0-cli php7.0-dev \
 php-sqlite3 php-gd \
 php-curl php7.0-curl php7.0-dev \
-php-imap php-mysql php-memcached php-php7.0-mcrypt php-mbstring \
+php-imap php-mysql php-memcached php7.0-mcrypt php-mbstring \
 php-xml php-imagick php7.0-zip php7.0-bcmath php-soap \
 php7.0-intl php7.0-readline
 
