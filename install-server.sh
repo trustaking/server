@@ -1,6 +1,6 @@
 #!/bin/bash
 # =================== YOUR DATA ========================
-#bash <( curl -s https://raw.githubusercontent.com/trustaking/server/master/install-server.sh )"
+#bash <( curl -s https://raw.githubusercontent.com/trustaking/server/master/install-server.sh )
 SERVER_IP=$(curl --silent ipinfo.io/ip)
 SERVICE_END_DATE="2020-05-31"
 SERVICE_DESC=" trustaking.com service. Service ends on "$SERVICE_END_DATE
@@ -451,11 +451,11 @@ sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trus
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 # Install Coins Service
-wget ${COINSERVICEINSTALLER} -O /home/${USER}/install-coin.sh
-wget ${COINSERVICECONFIG} -O /home/${USER}/config-${fork}.sh
-chmod +x /home/${USER}/install-coin.sh
-cd /home/${USER}/
-./install-coin.sh -f ${fork} -u ${RPCUSER} -p ${RPCPASS} -n ${NET}
+wget ${COINSERVICEINSTALLER} -O ~/install-coin.sh
+wget ${COINSERVICECONFIG} -O ~/config-${fork}.sh
+chmod +x ~/install-coin.sh
+cd ~
+~/install-coin.sh -f ${fork} -n ${NET}
 
 # Install hot wallet setup
 sleep 60
