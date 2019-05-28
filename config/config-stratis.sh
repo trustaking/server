@@ -20,7 +20,7 @@ COINAPIPORT=38221
 
 function setGeneralVars() {
 ## set general variables
-COINRUNCMD="sudo dotnet ./Stratis.StratisD.dll ${NETWORK} -datadir=/home/${NODE_USER}/.${FORK}node #-stake=1 -walletname= -walletpassword="
+COINRUNCMD="sudo dotnet ./Stratis.StratisD.dll ${NETWORK} -datadir=/home/${NODE_USER}/.${FORK}node -maxblkmem=2"
 COINGITHUB=https://github.com/stratisproject/StratisBitcoinFullNode.git
 COINDSRC=/home/${NODE_USER}/code/src/Stratis.StratisD
 CONF=release

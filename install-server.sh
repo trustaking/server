@@ -85,7 +85,7 @@ fi
 PUBLIC_SSH_KEYS=""
 
 # if vps not contains swap file - create it
-SWAP_SIZE="2G"
+SWAP_SIZE="3G"
 
 TIMEZONE="Etc/GMT+0" # list of avaiable timezones: ls -R --group-directories-first /usr/share/zoneinfo
 
