@@ -1,6 +1,6 @@
 #!/bin/bash
 # =================== YOUR DATA ========================
-WEBSERVERBASHFILE="bash <( curl -s https://raw.githubusercontent.com/trustaking/server-install/master/install-web-server.sh )"
+#bash <( curl -s https://raw.githubusercontent.com/trustaking/server/master/install-server.sh )"
 SERVER_IP=$(curl --silent ipinfo.io/ip)
 SERVICE_END_DATE="2020-05-31"
 SERVICE_DESC=" trustaking.com service. Service ends on "$SERVICE_END_DATE
@@ -22,9 +22,9 @@ DNS_NAME="$fork.trustaking.com"
 USER="$fork-web"
 SUDO_PASSWORD="$fork-web"
 MYSQL_ROOT_PASSWORD="$fork-web"
-COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustaking/server-install/master/install-coin.sh"
-COINSERVICECONFIG="https://raw.githubusercontent.com/trustaking/server-install/master/config/config-$fork.sh"
-WEBFILE="https://github.com/trustaking/trustaking-server.git"
+COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustaking/server/master/install-coin.sh"
+COINSERVICECONFIG="https://raw.githubusercontent.com/trustaking/server/master/config/config-$fork.sh"
+WEBFILE="https://github.com/trustaking/node.git"
 RPCUSER=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 RPCPASS=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 
@@ -75,7 +75,6 @@ else
 fi
 
 # =================== YOUR DATA ========================
-
 read -p "Are you using IP(y) or DNS(n)?" response
 
 if [[ "$response" =~ ^([yY])+$ ]]; then
@@ -196,6 +195,7 @@ chmod 700 /home/$USER/.ssh/id_rsa
 # Setup Unattended Security Upgrades
 
 cat > /etc/apt/apt.conf.d/50unattended-upgrades << EOF
+Unattended-Upgrade::Allowed-Origins {
     "Ubuntu xenial-security";
 };
 Unattended-Upgrade::Package-Blacklist {
@@ -433,7 +433,6 @@ php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-maste
 ## Inject apiport & ticker into /include/config.php
 sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$api_port='\).*/\1$apiport';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$service_desc='\).*/\1${SERVICE_DESC}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$price='\).*/\1${PRICE}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$redirectURL='\).*/\1${REDIRECTURL}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$service_desc='\).*/\1${SERVICE_DESC}';/" /home/${USER}/${SERVER_NAME}/include/config.php
@@ -452,13 +451,11 @@ sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trus
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 # Install Coins Service
-pause
 wget ${COINSERVICEINSTALLER} -O /home/${USER}/install-coin.sh
 wget ${COINSERVICECONFIG} -O /home/${USER}/config-${fork}.sh
 chmod +x /home/${USER}/install-coin.sh
 cd /home/${USER}/
 ./install-coin.sh -f ${fork} -u ${RPCUSER} -p ${RPCPASS} -n ${NET}
-pause
 
 # Install hot wallet setup
 sleep 60

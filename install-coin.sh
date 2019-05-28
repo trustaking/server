@@ -27,7 +27,7 @@ while getopts ":f:u:p:n:" option; do
 done
 shift "$((OPTIND-1))"
 
-source config-${FORK}.sh
+source ~/config-${FORK}.sh
 
 SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
 
@@ -166,8 +166,8 @@ function compileWallet() {
     cd /home/${NODE_USER}/code
     git submodule update --init --recursive &>> ${SCRIPT_LOGFILE}
     cd ${COINDSRC}
-    dotnet publish -c ${CONF} -r ${ARCH} -v m -o ${COINDLOC} &>> ${SCRIPT_LOGFILE}	   ### compile & publish code
-    rm -rf /home/${NODE_USER}/code &>> ${SCRIPT_LOGFILE} 	   ### Remove source
+    dotnet publish -c ${CONF} -r ${ARCH} -v m -o ${COINDLOC} &>> ${SCRIPT_LOGFILE} ### compile & publish code
+    rm -rf /home/${NODE_USER}/code &>> ${SCRIPT_LOGFILE} 	                       ### Remove source
     echo -e "${NONE}${GREEN}* Done${NONE}";
 }
 
@@ -189,7 +189,7 @@ function configureWallet() {
     echo
     echo -e "* Configuring wallet. Please wait..."
     cd /home/${NODE_USER}/
-    sudo mkdir -p $COINCORE
+    [ ! -d ${COINCORE} ] && mkdir -p ${COINCORE}
     echo -e "externalip=${NODE_IP}\ntxindex=1\nlisten=1\ndaemon=1\nmaxconnections=64" > $COINCONFIG
     sudo mv $COINCONFIG $COINCORE
     echo -e "${NONE}${GREEN}* Done${NONE}";
@@ -244,7 +244,6 @@ echo -e "${BOLD}"
     check_root
 
 echo -e "${BOLD}"
-#read -p " Do you want to setup on Mainnet (m), Testnet (t) or upgrade (u) your ${FORK} full node. (m/t/u)?" response
 
 if [[ "$NET" =~ ^([mM])+$ ]]; then
     setMainVars
@@ -298,6 +297,8 @@ echo -e "${GREEN} thecrypt0hunter(2019)${NONE}"
     if [[ "$NET" =~ ^([uU])+$ ]]; then
         check_root
         ##TODO: Test for servicefile and only upgrade as required 
+        ##TODO: Setup for testnet - test if file exists
+        ##[ ! -f ${COINSERVICELOC}$COINSERVICENAME.service ] << Test for service file
         #Stop Test Service
         setTestVars
         setGeneralVars
