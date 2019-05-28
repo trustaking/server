@@ -454,8 +454,7 @@ wget ${COINSERVICEINSTALLER} -O ~/install-coin.sh
 wget ${COINSERVICECONFIG} -O ~/config-${fork}.sh
 chmod +x ~/install-coin.sh
 cd ~
-echo "-f ${fork} -n ${NET}"
-~/install-coin.sh -f ${fork} -n ${NET}
+~/install-coin.sh -f ${fork} -n ${net}
 
 # Install hot wallet setup
 sleep 60
