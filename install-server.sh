@@ -459,10 +459,8 @@ cd ~
 # Install hot wallet setup
 sleep 60
 /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
-##TODO:Inject hotwallet name in config.php
 
 # Display information
-echo
 echo "Website URL: "${DNS_NAME}
 [ ! -d /var/secure ] && mkdir -p /var/secure 
-echo "Requires keys.php, btcpayserver.pri & pub in /var/secure/ - run transfer.sh
+echo "Requires keys.php, btcpayserver.pri & pub in /var/secure/ - run transfer.sh"
