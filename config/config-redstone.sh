@@ -20,6 +20,7 @@ COINAPIPORT=38222
 
 function setGeneralVars() {
 ## set general variables
+#TODO: Fix the user and password variables
 COINRUNCMD="sudo dotnet ./Redstone.RedstoneFullNodeD.dll ${NETWORK} -datadir=/home/${NODE_USER}/.${FORK}node -cold -maxblkmem=2 -stake -walletname=${STAKINGNAME} -walletpassword=${STAKINGPASSWORD}"
 #TODO: Grab servicenode branch
 COINGITHUB=https://github.com/RedstonePlatform/Redstone.git
