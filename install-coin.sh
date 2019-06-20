@@ -13,15 +13,17 @@ OS_VER="Ubuntu*"
 ARCH="linux-x64"
 DATE_STAMP="$(date +%y-%m-%d-%s)"
 NODE_IP=$(curl --silent ipinfo.io/ip)
+BRANCH=master
 
-usage() { echo "Usage: $0 [-f coin name] [-u rpc username] [-p rpc password] [-n (m/t/u) main, test or upgrade]" 1>&2; exit 1; }
+usage() { echo "Usage: $0 [-f coin name] [-u rpc username] [-p rpc password] [-n (m/t/u) main, test or upgrade] [-b github branch/tags]" 1>&2; exit 1; }
 
-while getopts ":f:u:p:n:" option; do
+while getopts ":f:u:p:n:t:" option; do
     case "${option}" in
         f) FORK=${OPTARG};;
         u) RPCUSER=${OPTARG};;
         p) RPCPASS=${OPTARG};;
         n) NET=${OPTARG};;
+        b) BRANCH=${OPTARG};;
         *) usage ;;
     esac
 done
@@ -162,7 +164,7 @@ function compileWallet() {
     echo
     echo -e "* Compiling wallet. Please wait, this might take a while to complete..."
     cd /home/${NODE_USER}/
-    git clone --recurse-submodules ${COINGITHUB} code &>> ${SCRIPT_LOGFILE}
+    git clone --recurse-submodules --branch=${BRANCH} ${COINGITHUB} code &>> ${SCRIPT_LOGFILE}
     cd /home/${NODE_USER}/code
     git submodule update --init --recursive &>> ${SCRIPT_LOGFILE}
     cd ${COINDSRC}

@@ -6,6 +6,7 @@ SERVICE_END_DATE="2020-05-31"
 SERVICE_DESC=" trustaking.com service. Service ends on "$SERVICE_END_DATE
 ONLINE_DAYS=365
 PRICE="15\.00"
+branch=master
 # =================== YOUR DATA ========================
 if [ "$(id -u)" != "0" ]; then
     echo -e "${RED}* Sorry, this script needs to be run as root. Do \"sudo su root\" and then re-run this script${NONE}"
@@ -15,6 +16,8 @@ fi
 
 read -p "Which Fork (redstone, x42, impleum, city, stratis)? " fork
 read -p "Mainnet (m) or Testnet (t)? " net
+read -p "Which branch (default=master)? " branch
+
 # =================== YOUR DATA ========================
 SERVER_NAME="$fork.trustaking.com"
 REDIRECTURL="http:\/\/${SERVER_NAME}\/activate.php"
@@ -459,7 +462,7 @@ wget ${COINSERVICEINSTALLER} -O ~/install-coin.sh
 wget ${COINSERVICECONFIG} -O ~/config-${fork}.sh
 chmod +x ~/install-coin.sh
 cd ~
-~/install-coin.sh -f ${fork} -n ${net}
+~/install-coin.sh -f ${fork} -n ${net} -b ${branch}
 
 # Install hot wallet setup
 sleep 60
