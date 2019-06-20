@@ -6,7 +6,6 @@ SERVICE_END_DATE="2020-05-31"
 SERVICE_DESC=" trustaking.com service. Service ends on "$SERVICE_END_DATE
 ONLINE_DAYS=365
 PRICE="15\.00"
-branch=master
 # =================== YOUR DATA ========================
 if [ "$(id -u)" != "0" ]; then
     echo -e "${RED}* Sorry, this script needs to be run as root. Do \"sudo su root\" and then re-run this script${NONE}"
@@ -17,6 +16,10 @@ fi
 read -p "Which Fork (redstone, x42, impleum, city, stratis)? " fork
 read -p "Mainnet (m) or Testnet (t)? " net
 read -p "Which branch (default=master)? " branch
+
+if [${BRANCH} = ""]; then 
+branch="master";
+fi
 
 # =================== YOUR DATA ========================
 SERVER_NAME="$fork.trustaking.com"
