@@ -16,7 +16,7 @@ NODE_IP=$(curl --silent ipinfo.io/ip)
 
 usage() { echo "Usage: $0 [-f coin name] [-u rpc username] [-p rpc password] [-n (m/t/u) main, test or upgrade] [-b github branch/tags]" 1>&2; exit 1; }
 
-while getopts ":f:u:p:n:t:" option; do
+while getopts ":f:u:p:n:b:" option; do
     case "${option}" in
         f) FORK=${OPTARG};;
         u) RPCUSER=${OPTARG};;
