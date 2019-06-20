@@ -13,7 +13,6 @@ OS_VER="Ubuntu*"
 ARCH="linux-x64"
 DATE_STAMP="$(date +%y-%m-%d-%s)"
 NODE_IP=$(curl --silent ipinfo.io/ip)
-BRANCH=master
 
 usage() { echo "Usage: $0 [-f coin name] [-u rpc username] [-p rpc password] [-n (m/t/u) main, test or upgrade] [-b github branch/tags]" 1>&2; exit 1; }
 
@@ -30,6 +29,10 @@ done
 shift "$((OPTIND-1))"
 
 source ~/config-${FORK}.sh
+
+if [${BRANCH} = ""]; then 
+BRANCH="master";
+fi
 
 SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
 
