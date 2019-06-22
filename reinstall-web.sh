@@ -81,6 +81,24 @@ if [[ "$response" =~ ^([yY])+$ ]]; then
     DNS_NAME=$(curl --silent ipinfo.io/ip)
 fi
 
+# Setup User
+
+useradd $USER
+mkdir -p /home/$USER/.ssh
+adduser $USER sudo
+
+# Setup Bash For User
+
+chsh -s /bin/bash $USER
+cp /root/.profile /home/$USER/.profile
+cp /root/.bashrc /home/$USER/.bashrc
+
+# Set The Sudo Password For User
+
+PASSWORD=$(mkpasswd $SUDO_PASSWORD)
+usermod --password $PASSWORD $USER
+
+
 # Re-Install Website
 rm -rf /home/${USER}/${SERVER_NAME}
 mkdir /home/${USER}/${SERVER_NAME}
