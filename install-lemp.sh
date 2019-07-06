@@ -108,7 +108,7 @@ apt-get upgrade -y
 
 # Add A Few PPAs To Stay Current
 
-apt-get install -y --force-yes software-properties-common
+apt-get install -y software-properties-common
 
 apt-add-repository ppa:nginx/development -y
 #apt-add-repository ppa:chris-lea/redis-server -y
@@ -121,7 +121,7 @@ apt-get update
 
 # Base Packages
 
-apt-get install -y --force-yes build-essential curl fail2ban gcc git libmcrypt4 libpcre3-dev \
+apt-get install -y build-essential curl fail2ban gcc git libmcrypt4 libpcre3-dev \
 make python2.7 python-pip supervisor ufw unattended-upgrades unzip whois zsh mc p7zip-full htop
 
 # Install Python Httpie
@@ -225,7 +225,7 @@ ufw --force enable
 
 # Allow FPM Restart
 
-echo "$USER ALL=NOPASSWD: /usr/sbin/service php7.0-fpm reload" > /etc/sudoers.d/php-fpm
+echo "$USER ALL=NOPASSWD: /usr/sbin/service php7.3-fpm reload" > /etc/sudoers.d/php-fpm
 
 # Configure Supervisor Autostart
 
@@ -248,19 +248,10 @@ fi
 
 # Install Base PHP Packages
 
-#apt-get install -y --force-yes php7.0-cli php7.0-dev \
-#php-sqlite3 php-gd \
-#php-curl php7.0-curl php7.0-dev \
-#php-imap php-mysql php-memcached php7.0-mcrypt php-mbstring \
-#php-xml php-imagick php7.0-zip php7.0-bcmath php-soap \
-#php7.0-intl php7.0-readline
-
-#apt-get install -y php-sqlite3 
-#php-memcached php7.0-mcrypt php-imagick php7.0-bcmath php7.0-intl php7.0-readline
-
 sudo apt install php7.3-fpm php7.3-common php7.3-mysql php7.3-xml \
 php7.3-xmlrpc php7.3-curl php7.3-gd \
 php7.3-imagick php7.3-cli php7.3-dev php7.3-imap php7.3-mbstring \
+php-sqlite3 php-memcached php7.3-mcrypt php7.3-bcmath php7.3-intl php7.3-readline \
 php7.3-opcache php7.3-soap php7.3-zip unzip -y
 
 # Install Composer Package Manager
@@ -275,8 +266,6 @@ sudo sed -i "s/display_errors = .*/display_errors = On/" /etc/php/7.3/cli/php.in
 sudo sed -i "s/memory_limit = .*/memory_limit = 512M/" /etc/php/7.3/cli/php.ini
 sudo sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.3/cli/php.ini
 
-##TODO: update /etc/php/7.3/cli/php.ini >> remove the ; from intl
-
 # Configure Sessions Directory Permissions
 
 chmod 733 /var/lib/php/sessions
@@ -284,7 +273,7 @@ chmod +t /var/lib/php/sessions
 
 # Install Nginx & PHP-FPM
 
-apt-get install -y --force-yes nginx php7.0-fpm
+apt-get install -y nginx php7.3-fpm
 
 # Enable Nginx service
 systemctl enable nginx.service
@@ -360,7 +349,7 @@ server {
 
     location ~ \.php$ {
         include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+        fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
         include fastcgi_params;
         fastcgi_intercept_errors on;
     }
@@ -377,7 +366,7 @@ ln -s /etc/nginx/sites-available/${USER} /etc/nginx/sites-enabled/${USER}
 
 if [ ! -z "\$(ps aux | grep php-fpm | grep -v grep)" ]
 then
-    service php7.0-fpm restart
+    service php7.3-fpm restart
 fi
 
 service nginx restart
@@ -392,7 +381,7 @@ groups $USER
 ### Install Node.js
 #curl --silent --location https://deb.nodesource.com/setup_8.x | bash -
 #apt-get update
-#sudo apt-get install -y --force-yes nodejs
+#sudo apt-get install -y nodejs
 #npm install -g pm2
 #npm install -g gulp
 
@@ -431,7 +420,7 @@ mysql --user="root" --password="$MYSQL_ROOT_PASSWORD" -e "FLUSH PRIVILEGES;"
 #service memcached restart
 
 # Install & Configure Beanstalk
-#apt-get install -y --force-yes beanstalkd
+#apt-get install -y beanstalkd
 #sed -i "s/BEANSTALKD_LISTEN_ADDR.*/BEANSTALKD_LISTEN_ADDR=0.0.0.0/" /etc/default/beanstalkd
 #sed -i "s/#START=yes/START=yes/" /etc/default/beanstalkd
 #/etc/init.d/beanstalkd start
