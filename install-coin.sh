@@ -31,7 +31,7 @@ shift "$((OPTIND-1))"
 source ~/config-${FORK}.sh
 
 if [${BRANCH} = ""]; then 
-BRANCH="master";
+BRANCH="master"
 fi
 
 SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
