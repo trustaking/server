@@ -158,6 +158,19 @@ function installDependencies() {
             sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
             echo -e "${NONE}${GREEN}* Done${NONE}";
         fi
+        if [[ "${VERSION_ID}" = "19.04" ]]; then
+            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
+            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
+            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
+            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
+            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
+            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
+            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
+            echo -e "${NONE}${GREEN}* Done${NONE}";
+        fi
+        else
+        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
+    fi
         else
         echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
     fi

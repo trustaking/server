@@ -111,7 +111,8 @@ apt-get upgrade -y
 apt-get install -y software-properties-common
 
 apt-add-repository ppa:nginx/development -y
-#apt-add-repository ppa:chris-lea/redis-server -y
+apt-add-repository ppa:ondrej/nginx -y
+apt-add-repository ppa:chris-lea/redis-server -y
 apt-add-repository ppa:ondrej/apache2 -y
 apt-add-repository ppa:ondrej/php -y
 
@@ -331,11 +332,14 @@ server {
     server_name ${DNS_NAME};
     root /home/${USER}/${SERVER_NAME}/;
     index index.html index.htm index.php;
+ 
     charset utf-8;
+    client_max_body_size 100M;
+    fastcgi_read_timeout 1800;
 
     location / {
         index index.php;
-        try_files \$uri \$uri/ \$uri.php;
+        try_files \$uri \$uri/ /index.php?_url=$uri&$args;
     }
 
     location = /favicon.ico { access_log off; log_not_found off; }
@@ -344,7 +348,7 @@ server {
     error_log  /var/log/nginx/${SERVER_NAME}-error.log error;
     error_page 404 /index.php;
 
-    location ~ \.php$ {
+    location ~ [^/]\.php(/|$) {
         include snippets/fastcgi-php.conf;
         fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
         include fastcgi_params;
@@ -427,6 +431,9 @@ mysql --user="root" --password="$MYSQL_ROOT_PASSWORD" -e "FLUSH PRIVILEGES;"
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 
+# Install Phalcon
+sudo apt-get install php-phalcon
+
 # Install Website
 mkdir /home/${USER}/${SERVER_NAME}
 cd /home/${USER}/
@@ -436,7 +443,7 @@ chmod g+rw /home/${USER}/${SERVER_NAME} -R
 chmod g+s /home/${USER}/${SERVER_NAME} -R
 cd /home/${USER}/${SERVER_NAME}
 php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
-php /usr/local/bin/composer create-project --prefer-dist cakephp/app cakeapp
+#php /usr/local/bin/composer create-project --prefer-dist cakephp/app cakeapp
 
 ## Inject apiport & ticker into /include/config.php
 sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/config.php
