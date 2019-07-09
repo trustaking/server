@@ -31,7 +31,7 @@ shift "$((OPTIND-1))"
 source ~/config-${FORK}.sh
 
 if [${BRANCH} = ""]; then 
-BRANCH="master"
+BRANCH="master";
 fi
 
 SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
@@ -232,294 +232,30 @@ function installUnattendedUpgrades() {
     sleep 3
     sudo sh -c 'echo "Unattended-Upgrade::Allowed-Origins {" >> /etc/apt/apt.conf.d/50unattended-upgrades'
     sudo sh -c 'echo "        "${distro_id}:${distro_codename}";" >> /etc/apt/apt.conf.d/50unattended-upgrades'
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fi{distro_id}:${distro_codename}-security";" >> /etc/apt/apt.conf.d/50unattended-upgrades'
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fidic::AutocleanInterval "7";" >> /etc/apt/apt.conf.d/20auto-upgrades'
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fidic::Unattended-Upgrade "1";" >> /etc/apt/apt.conf.d/20auto-upgrades'
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fito-upgrades &>> ${SCRIPT_LOGFILE}
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fiE}";
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fi
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fi
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fi{
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fi
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fi
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fi
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fi
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fi
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fiet ${COINSERVICENAME}; then echo -e "Service: ${on}"; else echo -e "Service: ${off}"; fi
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fi
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fi
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fi
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fi
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fi
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fi********************************************************${NONE}"
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fiript will install and configure your full node.        *${NONE}"
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fi********************************************************${NONE}"
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fi
-            wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
-            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            echo -e "${NONE}${GREEN}* Done${NONE}";
-        fi
-        else
-        echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
-    fi
+    sudo sh -c 'echo "        "${distro_id}:${distro_codename}-security";" >> /etc/apt/apt.conf.d/50unattended-upgrades'
+    sudo sh -c 'echo "APT::Periodic::AutocleanInterval "7";" >> /etc/apt/apt.conf.d/20auto-upgrades'
+    sudo sh -c 'echo "APT::Periodic::Unattended-Upgrade "1";" >> /etc/apt/apt.conf.d/20auto-upgrades'
+    cat /etc/apt/apt.conf.d/20auto-upgrades &>> ${SCRIPT_LOGFILE}
+    echo -e "${GREEN}* Done${NONE}";
+}
+
+function displayServiceStatus() {
+	echo
+	echo
+	on="${GREEN}ACTIVE${NONE}"
+	off="${RED}OFFLINE${NONE}"
+
+	if systemctl is-active --quiet ${COINSERVICENAME}; then echo -e "Service: ${on}"; else echo -e "Service: ${off}"; fi
+}
+
+clear
+cd
+echo && echo
+echo -e "${PURPLE}**********************************************************************${NONE}"
+echo -e "${PURPLE}*      This script will install and configure your full node.        *${NONE}"
+echo -e "${PURPLE}**********************************************************************${NONE}"
+echo -e "${BOLD}"
+
     check_root
 
 echo -e "${BOLD}"
@@ -603,4 +339,4 @@ echo -e "${GREEN} thecrypt0hunter(2019)${NONE}"
     fi
   fi
 fi
-    cd ~
+cd ~
