@@ -47,6 +47,7 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
            ;;
         city)
            apiport="24335"; # "4335" <Main City
+           apiver="&api-version=1.0";
         ;; 
         impleum)
            apiport="38222"; # "39222" <Main Impleum
@@ -69,6 +70,7 @@ else
             ;;
          city)
             apiport="4335";
+            apiver="&api-version=1.0";
             ;; 
          impleum)
             apiport="39222";
@@ -443,6 +445,7 @@ sed -i "s/^\(\$redirectURL='\).*/\1${REDIRECTURL}';/" /home/${USER}/${SERVER_NAM
 sed -i "s/^\(\$service_desc='\).*/\1${SERVICE_DESC}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$service_end_date='\).*/\1${SERVICE_END_DATE}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$online_days='\).*/\1${ONLINE_DAYS}';/" /home/${USER}/${SERVER_NAME}/include/config.php
+sed -i "s/^\(\$api_ver='\).*/\1${apiver}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 
 #Inject RPC username & password into config.php
 sed -i "s/^\(\$rpc_user='\).*/\1${RPCUSER}';/" /home/${USER}/${SERVER_NAME}/include/config.php

@@ -41,6 +41,7 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
            ;;
         city)
            apiport="24335"; # "4335" <Main City
+           apiver="&api-version=1.0";
         ;; 
         impleum)
            apiport="38222"; # "39222" <Main Impleum
@@ -63,6 +64,7 @@ else
             ;;
          city)
             apiport="4335";
+            apiver="&api-version=1.0";
             ;; 
          impleum)
             apiport="39222";
@@ -99,6 +101,56 @@ PASSWORD=$(mkpasswd $SUDO_PASSWORD)
 usermod --password $PASSWORD $USER
 
 
+## Add site-available and enable the website
+if [ ! -f /etc/nginx/sites-available/${USER} ]; then
+
+cat > /etc/nginx/sites-available/${USER} << EOF
+server {
+    listen 80;
+    server_name ${DNS_NAME};
+    root /home/${USER}/${SERVER_NAME}/;
+    index index.html index.htm index.php;
+    charset utf-8;
+
+    location / {
+        index index.php;
+        try_files \$uri \$uri/ \$uri.php;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+    access_log off;
+    error_log  /var/log/nginx/${SERVER_NAME}-error.log error;
+    error_page 404 /index.php;
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+        include fastcgi_params;
+        fastcgi_intercept_errors on;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+EOF
+
+ln -s /etc/nginx/sites-available/${USER} /etc/nginx/sites-enabled/${USER}
+
+# Restart Nginx & PHP-FPM Services
+
+if [ ! -z "\$(ps aux | grep php-fpm | grep -v grep)" ]
+then
+    service php7.0-fpm restart
+fi
+
+service nginx restart
+service nginx reload
+
+fi
+
+
 # Re-Install Website
 rm -rf /home/${USER}/${SERVER_NAME}
 mkdir /home/${USER}/${SERVER_NAME}
@@ -117,6 +169,7 @@ sed -i "s/^\(\$redirectURL='\).*/\1${REDIRECTURL}';/" /home/${USER}/${SERVER_NAM
 sed -i "s/^\(\$service_desc='\).*/\1${SERVICE_DESC}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$service_end_date='\).*/\1${SERVICE_END_DATE}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$online_days='\).*/\1${ONLINE_DAYS}';/" /home/${USER}/${SERVER_NAME}/include/config.php
+sed -i "s/^\(\$api_ver='\).*/\1${apiver}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 
 #Inject RPC username & password into config.php
 sed -i "s/^\(\$rpc_user='\).*/\1${RPCUSER}';/" /home/${USER}/${SERVER_NAME}/include/config.php
