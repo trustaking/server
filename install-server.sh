@@ -116,6 +116,7 @@ apt-add-repository ppa:nginx/development -y
 #apt-add-repository ppa:chris-lea/redis-server -y
 apt-add-repository ppa:ondrej/apache2 -y
 apt-add-repository ppa:ondrej/php -y
+apt-add-repository ppa:certbot/certbot -y
 
 # Update Package Lists
 
@@ -123,7 +124,7 @@ apt-get update
 
 # Base Packages
 
-apt-get install -y --force-yes build-essential curl fail2ban gcc git libmcrypt4 libpcre3-dev \
+apt-get install -y --force-yes build-essential curl fail2ban gcc git libmcrypt4 libpcre3-dev python-certbot-apache\
 make python2.7 python-pip supervisor ufw unattended-upgrades unzip whois zsh mc p7zip-full htop
 
 # Install Python Httpie
@@ -223,6 +224,7 @@ EOF
 ufw allow 22
 ufw allow 80
 ufw allow 443
+ufw allow 'Nginx Full'
 ufw --force enable
 
 # Allow FPM Restart
@@ -363,7 +365,7 @@ server {
 }
 EOF
 
-ln -s /etc/nginx/sites-available/${USER} /etc/nginx/sites-enabled/${USER}
+ln -s /etc/nginx/sites-available/${SERVER_NAME} /etc/nginx/sites-enabled/${SERVER_NAME}
 
 # Restart Nginx & PHP-FPM Services
 
@@ -427,6 +429,13 @@ groups $USER
 #sed -i "s/BEANSTALKD_LISTEN_ADDR.*/BEANSTALKD_LISTEN_ADDR=0.0.0.0/" /etc/default/beanstalkd
 #sed -i "s/#START=yes/START=yes/" /etc/default/beanstalkd
 #/etc/init.d/beanstalkd start
+
+# Install SSL certificate
+sudo certbot --nginx \
+  --non-interactive \
+  --agree-tos \
+  --email admin@trustaking.com \
+  --domains ${SERVER_NAME}
 
 # Install Website
 mkdir /home/${USER}/${SERVER_NAME}

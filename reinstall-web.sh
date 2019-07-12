@@ -136,7 +136,7 @@ server {
 }
 EOF
 
-ln -s /etc/nginx/sites-available/${USER} /etc/nginx/sites-enabled/${USER}
+ln -s /etc/nginx/sites-available/${SERVER_NAME} /etc/nginx/sites-enabled/${SERVER_NAME}
 
 # Restart Nginx & PHP-FPM Services
 
@@ -149,7 +149,6 @@ service nginx restart
 service nginx reload
 
 fi
-
 
 # Re-Install Website
 rm -rf /home/${USER}/${SERVER_NAME}

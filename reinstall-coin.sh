@@ -34,59 +34,12 @@ WEBFILE="https://github.com/trustaking/node.git"
 RPCUSER=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 RPCPASS=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 
-if [[ "$net" =~ ^([tT])+$ ]]; then
-    case $fork in
-         stratis)
-            apiport="38221"; # "37221" <Main Stratis
-            ;;
-         redstone)
-            apiport="38222"; # "37222" <Main Redstone
-            ;;
-        x42)
-           apiport="42221"; # "42220" <Main X42
-           ;;
-        city)
-           apiport="24335"; # "4335" <Main City
-        ;; 
-        impleum)
-           apiport="38222"; # "39222" <Main Impleum
-            ;;
-         *)
-           echo "$fork has not been configured."
-           exit
-           ;;
-    esac
-else 
-    case $fork in
-        stratis)
-            apiport="37221";
-            ;;
-         redstone)
-            apiport="37222";
-            ;;
-         x42)
-            apiport="42220";
-            ;;
-         city)
-            apiport="4335";
-            ;; 
-         impleum)
-            apiport="39222";
-            ;;
-         *)
-            echo "$fork has not been configured."
-            exit
-            ;;
-    esac
-fi
-
 # =================== YOUR DATA ========================
 read -p "Are you using IP(y) or DNS(n)?" response
 
 if [[ "$response" =~ ^([yY])+$ ]]; then
     DNS_NAME=$(curl --silent ipinfo.io/ip)
 fi
-
 
 # Install Coins Service
 wget ${COINSERVICEINSTALLER} -O ~/install-coin.sh
