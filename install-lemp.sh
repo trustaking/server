@@ -104,11 +104,11 @@ sudo sed -i "s/#precedence ::ffff:0:0\/96  100/precedence ::ffff:0:0\/96  100/" 
 # Upgrade The Base Packages
 
 apt-get update
-apt-get upgrade -y
+apt-get upgrade -qy
 
 # Add A Few PPAs To Stay Current
 
-apt-get install -y software-properties-common
+apt -qy install software-properties-common
 
 apt-add-repository ppa:nginx/development -y
 apt-add-repository ppa:ondrej/nginx -y
@@ -122,7 +122,7 @@ apt-get update
 
 # Base Packages
 
-apt-get install -y build-essential curl fail2ban gcc git libmcrypt4 libpcre3-dev \
+apt -qy install build-essential curl fail2ban gcc git libmcrypt4 libpcre3-dev \
 make python2.7 python-pip supervisor ufw unattended-upgrades unzip whois zsh mc p7zip-full htop
 
 # Install Python Httpie
@@ -249,12 +249,17 @@ fi
 
 # Install Base PHP Packages
 
-sudo apt install php7.3-fpm php7.3-common php7.3-mysql php7.3-xml \
+sudo apt -qy install php7.3-fpm php7.3-common php7.3-mysql php7.3-xml \
 php7.3-xmlrpc php7.3-curl php7.3-gd \
 php-imagick php7.3-cli php7.3-dev php7.3-imap php7.3-mbstring \
 php-sqlite3 php-memcached php7.1-mcrypt php7.3-bcmath php7.3-intl php7.3-readline \
-php7.3-opcache php7.3-soap php7.3-zip unzip -y
+php7.3-opcache php7.3-soap php7.3-zip unzip php7.3-pgsql php-msgpack \
+gcc make re2c libpcre3-dev software-properties-common build-essential 
 
+# Install Phalcon
+
+curl -s "https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh" | sudo bash
+sudo apt -qy install php7.3-phalcon
 sudo apt update
 
 # Misc. PHP CLI Configuration
@@ -271,7 +276,7 @@ chmod +t /var/lib/php/sessions
 
 # Install Nginx & PHP-FPM
 
-apt-get install -y nginx php7.3-fpm
+apt install -qy nginx php7.3-fpm
 
 # Enable Nginx service
 systemctl enable nginx.service
@@ -332,10 +337,10 @@ server {
     server_name ${DNS_NAME};
     root /home/${USER}/${SERVER_NAME}/;
     index index.html index.htm index.php;
- 
     charset utf-8;
     client_max_body_size 100M;
     fastcgi_read_timeout 1800;
+    include snippets/phpMyAdmin.conf;
 
     location / {
         index index.php;
@@ -350,18 +355,54 @@ server {
 
     location ~ [^/]\.php(/|$) {
         include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
+        fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
         include fastcgi_params;
         fastcgi_intercept_errors on;
+        include fastcgi_params;
+        fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+        if (!-f $document_root$fastcgi_script_name) {
+            return 404;
+        }
+        
+        fastcgi_param PATH_INFO       $fastcgi_path_info;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     }
 
     location ~ /\.ht {
         deny all;
     }
+
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+        expires       max;
+        log_not_found off;
+        access_log    off;
+    }
+
 }
 EOF
 
 ln -s /etc/nginx/sites-available/${USER} /etc/nginx/sites-enabled/${USER}
+
+## Add config for PHPMyAdmin
+
+cat > /etc/nginx/snippets/phpmyadmin.conf << EOF
+location /phpmyadmin {
+    root /usr/share/;
+    index index.php index.html index.htm;
+    location ~ ^/phpmyadmin/(.+\.php)$ {
+        try_files $uri =404;
+        root /usr/share/;
+        fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include /etc/nginx/fastcgi_params;
+    }
+
+    location ~* ^/phpmyadmin/(.+\.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt))$ {
+        root /usr/share/;
+    }
+}
+EOF
 
 # Restart Nginx & PHP-FPM Services
 
@@ -382,7 +423,7 @@ groups $USER
 ### Install Node.js
 #curl --silent --location https://deb.nodesource.com/setup_8.x | bash -
 #apt-get update
-#sudo apt-get install -y nodejs
+#sudo apt -qy install nodejs
 #npm install -g pm2
 #npm install -g gulp
 
@@ -394,7 +435,8 @@ debconf-set-selections <<< "mysql-community-server mysql-community-server/root-p
 debconf-set-selections <<< "mysql-community-server mysql-community-server/re-root-pass password $MYSQL_ROOT_PASSWORD"
 
 ### Install MySQL
-apt-get install -y mysql-server
+apt -qy install mysql-server mysql-client php7.3-mysqli
+
 
 ## Configure Password Expiration
 echo "default_password_lifetime = 0" >> /etc/mysql/mysql.conf.d/mysqld.cnf
@@ -410,18 +452,29 @@ mysql --user="root" --password="$MYSQL_ROOT_PASSWORD" -e "GRANT ALL ON *.* TO '$
 mysql --user="root" --password="$MYSQL_ROOT_PASSWORD" -e "GRANT ALL ON *.* TO '$USER'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION;"
 mysql --user="root" --password="$MYSQL_ROOT_PASSWORD" -e "FLUSH PRIVILEGES;"
 
+# Install PHPMyAdmin source: https://github.com/aamnah/bash-scripts/blob/master/install/amp_debian.sh
+debconf-set-selections <<< "phpmyadmin phpmyadmin/reconfigure-webserver multiselect ''" # Select Web Server
+debconf-set-selections <<< "phpmyadmin phpmyadmin/dbconfig-install boolean true" # Configure database for phpmyadmin with dbconfig-common
+debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/app-pass password ${MYSQL_ROOT_PASSWORD}" # Set MySQL application password for phpmyadmin
+debconf-set-selections <<< "phpmyadmin phpmyadmin/app-password-confirm password ${MYSQL_ROOT_PASSWORD}" # Confirm application password
+debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/admin-pass password ${MYSQL_ROOT_PASSWORD}" # MySQL Root Password
+debconf-set-selections <<< "phpmyadmin phpmyadmin/internal/skip-preseed boolean true"
+apt -qy install phpmyadmin
+
+sed -i '/;extension=mysqli/s/^;//g' /etc/php/7.3/cli/php.ini
+
 # Install & Configure Redis Server
-#apt-get install -y redis-server
+#apt -qy install redis-server
 #sed -i 's/bind 127.0.0.1/bind 0.0.0.0/' /etc/redis/redis.conf
 #service redis-server restart
 
 # Install & Configure Memcached
-#apt-get install -y memcached
+#apt -qy install memcached
 #sed -i 's/-l 127.0.0.1/-l 0.0.0.0/' /etc/memcached.conf
 #service memcached restart
 
 # Install & Configure Beanstalk
-#apt-get install -y beanstalkd
+#apt -qy install beanstalkd
 #sed -i "s/BEANSTALKD_LISTEN_ADDR.*/BEANSTALKD_LISTEN_ADDR=0.0.0.0/" /etc/default/beanstalkd
 #sed -i "s/#START=yes/START=yes/" /etc/default/beanstalkd
 #/etc/init.d/beanstalkd start
@@ -432,7 +485,7 @@ curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 
 # Install Phalcon
-sudo apt-get install php-phalcon
+sudo apt -qy install php-phalcon
 
 # Install Website
 mkdir /home/${USER}/${SERVER_NAME}
@@ -443,7 +496,6 @@ chmod g+rw /home/${USER}/${SERVER_NAME} -R
 chmod g+s /home/${USER}/${SERVER_NAME} -R
 cd /home/${USER}/${SERVER_NAME}
 php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
-#php /usr/local/bin/composer create-project --prefer-dist cakephp/app cakeapp
 
 ## Inject apiport & ticker into /include/config.php
 sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/config.php

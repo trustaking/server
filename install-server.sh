@@ -83,9 +83,9 @@ else
 fi
 
 # =================== YOUR DATA ========================
-read -p "Are you using IP(y) or DNS(n)?" response
+read -p "Are you using DNS(y) or IP(n)?" dns
 
-if [[ "$response" =~ ^([yY])+$ ]]; then
+if [[ "$dns" =~ ^([nN])+$ ]]; then
     DNS_NAME=$(curl --silent ipinfo.io/ip)
 fi
 
@@ -110,10 +110,10 @@ apt-get upgrade -y
 
 # Add A Few PPAs To Stay Current
 
-apt-get install -y --force-yes software-properties-common
+apt-get install -y software-properties-common
 
 apt-add-repository ppa:nginx/development -y
-#apt-add-repository ppa:chris-lea/redis-server -y
+apt-add-repository ppa:chris-lea/redis-server -y
 apt-add-repository ppa:ondrej/apache2 -y
 apt-add-repository ppa:ondrej/php -y
 apt-add-repository ppa:certbot/certbot -y
@@ -124,8 +124,10 @@ apt-get update
 
 # Base Packages
 
-apt-get install -y --force-yes build-essential curl fail2ban gcc git libmcrypt4 libpcre3-dev python-certbot-apache\
-make python2.7 python-pip supervisor ufw unattended-upgrades unzip whois zsh mc p7zip-full htop
+apt-get install -y build-essential curl fail2ban \
+gcc git libmcrypt4 libpcre3-dev python-certbot-nginx \
+make python2.7 python-pip supervisor ufw unattended-upgrades \
+unzip whois zsh mc p7zip-full htop
 
 # Install Python Httpie
 
@@ -222,8 +224,6 @@ EOF
 # Setup UFW Firewall
 
 ufw allow 22
-ufw allow 80
-ufw allow 443
 ufw allow 'Nginx Full'
 ufw --force enable
 
@@ -252,7 +252,7 @@ fi
 
 # Install Base PHP Packages
 
-apt-get install -y --force-yes php7.0-cli php7.0-dev \
+apt-get install -y php7.0-cli php7.0-dev \
 php-sqlite3 php-gd \
 php-curl php7.0-curl php7.0-dev \
 php-imap php-mysql php-memcached php7.0-mcrypt php-mbstring \
@@ -278,7 +278,7 @@ chmod +t /var/lib/php/sessions
 
 # Install Nginx & PHP-FPM
 
-apt-get install -y --force-yes nginx php7.0-fpm
+apt-get install -y nginx php7.0-fpm
 
 # Enable Nginx service
 systemctl enable nginx.service
@@ -430,12 +430,15 @@ groups $USER
 #sed -i "s/#START=yes/START=yes/" /etc/default/beanstalkd
 #/etc/init.d/beanstalkd start
 
-# Install SSL certificate
-sudo certbot --nginx \
+# Install SSL certificate if using DNS
+
+if [[ "$dns" =~ ^([yY])+$ ]]; then
+certbot --nginx \
   --non-interactive \
   --agree-tos \
   --email admin@trustaking.com \
   --domains ${SERVER_NAME}
+fi
 
 # Install Website
 mkdir /home/${USER}/${SERVER_NAME}
