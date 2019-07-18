@@ -373,8 +373,8 @@ server {
             return 404;
         }
         
-        fastcgi_param PATH_INFO       $fastcgi_path_info;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO       \$fastcgi_path_info;
+        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
     }
 
     location ~ /\.ht {
@@ -399,7 +399,7 @@ location /phpmyadmin {
     root /usr/share/;
     index index.php index.html index.htm;
     location ~ ^/phpmyadmin/(.+\.php)$ {
-        try_files $uri =404;
+        try_files \$uri =404;
         root /usr/share/;
         fastcgi_pass unix:/run/php/php7.3-fpm.sock;
         fastcgi_index index.php;
