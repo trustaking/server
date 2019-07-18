@@ -470,7 +470,7 @@ debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/admin-pass password ${MY
 debconf-set-selections <<< "phpmyadmin phpmyadmin/internal/skip-preseed boolean true"
 apt -qy install phpmyadmin
 
-sed -i '/;extension=mysqli/s/^;//g' /etc/php/7.3/cli/php.ini
+#sed -i '/;extension=mysqli/s/^;//g' /etc/php/7.3/cli/php.ini
 
 # Install & Configure Redis Server
 #apt -qy install redis-server
