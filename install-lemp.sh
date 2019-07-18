@@ -117,12 +117,12 @@ apt upgrade -qy
 
 apt -qy install software-properties-common
 
-apt-add-repository ppa:nginx/development -qy
-apt-add-repository ppa:ondrej/nginx -qy
-apt-add-repository ppa:chris-lea/redis-server -qy
-apt-add-repository ppa:ondrej/apache2 -qy
-apt-add-repository ppa:ondrej/php -qy
-apt-add-repository ppa:certbot/certbot -qy
+apt-add-repository ppa:nginx/development -y
+apt-add-repository ppa:ondrej/nginx -y
+apt-add-repository ppa:chris-lea/redis-server -y
+apt-add-repository ppa:ondrej/apache2 -y
+apt-add-repository ppa:ondrej/php -y
+apt-add-repository ppa:certbot/certbot -y
 
 # Update Package Lists
 
