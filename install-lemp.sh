@@ -110,27 +110,27 @@ sudo sed -i "s/#precedence ::ffff:0:0\/96  100/precedence ::ffff:0:0\/96  100/" 
 
 # Upgrade The Base Packages
 
-apt-get update
-apt-get upgrade -qy
+apt update -qy
+apt upgrade -qy
 
 # Add A Few PPAs To Stay Current
 
 apt -qy install software-properties-common
 
-apt-add-repository ppa:nginx/development -y
-apt-add-repository ppa:ondrej/nginx -y
-apt-add-repository ppa:chris-lea/redis-server -y
-apt-add-repository ppa:ondrej/apache2 -y
-apt-add-repository ppa:ondrej/php -y
-apt-add-repository ppa:certbot/certbot -y
+apt-add-repository ppa:nginx/development -qy
+apt-add-repository ppa:ondrej/nginx -qy
+apt-add-repository ppa:chris-lea/redis-server -qy
+apt-add-repository ppa:ondrej/apache2 -qy
+apt-add-repository ppa:ondrej/php -qy
+apt-add-repository ppa:certbot/certbot -qy
 
 # Update Package Lists
 
-apt-get update
+apt update -qy
 
 # Base Packages
 
-apt-get install -y build-essential curl fail2ban \
+apt-get install -qy build-essential curl fail2ban \
 gcc git libmcrypt4 libpcre3-dev python-certbot-nginx \
 make python2.7 python-pip supervisor ufw unattended-upgrades \
 unzip whois zsh mc p7zip-full htop
@@ -369,7 +369,7 @@ server {
         fastcgi_intercept_errors on;
         include fastcgi_params;
         fastcgi_split_path_info ^(.+?\.php)(/.*)$;
-        if (!-f $document_root$fastcgi_script_name) {
+        if (!-f \$document_root\$fastcgi_script_name) {
             return 404;
         }
         
@@ -492,9 +492,6 @@ sed -i '/;extension=mysqli/s/^;//g' /etc/php/7.3/cli/php.ini
 
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
-
-# Install Phalcon
-sudo apt -qy install php-phalcon
 
 # Install SSL certificate if using DNS
 
