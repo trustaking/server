@@ -19,11 +19,11 @@ read -p "Mainnet (m) or Testnet (t)? " net
 read -p "Which branch (default=master)? " branch
 
 if [[ ${subdomain} == '' ]]; then 
-subdomain="${fork}"
+    subdomain="${fork}"
 fi
 
 if [[ ${branch} == '' ]]; then 
-branch="master"
+    branch="master"
 fi
 
 # =================== YOUR DATA ========================
