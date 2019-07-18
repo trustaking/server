@@ -14,20 +14,25 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 read -p "Which Fork (redstone, x42, impleum, city, stratis)? " fork
+read -p "What sub-domain (default=${fork})? " subdomain
 read -p "Mainnet (m) or Testnet (t)? " net
 read -p "Which branch (default=master)? " branch
 
-if [${BRANCH} = ""]; then 
+if [${subdomain} = ""]; then 
+subdomain=${fork});
+fi
+
+if [${branch} = ""]; then 
 branch="master";
 fi
 
 # =================== YOUR DATA ========================
-SERVER_NAME="$fork.trustaking.com"
-REDIRECTURL="http:\/\/${SERVER_NAME}\/activate.php"
-DNS_NAME="$fork.trustaking.com"
+SERVER_NAME="${subdomain}.trustaking.com"
+REDIRECTURL="${SERVER_NAME}\/activate.php"
+DNS_NAME="${subdomain}.trustaking.com"
 USER="$fork-web"
-SUDO_PASSWORD="$fork-web"
-MYSQL_ROOT_PASSWORD="$fork-web"
+SUDO_PASSWORD="$fork-web" ## TODO: create random password
+MYSQL_ROOT_PASSWORD="$fork-web" ## TODO: create random password
 COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustaking/server/master/install-coin.sh"
 COINSERVICECONFIG="https://raw.githubusercontent.com/trustaking/server/master/config/config-$fork.sh"
 WEBFILE="https://github.com/trustaking/node.git"
@@ -47,6 +52,7 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
            ;;
         city)
            apiport="24335"; # "4335" <Main City
+           apiver="&api-version=1.0";
         ;; 
         impleum)
            apiport="38222"; # "39222" <Main Impleum
@@ -69,6 +75,7 @@ else
             ;;
          city)
             apiport="4335";
+            apiver="&api-version=1.0";
             ;; 
          impleum)
             apiport="39222";
@@ -81,9 +88,9 @@ else
 fi
 
 # =================== YOUR DATA ========================
-read -p "Are you using IP(y) or DNS(n)?" response
+read -p "Are you using DNS(y) or IP(n)?" dns
 
-if [[ "$response" =~ ^([yY])+$ ]]; then
+if [[ "$dns" =~ ^([nN])+$ ]]; then
     DNS_NAME=$(curl --silent ipinfo.io/ip)
 fi
 
@@ -115,6 +122,7 @@ apt-add-repository ppa:ondrej/nginx -y
 apt-add-repository ppa:chris-lea/redis-server -y
 apt-add-repository ppa:ondrej/apache2 -y
 apt-add-repository ppa:ondrej/php -y
+apt-add-repository ppa:certbot/certbot -y
 
 # Update Package Lists
 
@@ -122,8 +130,10 @@ apt-get update
 
 # Base Packages
 
-apt -qy install build-essential curl fail2ban gcc git libmcrypt4 libpcre3-dev \
-make python2.7 python-pip supervisor ufw unattended-upgrades unzip whois zsh mc p7zip-full htop
+apt-get install -y build-essential curl fail2ban \
+gcc git libmcrypt4 libpcre3-dev python-certbot-nginx \
+make python2.7 python-pip supervisor ufw unattended-upgrades \
+unzip whois zsh mc p7zip-full htop
 
 # Install Python Httpie
 
@@ -220,8 +230,7 @@ EOF
 # Setup UFW Firewall
 
 ufw allow 22
-ufw allow 80
-ufw allow 443
+ufw allow 'Nginx Full'
 ufw --force enable
 
 # Allow FPM Restart
@@ -385,14 +394,14 @@ ln -s /etc/nginx/sites-available/${USER} /etc/nginx/sites-enabled/${USER}
 
 ## Add config for PHPMyAdmin
 
-cat > /etc/nginx/snippets/phpmyadmin.conf << EOF
+cat > /etc/nginx/snippets/phpMyAdmin.conf << EOF
 location /phpmyadmin {
     root /usr/share/;
     index index.php index.html index.htm;
     location ~ ^/phpmyadmin/(.+\.php)$ {
         try_files $uri =404;
         root /usr/share/;
-        fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+        fastcgi_pass unix:/run/php/php7.3-fpm.sock;
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         include /etc/nginx/fastcgi_params;
@@ -487,6 +496,16 @@ mv composer.phar /usr/local/bin/composer
 # Install Phalcon
 sudo apt -qy install php-phalcon
 
+# Install SSL certificate if using DNS
+
+if [[ "$dns" =~ ^([yY])+$ ]]; then
+certbot --nginx \
+  --non-interactive \
+  --agree-tos \
+  --email admin@trustaking.com \
+  --domains ${SERVER_NAME}
+fi
+
 # Install Website
 mkdir /home/${USER}/${SERVER_NAME}
 cd /home/${USER}/
@@ -505,6 +524,7 @@ sed -i "s/^\(\$redirectURL='\).*/\1${REDIRECTURL}';/" /home/${USER}/${SERVER_NAM
 sed -i "s/^\(\$service_desc='\).*/\1${SERVICE_DESC}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$service_end_date='\).*/\1${SERVICE_END_DATE}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$online_days='\).*/\1${ONLINE_DAYS}';/" /home/${USER}/${SERVER_NAME}/include/config.php
+sed -i "s/^\(\$api_ver='\).*/\1${apiver}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 
 #Inject RPC username & password into config.php
 sed -i "s/^\(\$rpc_user='\).*/\1${RPCUSER}';/" /home/${USER}/${SERVER_NAME}/include/config.php

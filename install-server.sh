@@ -14,20 +14,25 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 read -p "Which Fork (redstone, x42, impleum, city, stratis)? " fork
+read -p "What sub-domain (default=${fork})? " subdomain
 read -p "Mainnet (m) or Testnet (t)? " net
 read -p "Which branch (default=master)? " branch
 
-if [${BRANCH} = ""]; then 
+if [${subdomain} = ""]; then 
+subdomain=${fork});
+fi
+
+if [${branch} = ""]; then 
 branch="master";
 fi
 
 # =================== YOUR DATA ========================
-SERVER_NAME="$fork.trustaking.com"
-REDIRECTURL="http:\/\/${SERVER_NAME}\/activate.php"
-DNS_NAME="$fork.trustaking.com"
+SERVER_NAME="${subdomain}.trustaking.com"
+REDIRECTURL="${SERVER_NAME}\/activate.php"
+DNS_NAME="${subdomain}.trustaking.com"
 USER="$fork-web"
-SUDO_PASSWORD="$fork-web"
-MYSQL_ROOT_PASSWORD="$fork-web"
+SUDO_PASSWORD="$fork-web" ## TODO: create random password
+MYSQL_ROOT_PASSWORD="$fork-web" ## TODO: create random password
 COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustaking/server/master/install-coin.sh"
 COINSERVICECONFIG="https://raw.githubusercontent.com/trustaking/server/master/config/config-$fork.sh"
 WEBFILE="https://github.com/trustaking/node.git"
@@ -106,13 +111,14 @@ sudo sed -i "s/#precedence ::ffff:0:0\/96  100/precedence ::ffff:0:0\/96  100/" 
 # Upgrade The Base Packages
 
 apt-get update
-apt-get upgrade -y
+apt-get upgrade -qy
 
 # Add A Few PPAs To Stay Current
 
-apt-get install -y software-properties-common
+apt -qy install software-properties-common
 
 apt-add-repository ppa:nginx/development -y
+apt-add-repository ppa:ondrej/nginx -y
 apt-add-repository ppa:chris-lea/redis-server -y
 apt-add-repository ppa:ondrej/apache2 -y
 apt-add-repository ppa:ondrej/php -y
@@ -252,17 +258,18 @@ fi
 
 # Install Base PHP Packages
 
-apt-get install -y php7.0-cli php7.0-dev \
-php-sqlite3 php-gd \
-php-curl php7.0-curl php7.0-dev \
-php-imap php-mysql php-memcached php7.0-mcrypt php-mbstring \
-php-xml php-imagick php7.0-zip php7.0-bcmath php-soap \
-php7.0-intl php7.0-readline
+sudo apt -qy install php7.3-fpm php7.3-common php7.3-mysql php7.3-xml \
+php7.3-xmlrpc php7.3-curl php7.3-gd \
+php-imagick php7.3-cli php7.3-dev php7.3-imap php7.3-mbstring \
+php-sqlite3 php-memcached php7.1-mcrypt php7.3-bcmath php7.3-intl php7.3-readline \
+php7.3-opcache php7.3-soap php7.3-zip unzip php7.3-pgsql php-msgpack \
+gcc make re2c libpcre3-dev software-properties-common build-essential 
 
-# Install Composer Package Manager
+# Install Phalcon
 
-curl -sS https://getcomposer.org/installer | php
-mv composer.phar /usr/local/bin/composer
+#curl -s "https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh" | sudo bash
+#sudo apt -qy install php7.3-phalcon
+#sudo apt update
 
 # Misc. PHP CLI Configuration
 
@@ -278,7 +285,7 @@ chmod +t /var/lib/php/sessions
 
 # Install Nginx & PHP-FPM
 
-apt-get install -y nginx php7.0-fpm
+apt install -qy nginx php7.3-fpm
 
 # Enable Nginx service
 systemctl enable nginx.service
@@ -295,31 +302,31 @@ service nginx restart
 
 # Tweak Some PHP-FPM Settings
 
-sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.0/fpm/php.ini
-sed -i "s/display_errors = .*/display_errors = On/" /etc/php/7.0/fpm/php.ini
-sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php/7.0/fpm/php.ini
-sed -i "s/memory_limit = .*/memory_limit = 512M/" /etc/php/7.0/fpm/php.ini
-sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.0/fpm/php.ini
-sed -i "s/short_open_tag.*/short_open_tag = On/" /etc/php/7.0/fpm/php.ini
+sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.3/fpm/php.ini
+sed -i "s/display_errors = .*/display_errors = On/" /etc/php/7.3/fpm/php.ini
+sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php/7.3/fpm/php.ini
+sed -i "s/memory_limit = .*/memory_limit = 512M/" /etc/php/7.3/fpm/php.ini
+sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.3/fpm/php.ini
+sed -i "s/short_open_tag.*/short_open_tag = On/" /etc/php/7.3/fpm/php.ini
 
 # Setup Session Save Path
 
-sed -i "s/\;session.save_path = .*/session.save_path = \"\/var\/lib\/php5\/sessions\"/" /etc/php/7.0/fpm/php.ini
-sed -i "s/php5\/sessions/php\/sessions/" /etc/php/7.0/fpm/php.ini
+sed -i "s/\;session.save_path = .*/session.save_path = \"\/var\/lib\/php5\/sessions\"/" /etc/php/7.3/fpm/php.ini
+sed -i "s/php5\/sessions/php\/sessions/" /etc/php/7.3/fpm/php.ini
 
 # Configure Nginx & PHP-FPM To Run As User
 
 sed -i "s/user www-data;/user $USER;/" /etc/nginx/nginx.conf
 sed -i "s/# server_names_hash_bucket_size.*/server_names_hash_bucket_size 64;/" /etc/nginx/nginx.conf
-sed -i "s/^user = www-data/user = $USER/" /etc/php/7.0/fpm/pool.d/www.conf
-sed -i "s/^group = www-data/group = $USER/" /etc/php/7.0/fpm/pool.d/www.conf
-sed -i "s/;listen\.owner.*/listen.owner = $USER/" /etc/php/7.0/fpm/pool.d/www.conf
-sed -i "s/;listen\.group.*/listen.group = $USER/" /etc/php/7.0/fpm/pool.d/www.conf
-sed -i "s/;listen\.mode.*/listen.mode = 0666/" /etc/php/7.0/fpm/pool.d/www.conf
+sed -i "s/^user = www-data/user = $USER/" /etc/php/7.3/fpm/pool.d/www.conf
+sed -i "s/^group = www-data/group = $USER/" /etc/php/7.3/fpm/pool.d/www.conf
+sed -i "s/;listen\.owner.*/listen.owner = $USER/" /etc/php/7.3/fpm/pool.d/www.conf
+sed -i "s/;listen\.group.*/listen.group = $USER/" /etc/php/7.3/fpm/pool.d/www.conf
+sed -i "s/;listen\.mode.*/listen.mode = 0666/" /etc/php/7.3/fpm/pool.d/www.conf
 
 # Configure A Few More Server Things
 
-sed -i "s/;request_terminate_timeout.*/request_terminate_timeout = 60/" /etc/php/7.0/fpm/pool.d/www.conf
+sed -i "s/;request_terminate_timeout.*/request_terminate_timeout = 60/" /etc/php/7.3/fpm/pool.d/www.conf
 sed -i "s/worker_processes.*/worker_processes auto;/" /etc/nginx/nginx.conf
 sed -i "s/# multi_accept.*/multi_accept on;/" /etc/nginx/nginx.conf
 
@@ -386,7 +393,7 @@ groups $USER
 ### Install Node.js
 #curl --silent --location https://deb.nodesource.com/setup_8.x | bash -
 #apt-get update
-#sudo apt-get install -y --force-yes nodejs
+#sudo apt -qy install nodejs
 #npm install -g pm2
 #npm install -g gulp
 
@@ -430,6 +437,11 @@ groups $USER
 #sed -i "s/#START=yes/START=yes/" /etc/default/beanstalkd
 #/etc/init.d/beanstalkd start
 
+# Install Composer Package Manager
+
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
+
 # Install SSL certificate if using DNS
 
 if [[ "$dns" =~ ^([yY])+$ ]]; then
@@ -449,6 +461,7 @@ chmod g+rw /home/${USER}/${SERVER_NAME} -R
 chmod g+s /home/${USER}/${SERVER_NAME} -R
 cd /home/${USER}/${SERVER_NAME}
 php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
+
 ## Inject apiport & ticker into /include/config.php
 sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$api_port='\).*/\1$apiport';/" /home/${USER}/${SERVER_NAME}/include/config.php
