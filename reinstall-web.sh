@@ -1,6 +1,6 @@
 #!/bin/bash
 # =================== YOUR DATA ========================
-#bash <( curl -s https://raw.githubusercontent.com/trustaking/server/master/reinstall-web.sh )
+#bash <( curl -s https://raw.githubusercontent.com/trustaking/server/master/install-lemp.sh )
 SERVER_IP=$(curl --silent ipinfo.io/ip)
 SERVICE_END_DATE="2020-05-31"
 SERVICE_DESC=" trustaking.com service. Service ends on "$SERVICE_END_DATE
@@ -14,14 +14,25 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 read -p "Which Fork (redstone, x42, impleum, city, stratis)? " fork
+read -p "What sub-domain (default=${fork})? " subdomain
 read -p "Mainnet (m) or Testnet (t)? " net
+read -p "Which branch (default=master)? " branch
+
+if [[ ${subdomain} == '' ]]; then 
+    subdomain="${fork}"
+fi
+
+if [[ ${branch} == '' ]]; then 
+    branch="master"
+fi
+
 # =================== YOUR DATA ========================
-SERVER_NAME="$fork.trustaking.com"
-REDIRECTURL="http:\/\/${SERVER_NAME}\/activate.php"
-DNS_NAME="$fork.trustaking.com"
+SERVER_NAME="${subdomain}.trustaking.com"
+REDIRECTURL="${SERVER_NAME}\/activate.php"
+DNS_NAME="${subdomain}.trustaking.com"
 USER="$fork-web"
-SUDO_PASSWORD="$fork-web"
-MYSQL_ROOT_PASSWORD="$fork-web"
+SUDO_PASSWORD="$fork-web" ## TODO: create random password
+MYSQL_ROOT_PASSWORD="$fork-web" ## TODO: create random password
 COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustaking/server/master/install-coin.sh"
 COINSERVICECONFIG="https://raw.githubusercontent.com/trustaking/server/master/config/config-$fork.sh"
 WEBFILE="https://github.com/trustaking/node.git"
@@ -77,9 +88,9 @@ else
 fi
 
 # =================== YOUR DATA ========================
-read -p "Are you using IP(y) or DNS(n)?" response
+read -p "Are you using DNS(y) or IP(n)?" dns
 
-if [[ "$response" =~ ^([yY])+$ ]]; then
+if [[ "$dns" =~ ^([nN])+$ ]]; then
     DNS_NAME=$(curl --silent ipinfo.io/ip)
 fi
 
@@ -99,7 +110,6 @@ cp /root/.bashrc /home/$USER/.bashrc
 
 PASSWORD=$(mkpasswd $SUDO_PASSWORD)
 usermod --password $PASSWORD $USER
-
 
 ## Add site-available and enable the website
 if [ ! -f /etc/nginx/sites-available/${USER} ]; then
@@ -148,6 +158,21 @@ fi
 service nginx restart
 service nginx reload
 
+# Install Composer Package Manager
+
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
+
+# Install SSL certificate if using DNS
+
+if [[ "$dns" =~ ^([yY])+$ ]]; then
+certbot --nginx \
+  --non-interactive \
+  --agree-tos \
+  --email admin@trustaking.com \
+  --domains ${SERVER_NAME}
+fi
+
 fi
 
 # Re-Install Website
@@ -160,6 +185,7 @@ chmod g+rw /home/${USER}/${SERVER_NAME} -R
 chmod g+s /home/${USER}/${SERVER_NAME} -R
 cd /home/${USER}/${SERVER_NAME}
 php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
+
 ## Inject apiport & ticker into /include/config.php
 sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$api_port='\).*/\1$apiport';/" /home/${USER}/${SERVER_NAME}/include/config.php
