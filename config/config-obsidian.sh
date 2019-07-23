@@ -3,26 +3,25 @@ function setMainVars() {
 NETWORK=""
 NODE_USER=${FORK}${NETWORK}
 COINCORE=/home/${NODE_USER}/.${FORK}node/${FORK}/ObsidianXMain
-COINPORT=56660
-COINRPCPORT=56661
-COINAPIPORT=37221
-}
+COINPORT=46660
+COINRPCPORT=46661
+COINAPIPORT=47221
 
 function setTestVars() {
 ## set network dependent variables
 NETWORK="-testnet"
 NODE_USER=${FORK}${NETWORK}
 COINCORE=/home/${NODE_USER}/.${FORK}node/${FORK}/ObsidianXTest
-COINPORT=56660
-COINRPCPORT=56661
-COINAPIPORT=37221
+COINPORT=46660
+COINRPCPORT=46661
+COINAPIPORT=47221
 }
 
 function setGeneralVars() {
 ## set general variables
-COINRUNCMD="sudo dotnet ./Obsidian.ObsidianD.dll ${NETWORK} -datadir=/home/${NODE_USER}/.${FORK}chain -maxblkmem=2 -txindex=1 #-stake -walletname=\${STAKINGNAME} -walletpassword=\${STAKINGPASSWORD}"
+COINRUNCMD="sudo dotnet ./Obsidian.ObsidianD.dll ${NETWORK} -datadir=/home/${NODE_USER}/.${FORK}chain -maxblkmem=2 -txindex=1 -hdwallet #-stake -walletname=\${STAKINGNAME} -walletpassword=\${STAKINGPASSWORD}"
 COINGITHUB=https://github.com/obsidianproject/Obsidian-StratisNode.git
-COINDSRC=/home/${NODE_USER}/code/src/Obsidian.ObsidianD
+COINDSRC=/home/${NODE_USER}/code/src/Obsidian.OdX
 CONF=release
 COINDAEMON=${FORK}d
 COINCONFIG=${FORK}.conf

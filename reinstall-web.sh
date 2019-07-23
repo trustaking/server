@@ -39,6 +39,8 @@ WEBFILE="https://github.com/trustaking/node.git"
 RPCUSER=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 RPCPASS=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 
+#TODO: Replace with config files
+
 if [[ "$net" =~ ^([tT])+$ ]]; then
     case $fork in
          stratis)
@@ -56,6 +58,9 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
         ;; 
         impleum)
            apiport="38222"; # "39222" <Main Impleum
+            ;;
+        obsidian)
+            apiport="47221" # "47221" <Main Obsidian
             ;;
          *)
            echo "$fork has not been configured."
@@ -79,6 +84,9 @@ else
             ;; 
          impleum)
             apiport="39222";
+            ;;
+        obsidian)
+            apiport="47221" # "47221" <Main Obsidian
             ;;
          *)
             echo "$fork has not been configured."
