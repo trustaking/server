@@ -42,6 +42,7 @@ if [[ "$dns" =~ ^([nN])+$ ]]; then
 fi
 
 # Install Coins Service
+read "Hit a key to install Coin service!" response
 wget ${COINSERVICEINSTALLER} -O ~/install-coin.sh
 wget ${COINSERVICECONFIG} -O ~/config-${fork}.sh
 chmod +x ~/install-coin.sh
@@ -49,7 +50,7 @@ cd ~
 ~/install-coin.sh -f ${fork} -n ${net} -b ${branch}
 
 # Install hot wallet setup
-sleep 60
+read "Hit a key to install hot wallet!" response
 /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 # Display information
