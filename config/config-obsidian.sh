@@ -6,6 +6,7 @@ COINCORE=/home/${NODE_USER}/.${FORK}node/${FORK}/ObsidianXMain
 COINPORT=46660
 COINRPCPORT=46661
 COINAPIPORT=47221
+}
 
 function setTestVars() {
 ## set network dependent variables
