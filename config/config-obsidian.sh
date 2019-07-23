@@ -22,7 +22,7 @@ function setGeneralVars() {
 ## set general variables
 COINRUNCMD="sudo dotnet ./Obsidian.ObsidianD.dll ${NETWORK} -datadir=/home/${NODE_USER}/.${FORK}chain -maxblkmem=2 -txindex=1 -hdwallet #-stake -walletname=\${STAKINGNAME} -walletpassword=\${STAKINGPASSWORD}"
 COINGITHUB=https://github.com/obsidianproject/Obsidian-StratisNode.git
-COINDSRC=/home/${NODE_USER}/code/src/Obsidian.OdX
+COINDSRC=/home/${NODE_USER}/code/src/Obsidian.OxD
 CONF=release
 COINDAEMON=${FORK}d
 COINCONFIG=${FORK}.conf
