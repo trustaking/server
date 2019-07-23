@@ -103,6 +103,7 @@ if [[ "$dns" =~ ^([nN])+$ ]]; then
 fi
 
 # SSH access via password will be disabled. Use keys instead.
+###### add manually for aruba
 PUBLIC_SSH_KEYS=""
 
 # if vps not contains swap file - create it
