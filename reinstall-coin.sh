@@ -13,7 +13,7 @@ if [ "$(id -u)" != "0" ]; then
     echo -e "${NONE}${GREEN}* All Good!${NONE}";
 fi
 
-read -p "Which Fork (redstone, x42, impleum, city, stratis)? " fork
+read -p "Which Fork (redstone, x42, impleum, city, stratis, obsidian)? " fork
 read -p "Mainnet (m) or Testnet (t)? " net
 read -p "Which branch (default=master)? " branch
 
@@ -35,9 +35,9 @@ RPCUSER=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 RPCPASS=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 
 # =================== YOUR DATA ========================
-read -p "Are you using IP(y) or DNS(n)?" response
+read -p "Are you using DNS(y) or IP(n)?" dns
 
-if [[ "$response" =~ ^([yY])+$ ]]; then
+if [[ "$dns" =~ ^([nN])+$ ]]; then
     DNS_NAME=$(curl --silent ipinfo.io/ip)
 fi
 

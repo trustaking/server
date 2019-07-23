@@ -13,7 +13,7 @@ if [ "$(id -u)" != "0" ]; then
     echo -e "${NONE}${GREEN}* All Good!${NONE}";
 fi
 
-read -p "Which Fork (redstone, x42, impleum, city, stratis)? " fork
+read -p "Which Fork (redstone, x42, impleum, city, stratis, obsidian)? " fork
 read -p "What sub-domain (default=${fork})? " subdomain
 read -p "Mainnet (m) or Testnet (t)? " net
 read -p "Which branch (default=master)? " branch
