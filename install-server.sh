@@ -243,7 +243,7 @@ ufw --force enable
 
 # Allow FPM Restart
 
-echo "$USER ALL=NOPASSWD: /usr/sbin/service php7.0-fpm reload" > /etc/sudoers.d/php-fpm
+echo "$USER ALL=NOPASSWD: /usr/sbin/service php7.3-fpm reload" > /etc/sudoers.d/php-fpm
 
 # Configure Supervisor Autostart
 
@@ -281,10 +281,10 @@ gcc make re2c libpcre3-dev software-properties-common build-essential
 
 # Misc. PHP CLI Configuration
 
-sudo sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.0/cli/php.ini
-sudo sed -i "s/display_errors = .*/display_errors = On/" /etc/php/7.0/cli/php.ini
-sudo sed -i "s/memory_limit = .*/memory_limit = 512M/" /etc/php/7.0/cli/php.ini
-sudo sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.0/cli/php.ini
+sudo sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.3/cli/php.ini
+sudo sed -i "s/display_errors = .*/display_errors = On/" /etc/php/7.3/cli/php.ini
+sudo sed -i "s/memory_limit = .*/memory_limit = 512M/" /etc/php/7.3/cli/php.ini
+sudo sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.3/cli/php.ini
 
 # Configure Sessions Directory Permissions
 
@@ -369,7 +369,7 @@ server {
 
     location ~ \.php$ {
         include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+        fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
         include fastcgi_params;
         fastcgi_intercept_errors on;
     }
@@ -386,7 +386,7 @@ ln -s /etc/nginx/sites-available/${SERVER_NAME} /etc/nginx/sites-enabled/${SERVE
 
 if [ ! -z "\$(ps aux | grep php-fpm | grep -v grep)" ]
 then
-    service php7.0-fpm restart
+    service php7.3-fpm restart
 fi
 
 service nginx restart
@@ -497,6 +497,7 @@ sed -i "s/^\(\$apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/tr
 sed -i "s/^\(\$apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-withdraw-funds.ps1
 
 # Install Coins Service
+read "Hit a key to install Coin service!" response
 wget ${COINSERVICEINSTALLER} -O ~/install-coin.sh
 wget ${COINSERVICECONFIG} -O ~/config-${fork}.sh
 chmod +x ~/install-coin.sh
@@ -504,7 +505,7 @@ cd ~
 ~/install-coin.sh -f ${fork} -n ${net} -b ${branch}
 
 # Install hot wallet setup
-sleep 60
+read "Hit a key to install hot wallet!" response
 /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 # Display information
