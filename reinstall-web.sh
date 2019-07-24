@@ -1,6 +1,6 @@
 #!/bin/bash
 # =================== YOUR DATA ========================
-#bash <( curl -s https://raw.githubusercontent.com/trustaking/server/master/install-lemp.sh )
+#bash <( curl -s https://raw.githubusercontent.com/trustaking/server/master/reinstall-web.sh )
 SERVER_IP=$(curl --silent ipinfo.io/ip)
 SERVICE_END_DATE="2020-05-31"
 SERVICE_DESC=" trustaking.com service. Service ends on "$SERVICE_END_DATE
