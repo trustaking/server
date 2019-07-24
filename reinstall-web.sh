@@ -122,9 +122,9 @@ PASSWORD=$(mkpasswd $SUDO_PASSWORD)
 usermod --password $PASSWORD $USER
 
 ## Add site-available and enable the website
-if [ ! -f /etc/nginx/sites-available/${USER} ]; then
+if [ ! -f /etc/nginx/sites-available/${SERVER_NAME} ]; then
 
-cat > /etc/nginx/sites-available/${USER} << EOF
+cat > /etc/nginx/sites-available/${SERVER_NAME} << EOF
 server {
     listen 80;
     server_name ${DNS_NAME};
