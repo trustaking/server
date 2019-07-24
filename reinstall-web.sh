@@ -54,14 +54,14 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
            ;;
         city)
            apiport="24335"; # "4335" <Main City
-           apiver="\&api-version=1.0";
+           apiver="api-version=1.0";
         ;; 
         impleum)
            apiport="38222"; # "39222" <Main Impleum
             ;;
         obsidian)
             apiport="47221" # "47221" <Main Obsidian
-            apiver="\&Segwit=true";
+            apiver="Segwit=true";
             ;;
          *)
            echo "$fork has not been configured."
@@ -81,14 +81,14 @@ else
             ;;
          city)
             apiport="4335";
-            apiver="\&api-version=1.0";
+            apiver="api-version=1.0";
             ;; 
          impleum)
             apiport="39222";
             ;;
         obsidian)
             apiport="47221";
-            apiver="\&Segwit=true";
+            apiver="Segwit=true";
             ;;
          *)
             echo "$fork has not been configured."
@@ -204,7 +204,7 @@ sed -i "s/^\(\$redirectURL='\).*/\1${REDIRECTURL}';/" /home/${USER}/${SERVER_NAM
 sed -i "s/^\(\$service_desc='\).*/\1${SERVICE_DESC}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$service_end_date='\).*/\1${SERVICE_END_DATE}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$online_days='\).*/\1${ONLINE_DAYS}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$api_ver='\).*/\1${apiver}';/" /home/${USER}/${SERVER_NAME}/include/config.php
+sed -i "s/^\(\$api_ver='\).*/\1\&${apiver}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 
 #Inject RPC username & password into config.php
 sed -i "s/^\(\$rpc_user='\).*/\1${RPCUSER}';/" /home/${USER}/${SERVER_NAME}/include/config.php
@@ -212,18 +212,18 @@ sed -i "s/^\(\$rpc_pass='\).*/\1${RPCPASS}';/" /home/${USER}/${SERVER_NAME}/incl
 
 ## Inject apiport into /scripts/trustaking-*.sh files
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-add-funds.sh
-sed -i "s/^\(apiver=\).*/\1$apiver/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-add-funds.sh
+sed -i "s/^\(apiver=\).*/\1\&$apiver/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-add-funds.sh
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-balance.sh
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-setup.sh
-sed -i "s/^\(apiver=\).*/\1$apiver/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-setup.sh
+sed -i "s/^\(apiver=\).*/\1\&$apiver/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-setup.sh
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-withdraw-funds.sh
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 sed -i "s/^\(\$apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-add-funds.ps1
-sed -i "s/^\(\$apiver=\).*/\1$apiver/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-add-funds.ps1
+sed -i "s/^\(\$apiver=\).*/\1\&$apiver/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-add-funds.ps1
 sed -i "s/^\(\$apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-balance.ps1
 sed -i "s/^\(\$apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-setup.ps1
-sed -i "s/^\(\$apiver=\).*/\1$apiver/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-setup.ps1
+sed -i "s/^\(\$apiver=\).*/\1\&$apiver/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-setup.ps1
 sed -i "s/^\(\$apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-withdraw-funds.ps1
 
 # Display information
