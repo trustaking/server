@@ -54,14 +54,14 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
            ;;
         city)
            apiport="24335"; # "4335" <Main City
-           apiver="&api-version=1.0";
+           apiver="\&api-version=1.0";
         ;; 
         impleum)
            apiport="38222"; # "39222" <Main Impleum
             ;;
         obsidian)
             apiport="47221" # "47221" <Main Obsidian
-            apiver="&Segwit=true";
+            apiver="\&Segwit=true";
             ;;
          *)
            echo "$fork has not been configured."
@@ -81,14 +81,14 @@ else
             ;;
          city)
             apiport="4335";
-            apiver="&api-version=1.0";
+            apiver="\&api-version=1.0";
             ;; 
          impleum)
             apiport="39222";
             ;;
         obsidian)
             apiport="47221"
-            apiver="&Segwit=true";
+            apiver="\&Segwit=true";
             ;;
          *)
             echo "$fork has not been configured."

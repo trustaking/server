@@ -54,14 +54,14 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
            ;;
         city)
            apiport="24335"; # "4335" <Main City
-           apiver="&api-version=1.0";
+           apiver="\&api-version=1.0";
         ;; 
         impleum)
            apiport="38222"; # "39222" <Main Impleum
             ;;
         obsidian)
             apiport="47221" # "47221" <Main Obsidian
-            apiver="&Segwit=true";
+            apiver="\&Segwit=true";
             ;;
          *)
            echo "$fork has not been configured."
@@ -205,8 +205,6 @@ sed -i "s/^\(\$service_desc='\).*/\1${SERVICE_DESC}';/" /home/${USER}/${SERVER_N
 sed -i "s/^\(\$service_end_date='\).*/\1${SERVICE_END_DATE}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$online_days='\).*/\1${ONLINE_DAYS}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$api_ver='\).*/\1${apiver}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-
-echo "NICK HERE>>>>apiver=${apiver}"
 
 #Inject RPC username & password into config.php
 sed -i "s/^\(\$rpc_user='\).*/\1${RPCUSER}';/" /home/${USER}/${SERVER_NAME}/include/config.php
