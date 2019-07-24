@@ -81,14 +81,14 @@ else
             ;;
          city)
             apiport="4335";
-            apiver="&api-version=1.0";
+            apiver="\&api-version=1.0";
             ;; 
          impleum)
             apiport="39222";
             ;;
         obsidian)
             apiport="47221";
-            apiver="&Segwit=true";
+            apiver="\&Segwit=true";
             ;;
          *)
             echo "$fork has not been configured."
