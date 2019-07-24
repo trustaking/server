@@ -349,7 +349,7 @@ EOF
 
 ln -s /etc/nginx/sites-available/catch-all /etc/nginx/sites-enabled/catch-all
 
-cat > /etc/nginx/sites-available/${USER} << EOF
+cat > /etc/nginx/sites-available/${SERVER_NAME} << EOF
 server {
     listen 80;
     server_name ${DNS_NAME};
