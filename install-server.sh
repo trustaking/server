@@ -61,6 +61,7 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
             ;;
         obsidian)
             apiport="47221" # "47221" <Main Obsidian
+            apiver="&Segwit=true";
             ;;
          *)
            echo "$fork has not been configured."
@@ -86,7 +87,8 @@ else
             apiport="39222";
             ;;
         obsidian)
-            apiport="47221" # "47221" <Main Obsidian
+            apiport="47221"
+            apiver="&Segwit=true";
             ;;
          *)
             echo "$fork has not been configured."
