@@ -89,7 +89,7 @@ else
         obsidian)
             apiport="47221";
 #           apiver="Segwit=true";
-            printf -v apiver "%q" "&Segwit=true";
+            printf -v apiver "%q" "&Segwit=true"
             ;;
          *)
             echo "$fork has not been configured."
