@@ -162,7 +162,7 @@ ln -s /etc/nginx/sites-available/${SERVER_NAME} /etc/nginx/sites-enabled/${SERVE
 
 if [ ! -z "\$(ps aux | grep php-fpm | grep -v grep)" ]
 then
-    service php7.0-fpm restart
+    service php7.3-fpm restart
 fi
 
 service nginx restart
