@@ -17,7 +17,7 @@ read -p "Which Fork (redstone, x42, impleum, city, stratis, obsidian)? " fork
 read -p "Mainnet (m) or Testnet (t)? " net
 read -p "Which branch (default=master)? " branch
 
-if [${BRANCH} = ""]; then 
+if [${branch} = ""]; then 
 branch="master";
 fi
 
