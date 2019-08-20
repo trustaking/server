@@ -13,9 +13,9 @@ function setTestVars() {
 NETWORK="-testnet"
 NODE_USER=${FORK}${NETWORK}
 COINCORE=/home/${NODE_USER}/.${FORK}node/${FORK}platform/SolarisTest
-COINPORT=60000
-COINRPCPORT=61000
-COINAPIPORT=62000
+COINPORT=60009
+COINRPCPORT=61009
+COINAPIPORT=62009
 }
 
 function setGeneralVars() {
