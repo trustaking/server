@@ -509,7 +509,7 @@ sed -i "s/^\(\$apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/tr
 sed -i "s/^\(\$apiver=\).*/\1$apiver/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-setup.ps1
 sed -i "s/^\(\$apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-withdraw-funds.ps1
 # Install Coins Service
-read "Hit a key to install Coin service!" response
+read -p "Hit a key to install Coin service!" response
 wget ${COINSERVICEINSTALLER} -O ~/install-coin.sh
 wget ${COINSERVICECONFIG} -O ~/config-${fork}.sh
 chmod +x ~/install-coin.sh
@@ -517,7 +517,7 @@ cd ~
 ~/install-coin.sh -f ${fork} -n ${net} -b ${branch}
 
 # Install hot wallet setup
-read "Hit a key to install hot wallet!" response
+read -p "Hit a key to install hot wallet!" response
 /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 # Display information
