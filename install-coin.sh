@@ -30,7 +30,7 @@ shift "$((OPTIND-1))"
 
 source ~/config-${FORK}.sh
 
-if [${BRANCH} = ""]; then 
+if [ "${BRANCH}" = "" ]; then 
 BRANCH="master";
 fi
 
