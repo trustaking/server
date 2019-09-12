@@ -42,7 +42,7 @@ if [[ "$dns" =~ ^([nN])+$ ]]; then
 fi
 
 # Install Coins Service
-read "Hit a key to install Coin service!" response
+read -p "Hit a key to install Coin service!" response
 wget ${COINSERVICEINSTALLER} -O ~/install-coin.sh
 wget ${COINSERVICECONFIG} -O ~/config-${fork}.sh
 chmod +x ~/install-coin.sh
@@ -50,10 +50,19 @@ cd ~
 ~/install-coin.sh -f ${fork} -n ${net} -b ${branch}
 
 # Install hot wallet setup
-read "Hit a key to install hot wallet!" response
+read -p "Hit a key to install hot wallet!" response
 /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 # Display information
+echo
+echo -e "Running a simulation for SSL renewal"
+echo 
+certbot renew --dry-run
+echo && echo
+echo "If the dry run was unsuccessful you may need to register & install your SSL certificate manually by running the following command: "
+echo
+echo "certbot --nginx --non-interactive --agree-tos --email admin@trustaking.com --domains ${DNS_NAME}"
+echo
 echo "Website URL: "${DNS_NAME}
 [ ! -d /var/secure ] && mkdir -p /var/secure 
 echo "Requires keys.php, btcpayserver.pri & pub in /var/secure/ - run transfer.sh"
