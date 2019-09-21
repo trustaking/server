@@ -12,7 +12,9 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
     echo -e "${NONE}${GREEN}* All Good!${NONE}";
 fi
-
+clear
+echo -e "${UNDERLINE}${BOLD}Trustaking Server & Node Installation Guide${NONE}"
+echo
 read -p "Before you continue ensure that your DNS has an 'A' record for $(curl --silent ipinfo.io/ip) - press any key to continue" response
 
 read -p "Which Fork (redstone, x42, impleum, city, stratis, obsidian, solaris)? " fork

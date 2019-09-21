@@ -12,6 +12,9 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
     echo -e "${NONE}${GREEN}* All Good!${NONE}";
 fi
+clear
+echo -e "${UNDERLINE}${BOLD}Blockcore Node Installation Guide${NONE}"
+echo
 
 read -p "Which Fork (redstone, x42, impleum, city, stratis, obsidian)? " fork
 read -p "Mainnet (m) or Testnet (t)? " net
