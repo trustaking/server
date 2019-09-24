@@ -21,7 +21,6 @@ read -p "Mainnet (m) or Testnet (t)? " net
 read -p "Which branch (default=master)? " branch
 echo "Add your SSH public key here: "
 read -p "" PUBLIC_SSH_KEYS
-echo
 
 if [[ ${subdomain} == '' ]]; then 
     subdomain="${fork}"
@@ -112,9 +111,9 @@ fi
 read -p "Are you using DNS(y) or IP(n)?" dns
 
 if [[ "$dns" =~ ^([nN])+$ ]]; then
-    DNS_NAME=$(curl --silent ipinfo.io/ip)
+    DNS_NAME=${SERVER_IP}
     else
-    read -p "Before you continue ensure that your DNS has an 'A' record for curl --silent ipinfo.io/ip - press any key to continue" response
+    read -p "Before you continue ensure that your DNS has an 'A' record for ${SERVER_IP} - press any key to continue" response
 fi
 
 # SSH access via password will be disabled. Use keys instead.
