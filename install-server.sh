@@ -15,8 +15,6 @@ fi
 clear
 echo -e "${UNDERLINE}${BOLD}Trustaking Server & Node Installation Guide${NONE}"
 echo
-read -p "Before you continue ensure that your DNS has an 'A' record for $(curl --silent ipinfo.io/ip) - press any key to continue" response
-
 read -p "Which Fork (redstone, x42, impleum, city, stratis, obsidian, solaris)? " fork
 read -p "What sub-domain (default=${fork})? " subdomain
 read -p "Mainnet (m) or Testnet (t)? " net
@@ -115,6 +113,8 @@ read -p "Are you using DNS(y) or IP(n)?" dns
 
 if [[ "$dns" =~ ^([nN])+$ ]]; then
     DNS_NAME=$(curl --silent ipinfo.io/ip)
+    else
+    read -p "Before you continue ensure that your DNS has an 'A' record for curl --silent ipinfo.io/ip - press any key to continue" response
 fi
 
 # SSH access via password will be disabled. Use keys instead.
@@ -122,7 +122,7 @@ fi
 PUBLIC_SSH_KEYS=""
 
 # if vps not contains swap file - create it
-SWAP_SIZE="3G"
+SWAP_SIZE="1G"
 
 TIMEZONE="Etc/GMT+0" # list of avaiable timezones: ls -R --group-directories-first /usr/share/zoneinfo
 
