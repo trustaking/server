@@ -89,15 +89,15 @@ function setupSwap() {
 #check if swap is available
     echo
     echo "* Creating Swap File. Please wait..."
-    if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/var/node_swap.img" ];then
+    if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/swap.img" ];then
     echo -e "${GREEN}* No proper swap, creating it.${NONE}";
     # needed because ant servers are ants
-    sudo rm -f /var/node_swap.img &>> ${SCRIPT_LOGFILE}
-    sudo dd if=/dev/zero of=/var/node_swap.img bs=1024k count=${SWAPSIZE} &>> ${SCRIPT_LOGFILE}
-    sudo chmod 0600 /var/node_swap.img &>> ${SCRIPT_LOGFILE}
-    sudo mkswap /var/node_swap.img &>> ${SCRIPT_LOGFILE}
-    sudo swapon /var/node_swap.img &>> ${SCRIPT_LOGFILE}
-    echo '/var/node_swap.img none swap sw 0 0' | sudo tee -a /etc/fstab &>> ${SCRIPT_LOGFILE}
+    sudo rm -f /swap.img &>> ${SCRIPT_LOGFILE}
+    sudo dd if=/dev/zero of=/swap.img bs=1024k count=${SWAPSIZE} &>> ${SCRIPT_LOGFILE}
+    sudo chmod 0600 /var/swap.img &>> ${SCRIPT_LOGFILE}
+    sudo mkswap /swap.img &>> ${SCRIPT_LOGFILE}
+    sudo swapon /swap.img &>> ${SCRIPT_LOGFILE}
+    echo '/swap.img none swap sw 0 0' | sudo tee -a /etc/fstab &>> ${SCRIPT_LOGFILE}
     echo 'vm.swappiness=10' | sudo tee -a /etc/sysctl.conf &>> ${SCRIPT_LOGFILE}
     echo 'vm.vfs_cache_pressure=50' | sudo tee -a /etc/sysctl.conf &>> ${SCRIPT_LOGFILE}
 else

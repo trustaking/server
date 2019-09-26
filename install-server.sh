@@ -65,7 +65,7 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
             ;;
         obsidian)
             apiport="47221" # "47221" <Main Obsidian
-            apiver="\&Segwit=true";
+#            apiver="\&Segwit=true";
             ;;
         solaris)
             apiport="62009" # "62000" <Main Obsidian
@@ -267,14 +267,14 @@ service supervisor start
 
 # Configure Swap Disk
 
-if [ -f /var/node_swap.img ]; then
+if [ -f /swap.img ]; then
     echo "Swap exists."
 else
-    fallocate -l $SWAP_SIZE /var/node_swap.img
-    chmod 600 /var/node_swap.img
-    mkswap /var/node_swap.img
-    swapon /var/node_swap.img
-    echo "/var/node_swap.img none swap sw 0 0" >> /etc/fstab
+    fallocate -l $SWAP_SIZE /swap.img
+    chmod 600 /swap.img
+    mkswap /swap.img
+    swapon /swap.img
+    echo "/swap.img none swap sw 0 0" >> /etc/fstab
     echo "vm.swappiness=30" >> /etc/sysctl.conf
     echo "vm.vfs_cache_pressure=50" >> /etc/sysctl.conf
 fi
