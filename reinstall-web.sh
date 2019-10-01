@@ -31,7 +31,8 @@ fi
 
 # =================== YOUR DATA ========================
 SERVER_NAME="${subdomain}.trustaking.com"
-REDIRECTURL="${SERVER_NAME}\/activate.php"
+REDIRECTURL="https:\/\/${SERVER_NAME}\/activate.php"
+IPNURL="https:\/\/${SERVER_NAME}\/IPNlogger.php"
 DNS_NAME="${subdomain}.trustaking.com"
 USER="$fork-web"
 SUDO_PASSWORD="$fork-web" ## TODO: create random password
@@ -204,6 +205,7 @@ sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/con
 sed -i "s/^\(\$api_port='\).*/\1$apiport';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$price='\).*/\1${PRICE}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$redirectURL='\).*/\1${REDIRECTURL}';/" /home/${USER}/${SERVER_NAME}/include/config.php
+sed -i "s/^\(\$ipnURL='\).*/\1${IPNURL}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$service_desc='\).*/\1${SERVICE_DESC}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$service_end_date='\).*/\1${SERVICE_END_DATE}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$online_days='\).*/\1${ONLINE_DAYS}';/" /home/${USER}/${SERVER_NAME}/include/config.php
