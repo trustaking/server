@@ -198,8 +198,8 @@ chown ${USER}:www-data /home/${USER}/${SERVER_NAME} -R
 chmod g+rw /home/${USER}/${SERVER_NAME} -R
 chmod g+s /home/${USER}/${SERVER_NAME} -R
 cd /home/${USER}/${SERVER_NAME}
-#php /usr/local/bin/composer require trustaking/btcpayserver-php-client
-php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
+php /usr/local/bin/composer require trustaking/btcpayserver-php-client
+#php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
 
 ## Inject apiport & ticker into /include/config.php
 sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/config.php
