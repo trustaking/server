@@ -159,16 +159,13 @@ gcc git libmcrypt4 libpcre3-dev python-certbot-nginx \
 make python2.7 python-pip supervisor ufw unattended-upgrades \
 unzip whois zsh mc p7zip-full htop
 
-# Install Python Httpie
+# Disable Password Authentication Over SSH & switch default port
 
-pip install httpie
-
-# Disable Password Authentication Over SSH
-
-sed -i "/PasswordAuthentication yes/d" /etc/ssh/sshd_config
-echo "" | sudo tee -a /etc/ssh/sshd_config
-echo "" | sudo tee -a /etc/ssh/sshd_config
-echo "PasswordAuthentication no" | sudo tee -a /etc/ssh/sshd_config
+sed -ri 's/#Port 22/Port 7777/g' /etc/ssh/sshd_config
+sed -ri 's/X11Forwarding yes/X11Forwarding no/g' /etc/ssh/sshd_config
+sed -ri 's/#AllowTcpForwarding yes/AllowTcpForwarding no/g' /etc/ssh/sshd_config
+sed -ri 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+sed -ri 's/#UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
 
 # Restart SSH
 
