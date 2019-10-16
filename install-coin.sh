@@ -34,11 +34,9 @@ if [ "${BRANCH}" = "" ]; then
 BRANCH="master";
 fi
 
-SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
-
 function check_root() {
 if [ "$(id -u)" != "0" ]; then
-    echo -e "${RED}* Sorry, this script needs to be run as root. Do \"sudo su root\" and then re-run this script${NONE}"
+    echo -e "${RED}* Sorry, this script needs to be run as root. Do \"su root\" and then re-run this script${NONE}"
     exit 1
     echo -e "${NONE}${GREEN}* All Good!${NONE}";
 fi
@@ -52,8 +50,8 @@ function create_user() {
         echo "user exists already, do nothing"
     else
         echo -e "${NONE}${GREEN}* Adding new system user ${NODE_USER}${NONE}"
-        sudo adduser --disabled-password --gecos "" ${NODE_USER} &>> ${SCRIPT_LOGFILE}
-        sudo echo -e "${NODE_USER} ALL=(ALL) NOPASSWD:ALL" &>> /etc/sudoers.d/90-cloud-init-users
+        adduser --disabled-password --gecos "" ${NODE_USER} &>> ${SCRIPT_LOGFILE}
+        echo -e "${NODE_USER} ALL=(ALL) NOPASSWD:ALL" &>> /etc/sudoers.d/90-cloud-init-users
     fi
     echo -e "${NONE}${GREEN}* Done${NONE}";
 }
@@ -79,9 +77,9 @@ function checkOSVersion() {
 function updateAndUpgrade() {
     echo
     echo "* Running update and upgrade. Please wait..."
-    sudo DEBIAN_FRONTEND=noninteractive apt-get update -qq -y &>> ${SCRIPT_LOGFILE}
-    sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y -qq &>> ${SCRIPT_LOGFILE}
-    sudo DEBIAN_FRONTEND=noninteractive apt-get autoremove -y -qq &>> ${SCRIPT_LOGFILE}
+    apt-get update -qq -y &>> ${SCRIPT_LOGFILE}
+    apt-get upgrade -y -qq &>> ${SCRIPT_LOGFILE}
+    apt-get autoremove -y -qq &>> ${SCRIPT_LOGFILE}
     echo -e "${GREEN}* Done${NONE}";
 }
 
@@ -92,14 +90,14 @@ function setupSwap() {
     if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/swap.img" ];then
     echo -e "${GREEN}* No proper swap, creating it.${NONE}";
     # needed because ant servers are ants
-    sudo rm -f /swap.img &>> ${SCRIPT_LOGFILE}
-    sudo dd if=/dev/zero of=/swap.img bs=1024k count=${SWAPSIZE} &>> ${SCRIPT_LOGFILE}
-    sudo chmod 0600 /var/swap.img &>> ${SCRIPT_LOGFILE}
-    sudo mkswap /swap.img &>> ${SCRIPT_LOGFILE}
-    sudo swapon /swap.img &>> ${SCRIPT_LOGFILE}
-    echo '/swap.img none swap sw 0 0' | sudo tee -a /etc/fstab &>> ${SCRIPT_LOGFILE}
-    echo 'vm.swappiness=10' | sudo tee -a /etc/sysctl.conf &>> ${SCRIPT_LOGFILE}
-    echo 'vm.vfs_cache_pressure=50' | sudo tee -a /etc/sysctl.conf &>> ${SCRIPT_LOGFILE}
+    rm -f /swap.img &>> ${SCRIPT_LOGFILE}
+    dd if=/dev/zero of=/swap.img bs=1024k count=${SWAPSIZE} &>> ${SCRIPT_LOGFILE}
+    chmod 0600 /swap.img &>> ${SCRIPT_LOGFILE}
+    mkswap /swap.img &>> ${SCRIPT_LOGFILE}
+    swapon /swap.img &>> ${SCRIPT_LOGFILE}
+    echo '/swap.img none swap sw 0 0' | tee -a /etc/fstab &>> ${SCRIPT_LOGFILE}
+    echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf &>> ${SCRIPT_LOGFILE}
+    echo 'vm.vfs_cache_pressure=50' | tee -a /etc/sysctl.conf &>> ${SCRIPT_LOGFILE}
 else
     echo -e "${GREEN}* All good, we have a swap.${NONE}";
 fi
@@ -108,13 +106,13 @@ fi
 function installFail2Ban() {
     echo
     echo -e "* Installing fail2ban. Please wait..."
-    sudo apt-get -y install fail2ban &>> ${SCRIPT_LOGFILE}
-    sudo systemctl enable fail2ban &>> ${SCRIPT_LOGFILE}
-    sudo systemctl start fail2ban &>> ${SCRIPT_LOGFILE}
+    apt-get -y install fail2ban &>> ${SCRIPT_LOGFILE}
+    systemctl enable fail2ban &>> ${SCRIPT_LOGFILE}
+    systemctl start fail2ban &>> ${SCRIPT_LOGFILE}
     # Add Fail2Ban memory hack if needed
     if ! grep -q "ulimit -s 256" /etc/default/fail2ban; then
-       echo "ulimit -s 256" | sudo tee -a /etc/default/fail2ban &>> ${SCRIPT_LOGFILE}
-       sudo systemctl restart fail2ban &>> ${SCRIPT_LOGFILE}
+       echo "ulimit -s 256" | tee -a /etc/default/fail2ban &>> ${SCRIPT_LOGFILE}
+       systemctl restart fail2ban &>> ${SCRIPT_LOGFILE}
     fi
     echo -e "${NONE}${GREEN}* Done${NONE}";
 }
@@ -122,50 +120,50 @@ function installFail2Ban() {
 function installFirewall() {
     echo
     echo -e "* Installing UFW. Please wait..."
-    sudo apt-get -y install ufw &>> ${SCRIPT_LOGFILE}
-    sudo ufw allow OpenSSH &>> ${SCRIPT_LOGFILE}
-    sudo ufw allow $COINPORT/tcp &>> ${SCRIPT_LOGFILE}
-    sudo ufw allow $COINRPCPORT/tcp &>> ${SCRIPT_LOGFILE}
+    apt-get -y install ufw &>> ${SCRIPT_LOGFILE}
+    ufw allow OpenSSH &>> ${SCRIPT_LOGFILE}
+    ufw allow $COINPORT/tcp &>> ${SCRIPT_LOGFILE}
+    ufw allow $COINRPCPORT/tcp &>> ${SCRIPT_LOGFILE}
     if [ "${DNSPORT}" != "" ] ; then
-        sudo ufw allow ${DNSPORT}/tcp &>> ${SCRIPT_LOGFILE}
-        sudo ufw allow ${DNSPORT}/udp &>> ${SCRIPT_LOGFILE}
+        ufw allow ${DNSPORT}/tcp &>> ${SCRIPT_LOGFILE}
+        ufw allow ${DNSPORT}/udp &>> ${SCRIPT_LOGFILE}
     fi
-    echo "y" | sudo ufw enable &>> ${SCRIPT_LOGFILE}
+    echo "y" | ufw enable &>> ${SCRIPT_LOGFILE}
     echo -e "${NONE}${GREEN}* Done${NONE}";
 }
 
 function installDependencies() {
     echo
     echo -e "* Installing dependencies. Please wait..."
-    sudo timedatectl set-ntp no &>> ${SCRIPT_LOGFILE}
-    sudo apt-get install git ntp nano wget curl software-properties-common -y &>> ${SCRIPT_LOGFILE}
+    timedatectl set-ntp no &>> ${SCRIPT_LOGFILE}
+    apt-get install git ntp nano wget curl software-properties-common -y &>> ${SCRIPT_LOGFILE}
     if [[ -r /etc/os-release ]]; then
         . /etc/os-release
         if [[ "${VERSION_ID}" = "16.04" ]]; then
             wget -q https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
+            dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
+            apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
+            apt-get update -y &>> ${SCRIPT_LOGFILE}
+            apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
             echo -e "${NONE}${GREEN}* Done${NONE}";
         fi
         if [[ "${VERSION_ID}" = "18.04" ]]; then
             wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo add-apt-repository universe -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
+            dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
+            add-apt-repository universe -y &>> ${SCRIPT_LOGFILE}
+            apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
+            apt-get update -y &>> ${SCRIPT_LOGFILE}
+            apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
             echo -e "${NONE}${GREEN}* Done${NONE}";
         fi
         if [[ "${VERSION_ID}" = "19.04" ]]; then
             wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get update -y &>> ${SCRIPT_LOGFILE}
-            sudo apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
+            dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
+            apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
+            apt-get update -y &>> ${SCRIPT_LOGFILE}
+            apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
             wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
-            sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
+            dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
             echo -e "${NONE}${GREEN}* Done${NONE}";
         fi
         else
@@ -193,10 +191,10 @@ function installWallet() {
     echo -e "#!/bin/bash\nexport DOTNET_CLI_TELEMETRY_OPTOUT=1\nif [ -f /var/secure/credentials.sh ]; then\nsource /var/secure/credentials.sh\nfi\ncd $COINDLOC\n$COINRUNCMD" > ${COINSTARTUP}
     echo -e "[Unit]\nDescription=${COINDAEMON}\nAfter=network-online.target\n\n[Service]\nType=simple\nUser=${NODE_USER}\nGroup=${NODE_USER}\nExecStart=${COINSTARTUP}\nRestart=always\nRestartSec=5\nPrivateTmp=true\nTimeoutStopSec=60s\nTimeoutStartSec=5s\nStartLimitInterval=120s\nStartLimitBurst=15\n\n[Install]\nWantedBy=multi-user.target" >${COINSERVICENAME}.service
     chown -R ${NODE_USER}:${NODE_USER} ${COINSERVICELOC} &>> ${SCRIPT_LOGFILE}
-    sudo mv $COINSERVICENAME.service ${COINSERVICELOC} &>> ${SCRIPT_LOGFILE}
-    sudo chmod 777 ${COINSTARTUP} &>> ${SCRIPT_LOGFILE}
-    sudo systemctl --system daemon-reload &>> ${SCRIPT_LOGFILE}
-    sudo systemctl enable ${COINSERVICENAME} &>> ${SCRIPT_LOGFILE}
+    mv $COINSERVICENAME.service ${COINSERVICELOC} &>> ${SCRIPT_LOGFILE}
+    chmod 777 ${COINSTARTUP} &>> ${SCRIPT_LOGFILE}
+    systemctl --system daemon-reload &>> ${SCRIPT_LOGFILE}
+    systemctl enable ${COINSERVICENAME} &>> ${SCRIPT_LOGFILE}
     echo -e "${NONE}${GREEN}* Done${NONE}";
 }
 
@@ -206,21 +204,21 @@ function configureWallet() {
     cd /home/${NODE_USER}/
     [ ! -d ${COINCORE} ] && mkdir -p ${COINCORE}
     echo -e "externalip=${NODE_IP}\ntxindex=1\nlisten=1\ndaemon=1\nmaxconnections=64" > $COINCONFIG
-    sudo mv $COINCONFIG $COINCORE
+    mv $COINCONFIG $COINCORE
     echo -e "${NONE}${GREEN}* Done${NONE}";
 }
 
 function startWallet() {
     echo
     echo -e "* Starting wallet daemon...${COINSERVICENAME}"
-    sudo service ${COINSERVICENAME} start &>> ${SCRIPT_LOGFILE}
+    service ${COINSERVICENAME} start &>> ${SCRIPT_LOGFILE}
     sleep 2
     echo -e "${GREEN}* Done${NONE}";
 }
 function stopWallet() {
     echo
     echo -e "* Stopping wallet daemon...${COINSERVICENAME}"
-    sudo service ${COINSERVICENAME} stop &>> ${SCRIPT_LOGFILE}
+    service ${COINSERVICENAME} stop &>> ${SCRIPT_LOGFILE}
     sleep 2
     echo -e "${GREEN}* Done${NONE}";
 }
@@ -228,13 +226,13 @@ function stopWallet() {
 function installUnattendedUpgrades() {
     echo
     echo "* Installing Unattended Upgrades..."
-    sudo apt install unattended-upgrades -y &>> ${SCRIPT_LOGFILE}
+    apt-get install unattended-upgrades -y &>> ${SCRIPT_LOGFILE}
     sleep 3
-    sudo sh -c 'echo "Unattended-Upgrade::Allowed-Origins {" >> /etc/apt/apt.conf.d/50unattended-upgrades'
-    sudo sh -c 'echo "        "${distro_id}:${distro_codename}";" >> /etc/apt/apt.conf.d/50unattended-upgrades'
-    sudo sh -c 'echo "        "${distro_id}:${distro_codename}-security";" >> /etc/apt/apt.conf.d/50unattended-upgrades'
-    sudo sh -c 'echo "APT::Periodic::AutocleanInterval "7";" >> /etc/apt/apt.conf.d/20auto-upgrades'
-    sudo sh -c 'echo "APT::Periodic::Unattended-Upgrade "1";" >> /etc/apt/apt.conf.d/20auto-upgrades'
+    sh -c 'echo "Unattended-Upgrade::Allowed-Origins {" >> /etc/apt/apt.conf.d/50unattended-upgrades'
+    sh -c 'echo "        '\${distro_id}:\${distro_codename}';" >> /etc/apt/apt.conf.d/50unattended-upgrades'
+    sh -c 'echo "        '\${distro_id}:\${distro_codename}-security';" >> /etc/apt/apt.conf.d/50unattended-upgrades'
+    sh -c 'echo "APT::Periodic::AutocleanInterval '7';" >> /etc/apt/apt.conf.d/20auto-upgrades'
+    sh -c 'echo "APT::Periodic::Unattended-Upgrade '1';" >> /etc/apt/apt.conf.d/20auto-upgrades'
     cat /etc/apt/apt.conf.d/20auto-upgrades &>> ${SCRIPT_LOGFILE}
     echo -e "${GREEN}* Done${NONE}";
 }
@@ -244,7 +242,6 @@ function displayServiceStatus() {
 	echo
 	on="${GREEN}ACTIVE${NONE}"
 	off="${RED}OFFLINE${NONE}"
-
 	if systemctl is-active --quiet ${COINSERVICENAME}; then echo -e "Service: ${on}"; else echo -e "Service: ${off}"; fi
 }
 
@@ -263,6 +260,7 @@ echo -e "${BOLD}"
 if [[ "$NET" =~ ^([mM])+$ ]]; then
     setMainVars
     setGeneralVars
+    SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
     echo -e "${BOLD} The log file can be monitored here: ${SCRIPT_LOGFILE}${NONE}"
     echo -e "${BOLD}"
     checkOSVersion
@@ -288,6 +286,7 @@ echo -e "${GREEN} thecrypt0hunter(2019)${NONE}"
     if [[ "$NET" =~ ^([tT])+$ ]]; then
         setTestVars
         setGeneralVars
+        SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
         echo -e "${BOLD} The log file can be monitored here: ${SCRIPT_LOGFILE}${NONE}"
         echo -e "${BOLD}"
         checkOSVersion
@@ -317,12 +316,14 @@ echo -e "${GREEN} thecrypt0hunter(2019)${NONE}"
         #Stop Test Service
         setTestVars
         setGeneralVars
+        SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
         stopWallet
 	    updateAndUpgrade
         compileWallet
         #Stop Main Service
         setMainVars
         setGeneralVars
+        SCRIPT_LOGFILE="/tmp/${NODE_USER}_${DATE_STAMP}_output.log"
         stopWallet
         compileWallet
         #Start Test Service
