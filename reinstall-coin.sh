@@ -1,7 +1,7 @@
 #!/bin/bash
 # =================== YOUR DATA ========================
 #bash <( curl -s https://raw.githubusercontent.com/trustaking/server/master/reinstall-coin.sh )
-SERVER_IP=$(curl --silent ipinfo.io/ip)
+SERVER_IP=$(curl --silent whatismyip.akamai.com)
 SERVICE_END_DATE="2020-05-31"
 SERVICE_DESC=" trustaking.com service. Service ends on "$SERVICE_END_DATE
 ONLINE_DAYS=365
