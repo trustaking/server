@@ -66,7 +66,7 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
             ;;
         obsidian)
             apiport="47221" # "47221" <Main Obsidian
-#            apiver="\&Segwit=true";
+            apiver="\&Segwit=true";
             ;;
         solaris)
             apiport="62009" # "62000" <Main Obsidian
