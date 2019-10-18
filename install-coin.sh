@@ -12,7 +12,7 @@ UNDERLINE='\033[4m'
 OS_VER="Ubuntu*"
 ARCH="linux-x64"
 DATE_STAMP="$(date +%y-%m-%d-%s)"
-NODE_IP=$(curl --silent ipinfo.io/ip)
+NODE_IP=$(curl --silent whatismyip.akamai.com)
 
 usage() { echo "Usage: $0 [-f coin name] [-u rpc username] [-p rpc password] [-n (m/t/u) main, test or upgrade] [-b github branch/tags]" 1>&2; exit 1; }
 
