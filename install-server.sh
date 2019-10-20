@@ -65,7 +65,7 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
             ;;
         obsidian)
             apiport="47221" # "47221" <Main Obsidian
-            apiver="&Segwit=true";
+            printf -v apiver "%q" "&Segwit=true";
             ;;
         solaris)
             apiport="62009" # "62000" <Main Obsidian
@@ -94,7 +94,7 @@ else
             ;;
         obsidian)
             apiport="47221"
-            apiver="&Segwit=true";
+            printf -v apiver "%q" "&Segwit=true";
             ;;
         solaris)
             apiport="62000"
@@ -499,19 +499,20 @@ sed -i "s/^\(\$rpc_pass='\).*/\1${RPCPASS}';/" /home/${USER}/${SERVER_NAME}/incl
 
 ## Inject apiport into /scripts/trustaking-*.sh files
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-add-funds.sh
-sed -i "s/^\(apiver=\).*/\1$apiver/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-add-funds.sh
+sed -i "s/^\(apiver=\).*/\1\"$apiver\"/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-add-funds.sh
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-balance.sh
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-setup.sh
-sed -i "s/^\(apiver=\).*/\1$apiver/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-setup.sh
+sed -i "s/^\(apiver=\).*/\1\"$apiver\"/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-setup.sh
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-withdraw-funds.sh
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 sed -i "s/^\(\$apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-add-funds.ps1
-sed -i "s/^\(\$apiver=\).*/\1$apiver/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-add-funds.ps1
+sed -i "s/^\(\$apiver=\).*/\1\"$apiver\"/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-add-funds.ps1
 sed -i "s/^\(\$apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-balance.ps1
 sed -i "s/^\(\$apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-setup.ps1
-sed -i "s/^\(\$apiver=\).*/\1$apiver/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-setup.ps1
+sed -i "s/^\(\$apiver=\).*/\1\"$apiver\"/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-setup.ps1
 sed -i "s/^\(\$apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-withdraw-funds.ps1
+
 # Install Coins Service
 read -p "Hit a key to install Coin service!" response
 wget ${COINSERVICEINSTALLER} -O ~/install-coin.sh

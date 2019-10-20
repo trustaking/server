@@ -66,6 +66,9 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
             apiport="47221" # "47221" <Main Obsidian
             printf -v apiver "%q" "&Segwit=true";
             ;;
+        solaris)
+            apiport="62009" # "62000" <Main Solaris
+            ;;
          *)
            echo "$fork has not been configured."
            exit
@@ -91,6 +94,9 @@ else
         obsidian)
             apiport="47221";
             printf -v apiver "%q" "&Segwit=true";
+            ;;
+        solaris)
+            apiport="62000"
             ;;
          *)
             echo "$fork has not been configured."
