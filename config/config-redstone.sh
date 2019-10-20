@@ -20,7 +20,7 @@ COINAPIPORT=38222
 
 function setGeneralVars() {
 ## set general variables
-COINRUNCMD="sudo dotnet ./Redstone.RedstoneFullNodeD.dll ${NETWORK} -datadir=/home/${NODE_USER}/.${FORK}node -cold -maxblkmem=2 -txindex=1 #-stake -walletname=\${STAKINGNAME} -walletpassword=\${STAKINGPASSWORD}"
+COINRUNCMD="sudo dotnet ./Redstone.RedstoneFullNodeD.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.${FORK}node -cold -maxblkmem=2 -txindex=1 #-stake -walletname=\${STAKINGNAME} -walletpassword=\${STAKINGPASSWORD}"
 COINGITHUB=https://github.com/RedstonePlatform/Redstone.git
 COINDSRC=/home/${NODE_USER}/code/src/Redstone/Programs/Redstone.RedstoneFullNodeD
 CONF=release
