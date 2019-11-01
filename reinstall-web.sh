@@ -16,7 +16,7 @@ clear
 echo -e "${UNDERLINE}${BOLD}Trustaking Web Server Installation Guide${NONE}"
 echo
 
-read -p "Which Fork (redstone, x42, impleum, city, stratis, obsidian)? " fork
+read -p "Which Fork (redstone, x42, impleum, city, stratis, obsidian, solaris)? " fork
 read -p "What sub-domain (default=${fork})? " subdomain
 read -p "Mainnet (m) or Testnet (t)? " net
 read -p "Which branch (default=master)? " branch
@@ -68,6 +68,7 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
             ;;
         solaris)
             apiport="62009" # "62000" <Main Solaris
+            coldstakeui=1
             ;;
          *)
            echo "$fork has not been configured."
@@ -97,6 +98,7 @@ else
             ;;
         solaris)
             apiport="62000"
+            coldstakeui=1
             ;;
          *)
             echo "$fork has not been configured."
@@ -111,23 +113,6 @@ read -p "Are you using DNS(y) or IP(n)?" dns
 if [[ "$dns" =~ ^([nN])+$ ]]; then
     DNS_NAME=$(curl --silent ipinfo.io/ip)
 fi
-
-# Setup User
-
-useradd $USER
-mkdir -p /home/$USER/.ssh
-adduser $USER sudo
-
-# Setup Bash For User
-
-chsh -s /bin/bash $USER
-cp /root/.profile /home/$USER/.profile
-cp /root/.bashrc /home/$USER/.bashrc
-
-# Set The Sudo Password For User
-
-PASSWORD=$(mkpasswd $SUDO_PASSWORD)
-usermod --password $PASSWORD $USER
 
 ## Add site-available and enable the website
 if [ ! -f /etc/nginx/sites-available/${SERVER_NAME} ]; then
@@ -215,6 +200,7 @@ sed -i "s/^\(\$service_desc='\).*/\1${SERVICE_DESC}';/" /home/${USER}/${SERVER_N
 sed -i "s/^\(\$service_end_date='\).*/\1${SERVICE_END_DATE}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$online_days='\).*/\1${ONLINE_DAYS}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$api_ver='\).*/\1${apiver}';/" /home/${USER}/${SERVER_NAME}/include/config.php
+sed -i "s/^\(\$coldstakeui='\).*/\1${coldstakeui}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 
 #Inject RPC username & password into config.php
 sed -i "s/^\(\$rpc_user='\).*/\1${RPCUSER}';/" /home/${USER}/${SERVER_NAME}/include/config.php
