@@ -180,6 +180,10 @@ function compileWallet() {
     git submodule update --init --recursive &>> ${SCRIPT_LOGFILE}
     cd ${COINDSRC}
     dotnet publish -c ${CONF} -r ${ARCH} -v m -o ${COINDLOC} &>> ${SCRIPT_LOGFILE} ### compile & publish code
+    # Workaround to install FodyNlogAdapter
+    wget -P /home/${NODE_USER}/code https://globalcdn.nuget.org/packages/stratis.fodynlogadapter.3.0.4.1.nupkg &>> ${SCRIPT_LOGFILE}
+    unzip /home/${NODE_USER}/code/stratis.fodynlogadapter.3.0.4.1.nupkg -d /home/${NODE_USER}/code &>> ${SCRIPT_LOGFILE}
+    cp /home/${NODE_USER}/code/lib/netstandard2.0/* ${COINDLOC} &>> ${SCRIPT_LOGFILE}
     rm -rf /home/${NODE_USER}/code &>> ${SCRIPT_LOGFILE} 	                       ### Remove source
     echo -e "${NONE}${GREEN}* Done${NONE}";
 }
