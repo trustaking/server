@@ -20,7 +20,7 @@ COINAPIPORT=24335
 
 function setGeneralVars() {
 ## set general variables
-COINRUNCMD="sudo dotnet ./City.Chain.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.${FORK}chain -maxblkmem=2 -txindex=1 #-stake -walletname=\${STAKINGNAME} -walletpassword=\${STAKINGPASSWORD}"
+COINRUNCMD="sudo dotnet ./City.Chain.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.${FORK}chain -maxblkmem=2 -txindex=1 \${stakeparams}}"
 COINGITHUB=https://github.com/CityChainFoundation/city-chain.git
 COINDSRC=/home/${NODE_USER}/code/src/City.Chain
 CONF=release
