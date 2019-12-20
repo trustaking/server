@@ -63,8 +63,10 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
            apiport="38222"; # "39222" <Main Impleum
             ;;
         obsidian)
-            apiport="47221" # "47221" <Main Obsidian
+            apiport="47221"; # "47221" <Main Obsidian
             printf -v apiver "%q" "&Segwit=true";
+            coldstakeui=1;
+            payment=1;
             ;;
         solaris)
             apiport="62009" # "62000" <Main Solaris
@@ -95,6 +97,8 @@ else
         obsidian)
             apiport="47221";
             printf -v apiver "%q" "&Segwit=true";
+            coldstakeui=1;
+            payment=1;
             ;;
         solaris)
             apiport="62000"
@@ -188,19 +192,20 @@ chmod g+rw /home/${USER}/${SERVER_NAME} -R
 chmod g+s /home/${USER}/${SERVER_NAME} -R
 cd /home/${USER}/${SERVER_NAME}
 php /usr/local/bin/composer require btcpayserver/btcpayserver-php-client
-#php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
 
 ## Inject apiport & ticker into /include/config.php
 sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$api_port='\).*/\1$apiport';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$price='\).*/\1${PRICE}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$redirectURL='\).*/\1${REDIRECTURL}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$ipnURL='\).*/\1${IPNURL}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$service_desc='\).*/\1${SERVICE_DESC}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$service_end_date='\).*/\1${SERVICE_END_DATE}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$online_days='\).*/\1${ONLINE_DAYS}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$api_ver='\).*/\1${apiver}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$coldstakeui='\).*/\1${coldstakeui}';/" /home/${USER}/${SERVER_NAME}/include/config.php
+sed -i "s/^\(\$payment='\).*/\1${payment}';/" /home/${USER}/${SERVER_NAME}/include/config.php
+
+## Inject hot wallet name & password into keys.php
+source /var/secure/credentials.sh
+sed -i "s/^\(\$WalletName='\).*/\1${STAKINGNAME}';/" /var/secure/keys.php
+sed -i "s/^\(\$WalletPassword='\).*/\1${STAKINGPASSWORD}';/" /var/secure/keys.php
 
 #Inject RPC username & password into config.php
 sed -i "s/^\(\$rpc_user='\).*/\1${RPCUSER}';/" /home/${USER}/${SERVER_NAME}/include/config.php

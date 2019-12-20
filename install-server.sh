@@ -2,10 +2,6 @@
 # =================== YOUR DATA ========================
 #bash <( curl -s https://raw.githubusercontent.com/trustaking/server/master/install-server.sh )
 SERVER_IP=$(curl --silent whatismyip.akamai.com)
-SERVICE_END_DATE="2020-05-31"
-SERVICE_DESC=" trustaking.com service. Service ends on "$SERVICE_END_DATE
-ONLINE_DAYS=365
-PRICE="15\.00"
 # =================== YOUR DATA ========================
 if [ "$(id -u)" != "0" ]; then
     echo -e "${RED}* Sorry, this script needs to be run as root. Do \"sudo su root\" and then re-run this script${NONE}"
@@ -64,12 +60,14 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
            apiport="38222"; # "39222" <Main Impleum
             ;;
         obsidian)
-            apiport="47221" # "47221" <Main Obsidian
+            apiport="47221"; # "47221" <Main Obsidian
             printf -v apiver "%q" "&Segwit=true";
+            coldstakeui=1;
+            payment=1;
             ;;
         solaris)
-            apiport="62009" # "62000" <Main Solaris
-            coldstakeui=1
+            apiport="62009"; # "62000" <Main Solaris
+            coldstakeui=1;
             ;;
          *)
            echo "$fork has not been configured."
@@ -94,12 +92,14 @@ else
             apiport="39222";
             ;;
         obsidian)
-            apiport="47221"
+            apiport="47221";
             printf -v apiver "%q" "&Segwit=true";
+            coldstakeui=1;
+            payment=1;
             ;;
         solaris)
-            apiport="62000"
-            coldstakeui=1
+            apiport="62000";
+            coldstakeui=1;
             ;;
          *)
             echo "$fork has not been configured."
@@ -409,53 +409,6 @@ usermod -a -G www-data $USER
 id $USER
 groups $USER
 
-### Install Node.js
-#curl --silent --location https://deb.nodesource.com/setup_8.x | bash -
-#apt-get update
-#sudo apt -qy install nodejs
-#npm install -g pm2
-#npm install -g gulp
-
-### Set The Automated Root Password
-
-#export DEBIAN_FRONTEND=noninteractive
-#debconf-set-selections <<< "mysql-community-server mysql-community-server/data-dir select ''"
-#debconf-set-selections <<< "mysql-community-server mysql-community-server/root-pass password $MYSQL_ROOT_PASSWORD"
-#debconf-set-selections <<< "mysql-community-server mysql-community-server/re-root-pass password $MYSQL_ROOT_PASSWORD"
-
-### Install MySQL
-#apt-get install -y mysql-server
-
-## Configure Password Expiration
-#echo "default_password_lifetime = 0" >> /etc/mysql/mysql.conf.d/mysqld.cnf
-
-## Configure Access Permissions For Root & User
-#sed -i '/^bind-address/s/bind-address.*=.*/bind-address = */' /etc/mysql/mysql.conf.d/mysqld.cnf
-#mysql --user="root" --password="$MYSQL_ROOT_PASSWORD" -e "GRANT ALL ON *.* TO root@'$SERVER_IP' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';"
-#mysql --user="root" --password="$MYSQL_ROOT_PASSWORD" -e "GRANT ALL ON *.* TO root@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';"
-#service mysql restart
-
-#mysql --user="root" --password="$MYSQL_ROOT_PASSWORD" -e "CREATE USER '$USER'@'$SERVER_IP' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';"
-#mysql --user="root" --password="$MYSQL_ROOT_PASSWORD" -e "GRANT ALL ON *.* TO '$USER'@'$SERVER_IP' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION;"
-#mysql --user="root" --password="$MYSQL_ROOT_PASSWORD" -e "GRANT ALL ON *.* TO '$USER'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION;"
-#mysql --user="root" --password="$MYSQL_ROOT_PASSWORD" -e "FLUSH PRIVILEGES;"
-
-# Install & Configure Redis Server
-#apt-get install -y redis-server
-#sed -i 's/bind 127.0.0.1/bind 0.0.0.0/' /etc/redis/redis.conf
-#service redis-server restart
-
-# Install & Configure Memcached
-#apt-get install -y memcached
-#sed -i 's/-l 127.0.0.1/-l 0.0.0.0/' /etc/memcached.conf
-#service memcached restart
-
-# Install & Configure Beanstalk
-#apt-get install -y --force-yes beanstalkd
-#sed -i "s/BEANSTALKD_LISTEN_ADDR.*/BEANSTALKD_LISTEN_ADDR=0.0.0.0/" /etc/default/beanstalkd
-#sed -i "s/#START=yes/START=yes/" /etc/default/beanstalkd
-#/etc/init.d/beanstalkd start
-
 # Install Composer Package Manager
 
 curl -sS https://getcomposer.org/installer | php
@@ -480,19 +433,15 @@ chmod g+rw /home/${USER}/${SERVER_NAME} -R
 chmod g+s /home/${USER}/${SERVER_NAME} -R
 cd /home/${USER}/${SERVER_NAME}
 php /usr/local/bin/composer btcpayserver/btcpayserver-php-client
-#php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
 
 ## Inject apiport & ticker into /include/config.php
 sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$api_port='\).*/\1$apiport';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$price='\).*/\1${PRICE}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$redirectURL='\).*/\1${REDIRECTURL}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$ipnURL='\).*/\1${IPNURL}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$service_desc='\).*/\1${SERVICE_DESC}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$service_end_date='\).*/\1${SERVICE_END_DATE}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$online_days='\).*/\1${ONLINE_DAYS}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$api_ver='\).*/\1${apiver}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$coldstakeui='\).*/\1${coldstakeui}';/" /home/${USER}/${SERVER_NAME}/include/config.php
+sed -i "s/^\(\$payment='\).*/\1${payment}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 
 #Inject RPC username & password into config.php
 sed -i "s/^\(\$rpc_user='\).*/\1${RPCUSER}';/" /home/${USER}/${SERVER_NAME}/include/config.php
@@ -525,6 +474,11 @@ cd ~
 # Install hot wallet setup
 read -p "Hit a key to install hot wallet!" response
 /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
+
+## Inject hot wallet name & password into keys.php
+source /var/secure/credentials.sh
+sed -i "s/^\(\$WalletName='\).*/\1${STAKINGNAME}';/" /var/secure/keys.php
+sed -i "s/^\(\$WalletPassword='\).*/\1${STAKINGPASSWORD}';/" /var/secure/keys.php
 
 # Display information
 echo
