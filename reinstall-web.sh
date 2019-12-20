@@ -2,10 +2,6 @@
 # =================== YOUR DATA ========================
 #bash <( curl -s https://raw.githubusercontent.com/trustaking/server/master/reinstall-web.sh )
 SERVER_IP=$(curl --silent whatismyip.akamai.com)
-SERVICE_END_DATE="2020-05-31"
-SERVICE_DESC=" trustaking.com service. Service ends on "$SERVICE_END_DATE
-ONLINE_DAYS=365
-PRICE="15\.00"
 # =================== YOUR DATA ========================
 if [ "$(id -u)" != "0" ]; then
     echo -e "${RED}* Sorry, this script needs to be run as root. Do \"sudo su root\" and then re-run this script${NONE}"
@@ -191,7 +187,8 @@ chown ${USER}:www-data /home/${USER}/${SERVER_NAME} -R
 chmod g+rw /home/${USER}/${SERVER_NAME} -R
 chmod g+s /home/${USER}/${SERVER_NAME} -R
 cd /home/${USER}/${SERVER_NAME}
-php /usr/local/bin/composer require btcpayserver/btcpayserver-php-client
+#php /usr/local/bin/composer btcpayserver/btcpayserver-php-client
+php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
 
 ## Inject apiport & ticker into /include/config.php
 sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/config.php
