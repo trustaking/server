@@ -14,14 +14,9 @@ echo
 read -p "Which Fork (redstone, x42, impleum, city, stratis, obsidian, solaris)? " fork
 read -p "What sub-domain (default=${fork})? " subdomain
 read -p "Mainnet (m) or Testnet (t)? " net
-read -p "Which branch (default=master)? " branch
 
 if [[ ${subdomain} == '' ]]; then 
     subdomain="${fork}"
-fi
-
-if [[ ${branch} == '' ]]; then 
-    branch="master"
 fi
 
 # =================== YOUR DATA ========================
