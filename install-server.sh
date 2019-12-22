@@ -55,6 +55,7 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
            ;;
         city)
            apiport="24335"; # "4335" <Main City
+           coldstakeui=1;
         ;; 
         impleum)
            apiport="38222"; # "39222" <Main Impleum
@@ -64,6 +65,7 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
             printf -v apiver "%q" "&Segwit=true";
             coldstakeui=1;
             payment=1;
+            whitelist=1;
             ;;
         solaris)
             apiport="62009"; # "62000" <Main Solaris
@@ -87,6 +89,7 @@ else
             ;;
          city)
             apiport="4335";
+            coldstakeui=1;
             ;; 
          impleum)
             apiport="39222";
@@ -96,6 +99,7 @@ else
             printf -v apiver "%q" "&Segwit=true";
             coldstakeui=1;
             payment=1;
+            whitelist=1;
             ;;
         solaris)
             apiport="62000";
@@ -443,6 +447,7 @@ sed -i "s/^\(\$ipnURL='\).*/\1${IPNURL}';/" /home/${USER}/${SERVER_NAME}/include
 sed -i "s/^\(\$api_ver='\).*/\1${apiver}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$coldstakeui='\).*/\1${coldstakeui}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$payment='\).*/\1${payment}';/" /home/${USER}/${SERVER_NAME}/include/config.php
+sed -i "s/^\(\$whitelist='\).*/\1${whitelist}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 
 #Inject RPC username & password into config.php
 sed -i "s/^\(\$rpc_user='\).*/\1${RPCUSER}';/" /home/${USER}/${SERVER_NAME}/include/config.php
