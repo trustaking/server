@@ -2,10 +2,6 @@
 # =================== YOUR DATA ========================
 #bash <( curl -s https://raw.githubusercontent.com/trustaking/server/master/reinstall-coin.sh )
 SERVER_IP=$(curl --silent whatismyip.akamai.com)
-SERVICE_END_DATE="2020-05-31"
-SERVICE_DESC=" trustaking.com service. Service ends on "$SERVICE_END_DATE
-ONLINE_DAYS=365
-PRICE="15\.00"
 # =================== YOUR DATA ========================
 if [ "$(id -u)" != "0" ]; then
     echo -e "${RED}* Sorry, this script needs to be run as root. Do \"sudo su root\" and then re-run this script${NONE}"
@@ -15,8 +11,7 @@ fi
 clear
 echo -e "${UNDERLINE}${BOLD}Blockcore Node Installation Guide${NONE}"
 echo
-
-read -p "Which Fork (redstone, x42, impleum, city, stratis, obsidian)? " fork
+read -p "Which Fork (redstone, x42, impleum, city, stratis, obsidian, solaris)? " fork
 read -p "Mainnet (m) or Testnet (t)? " net
 read -p "Which branch (default=master)? " branch
 
