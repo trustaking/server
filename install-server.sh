@@ -147,8 +147,6 @@ apt -qy install software-properties-common
 
 apt-add-repository ppa:nginx/development -y
 apt-add-repository ppa:ondrej/nginx -y
-apt-add-repository ppa:chris-lea/redis-server -y
-apt-add-repository ppa:ondrej/apache2 -y
 apt-add-repository ppa:ondrej/php -y
 apt-add-repository ppa:certbot/certbot -y
 
