@@ -51,6 +51,7 @@ function create_user() {
     else
         echo -e "${NONE}${GREEN}* Adding new system user ${NODE_USER}${NONE}"
         adduser --disabled-password --gecos "" ${NODE_USER} &>> ${SCRIPT_LOGFILE}
+        usermod -aG sudo ${NODE_USER} &>> ${SCRIPT_LOGFILE}
         echo -e "${NODE_USER} ALL=(ALL) NOPASSWD:ALL" &>> /etc/sudoers.d/90-cloud-init-users
     fi
     echo -e "${NONE}${GREEN}* Done${NONE}";
