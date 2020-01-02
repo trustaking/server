@@ -176,9 +176,26 @@ fi
 
 fi
 
+# Setup User
+useradd $USER
+mkdir -p /home/$USER/
+adduser $USER sudo
+
+# Setup Bash For User
+chsh -s /bin/bash $USER
+cp /root/.profile /home/$USER/.profile
+cp /root/.bashrc /home/$USER/.bashrc
+
+# Remove Sudo Password For User
+echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers
+
+# Setup Site Directory Permissions
+chown -R $USER:$USER /home/$USER
+chmod -R 755 /home/$USER
+
 # Re-Install Website
 rm -rf /home/${USER}/${SERVER_NAME}
-mkdir /home/${USER}/${SERVER_NAME}
+mkdir -p /home/${USER}/${SERVER_NAME}
 cd /home/${USER}/
 git clone ${WEBFILE} ${SERVER_NAME}
 chown ${USER}:www-data /home/${USER}/${SERVER_NAME} -R
