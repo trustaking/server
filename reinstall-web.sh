@@ -241,5 +241,15 @@ sed -i "s/^\(\$apiver=\).*/\1\"$apiver\"/" /home/${USER}/${SERVER_NAME}/scripts/
 sed -i "s/^\(\$apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/trustaking-cold-wallet-withdraw-funds.ps1
 
 # Display information
-
+echo
+echo -e "Running a simulation for SSL renewal"
+echo 
+certbot renew --dry-run
+echo && echo
+echo "If the dry run was unsuccessful you may need to register & install your SSL certificate manually by running the following command: "
+echo
+echo "certbot --nginx --non-interactive --agree-tos --email admin@trustaking.com --domains ${DNS_NAME}"
+echo
 echo "Website URL: "${DNS_NAME}
+[ ! -d /var/secure ] && mkdir -p /var/secure 
+echo "Requires keys.php, btcpayserver.pri & pub in /var/secure/ - run transfer.sh"
