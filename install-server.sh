@@ -168,6 +168,7 @@ sed -ri 's/X11Forwarding yes/X11Forwarding no/g' /etc/ssh/sshd_config
 sed -ri 's/#AllowTcpForwarding yes/AllowTcpForwarding no/g' /etc/ssh/sshd_config
 sed -ri 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
 sed -ri 's/#UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
+ufw allow 7777
 
 # Restart SSH
 
@@ -205,7 +206,8 @@ cp /root/.profile /home/$USER/.profile
 cp /root/.bashrc /home/$USER/.bashrc
 
 # Remove Sudo Password For User
-echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers
+echo "${USER} ALL=(ALL) NOPASSWD: ALL" &>> /etc/sudoers
+echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" &>> /etc/sudoers
 
 # Build Formatted Keys & Copy Keys To User
 
