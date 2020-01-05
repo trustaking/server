@@ -187,7 +187,7 @@ cp /root/.profile /home/$USER/.profile
 cp /root/.bashrc /home/$USER/.bashrc
 
 # Remove Sudo Password For User
-echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers
+echo "${USER} ALL=(ALL) NOPASSWD: ALL" &>> /etc/sudoers
 
 # Setup Site Directory Permissions
 chown -R $USER:$USER /home/$USER
