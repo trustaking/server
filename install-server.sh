@@ -168,7 +168,10 @@ sed -ri 's/X11Forwarding yes/X11Forwarding no/g' /etc/ssh/sshd_config
 sed -ri 's/#AllowTcpForwarding yes/AllowTcpForwarding no/g' /etc/ssh/sshd_config
 sed -ri 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
 sed -ri 's/#UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
-ufw allow 7777
+sed -ri 's/#PermitEmptyPasswords no/PermitEmptyPasswords yes/g' /etc/ssh/sshd_config
+echo 'PermitRootLogin no' &>> /etc/ssh/sshd_config
+
+ufw allow 7777 ## check vps provider has port 7777 open
 
 # Restart SSH
 
@@ -184,6 +187,7 @@ hostname ${SERVER_NAME}
 # Set The Timezone
 
 ln -sf /usr/share/zoneinfo/$TIMEZONE /etc/localtime
+update-locale LANG="en_US.UTF-8"
 
 # Create The Root SSH Directory If Necessary
 
@@ -207,7 +211,6 @@ cp /root/.bashrc /home/$USER/.bashrc
 
 # Remove Sudo Password For User
 echo "${USER} ALL=(ALL) NOPASSWD: ALL" &>> /etc/sudoers
-echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" &>> /etc/sudoers
 
 # Build Formatted Keys & Copy Keys To User
 
@@ -479,7 +482,7 @@ cd ~
 
 # Install hot wallet setup
 read -p "Hit a key to install hot wallet!" response
-/home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
+/home/${USER}/${DNS_NAME}/scripts/hot-wallet-setup.sh
 
 ## Inject hot wallet name & password into keys.php
 source /var/secure/credentials.sh

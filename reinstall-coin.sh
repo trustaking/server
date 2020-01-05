@@ -49,7 +49,7 @@ cd ~
 
 # Install hot wallet setup
 read -p "Hit a key to install hot wallet!" response
-/home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
+/home/${USER}/${DNS_NAME}/scripts/hot-wallet-setup.sh
 
 # Display information
 echo
