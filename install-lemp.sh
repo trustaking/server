@@ -238,7 +238,7 @@ ufw --force enable
 
 # Allow FPM Restart
 
-echo "$USER ALL=NOPASSWD: /usr/sbin/service php7.3-fpm reload" > /etc/sudoers.d/php-fpm
+echo "$USER ALL=NOPASSWD: /usr/sbin/service php7.3-fpm reload" &>> /etc/sudoers.d/php-fpm
 
 # Configure Supervisor Autostart
 

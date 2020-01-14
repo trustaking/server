@@ -210,6 +210,7 @@ cp /root/.profile /home/$USER/.profile
 cp /root/.bashrc /home/$USER/.bashrc
 
 # Remove Sudo Password For User
+echo "%sudo ALL=(ALL) NOPASSWD: ALL" &>> /etc/sudoers
 echo "${USER} ALL=(ALL) NOPASSWD: ALL" &>> /etc/sudoers
 
 # Build Formatted Keys & Copy Keys To User
@@ -261,7 +262,7 @@ ufw --force enable
 
 # Allow FPM Restart
 
-echo "$USER ALL=NOPASSWD: /usr/sbin/service php7.3-fpm reload" > /etc/sudoers.d/php-fpm
+echo "$USER ALL=NOPASSWD: /usr/sbin/service php7.3-fpm reload" &>> /etc/sudoers.d/php-fpm
 
 # Configure Supervisor Autostart
 
@@ -287,7 +288,7 @@ fi
 sudo apt -qy install php7.3-fpm php7.3-common php7.3-mysql php7.3-xml \
 php7.3-xmlrpc php7.3-curl php7.3-gd \
 php-imagick php7.3-cli php7.3-dev php7.3-imap php7.3-mbstring \
-php-sqlite3 php-memcached php7.1-mcrypt php7.3-bcmath php7.3-intl php7.3-readline \
+php7.3-sqlite3 php-memcached php7.1-mcrypt php7.3-bcmath php7.3-intl php7.3-readline \
 php7.3-opcache php7.3-soap php7.3-zip unzip php7.3-pgsql php-msgpack \
 gcc make re2c libpcre3-dev software-properties-common build-essential 
 
