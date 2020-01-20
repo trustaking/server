@@ -53,12 +53,12 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
         impleum)
            apiport="38222"; # "39222" <Main Impleum
             ;;
-        obsidian)
-            apiport="47221"; # "47221" <Main Obsidian
+        xds)
+            apiport="48334";
             printf -v apiver "%q" "&Segwit=true";
             coldstakeui=1;
-            whitelist=1;
             payment=1;
+            whitelist=1;
             ;;
         solaris)
             apiport="62009" # "62000" <Main Solaris
@@ -87,12 +87,12 @@ else
          impleum)
             apiport="39222";
             ;;
-        obsidian)
-            apiport="47221";
+        xds)
+            apiport="48334";
             printf -v apiver "%q" "&Segwit=true";
             coldstakeui=1;
-            whitelist=1;
             payment=1;
+            whitelist=1;
             ;;
         solaris)
             apiport="62000"
