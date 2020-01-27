@@ -25,10 +25,6 @@ REDIRECTURL="https:\/\/${SERVER_NAME}\/activate.php"
 IPNURL="https:\/\/${SERVER_NAME}\/IPNlogger.php"
 DNS_NAME="${subdomain}.trustaking.com"
 USER="$fork-web"
-SUDO_PASSWORD="$fork-web" ## TODO: create random password
-MYSQL_ROOT_PASSWORD="$fork-web" ## TODO: create random password
-COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustaking/server/master/install-coin.sh"
-COINSERVICECONFIG="https://raw.githubusercontent.com/trustaking/server/master/config/config-$fork.sh"
 WEBFILE="https://github.com/trustaking/node.git"
 RPCUSER=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 RPCPASS=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
@@ -44,14 +40,15 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
             apiport="38222"; # "37222" <Main Redstone
             ;;
         x42)
-           apiport="42221"; # "42220" <Main X42
-           ;;
+            apiport="42221"; # "42220" <Main X42
+            coldstakeui=1;
+            ;;
         city)
-           apiport="24335"; # "4335" <Main City
-           coldstakeui=1
-        ;; 
+            apiport="24335"; # "4335" <Main City
+            coldstakeui=1
+            ;; 
         impleum)
-           apiport="38222"; # "39222" <Main Impleum
+            apiport="38222"; # "39222" <Main Impleum
             ;;
         xds)
             apiport="48334";
@@ -65,9 +62,9 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
             coldstakeui=1
             ;;
          *)
-           echo "$fork has not been configured."
-           exit
-           ;;
+            echo "$fork has not been configured."
+            exit
+            ;;
     esac
 else 
     case $fork in
@@ -79,6 +76,7 @@ else
             ;;
          x42)
             apiport="42220";
+            coldstakeui=1;
             ;;
          city)
             apiport="4335";
