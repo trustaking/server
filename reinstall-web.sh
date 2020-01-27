@@ -42,6 +42,9 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
         x42)
             apiport="42221"; # "42220" <Main X42
             coldstakeui=1;
+            payment=1;
+            whitelist=1;
+            printf -v apiver "%q" "&Segwit=true";
             ;;
         city)
             apiport="24335"; # "4335" <Main City
@@ -77,6 +80,9 @@ else
          x42)
             apiport="42220";
             coldstakeui=1;
+            payment=1;
+            whitelist=1;
+            printf -v apiver "%q" "&Segwit=true";
             ;;
          city)
             apiport="4335";
