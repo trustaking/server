@@ -51,7 +51,8 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
             apiport="38222"; # "37222" <Main Redstone
             ;;
         x42)
-           apiport="42221"; # "42220" <Main X42
+            apiport="42221"; # "42220" <Main X42
+            coldstakeui=1;
            ;;
         city)
            apiport="24335"; # "4335" <Main City
@@ -86,6 +87,7 @@ else
             ;;
          x42)
             apiport="42220";
+            coldstakeui=1;            
             ;;
          city)
             apiport="4335";
