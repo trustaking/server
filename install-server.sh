@@ -460,7 +460,7 @@ sed -i "s/^\(\$rpc_user='\).*/\1${RPCUSER}';/" /home/${USER}/${SERVER_NAME}/incl
 sed -i "s/^\(\$rpc_pass='\).*/\1${RPCPASS}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 
 #Inject API port into wallet setup script
-sed -i "s/^\(\$apiport='\).*/\1$apiport';/" /home/${USER}/${DNS_NAME}/scripts/hot-wallet-setup.sh
+sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 # Install Coins Service
 read -p "Hit a key to install Coin service!" response
