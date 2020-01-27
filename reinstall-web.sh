@@ -224,6 +224,9 @@ sed -i "s/^\(\$WalletPassword='\).*/\1${STAKINGPASSWORD}';/" /var/secure/keys.ph
 sed -i "s/^\(\$rpc_user='\).*/\1${RPCUSER}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$rpc_pass='\).*/\1${RPCPASS}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 
+#Inject API port into wallet setup script
+sed -i "s/^\(\$apiport='\).*/\1$apiport';/" /home/${USER}/${DNS_NAME}/scripts/hot-wallet-setup.sh
+
 # Display information
 echo
 echo -e "Running a simulation for SSL renewal"
