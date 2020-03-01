@@ -44,7 +44,6 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
             coldstakeui=1;
             payment=1;
             whitelist=1;
-            printf -v apiver "%q" "&Segwit=true";
             ;;
         city)
             apiport="24335"; # "4335" <Main City
@@ -82,7 +81,6 @@ else
             coldstakeui=1;
             payment=1;
             whitelist=1;
-            printf -v apiver "%q" "&Segwit=true";
             ;;
          city)
             apiport="4335";
