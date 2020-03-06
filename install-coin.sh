@@ -35,10 +35,6 @@ if [ "${BRANCH}" = "" ]; then
 BRANCH="master";
 fi
 
-if [ "${DOTNETVER}" = "" ]; then 
-BRANCH="2.2";
-fi
-
 function check_root() {
 if [ "$(id -u)" != "0" ]; then
     echo -e "${RED}* Sorry, this script needs to be run as root. Do \"su root\" and then re-run this script${NONE}"

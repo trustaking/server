@@ -15,7 +15,12 @@ read -p "Which Fork (redstone, x42, impleum, city, stratis, xds, solaris)? " for
 read -p "What sub-domain (default=${fork})? " subdomain
 read -p "Mainnet (m) or Testnet (t)? " net
 read -p "Which branch (default=master)? " branch
-read -p "What version of dotnet is required default=2.2" dotnetver
+read -p "What version of dotnet is required (default=2.2)? " dotnetver
+
+if [ "${DOTNETVER}" = "" ]; then 
+DOTNETVER="2.2";
+fi
+
 echo "Add your SSH public key here: "
 read -p "" PUBLIC_SSH_KEYS
 

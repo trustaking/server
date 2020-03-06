@@ -14,10 +14,14 @@ echo
 read -p "Which Fork (redstone, x42, impleum, city, stratis, obsidian, solaris)? " fork
 read -p "Mainnet (m) or Testnet (t)? " net
 read -p "Which branch (default=master)? " branch
-read -p "What version of dotnet is required default=2.2" dotnetver
 
 if [ "${branch}" == "" ]; then 
 branch="master";
+fi
+
+read -p "What version of dotnet is required (default=2.2)? " dotnetver
+if [ "${dotnetver}" = "" ]; then 
+dotnetver="2.2";
 fi
 
 # =================== YOUR DATA ========================
