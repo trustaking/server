@@ -16,7 +16,7 @@ NODE_IP=$(curl --silent whatismyip.akamai.com)
 
 usage() { echo "Usage: $0 [-f coin name] [-u rpc username] [-p rpc password] [-n (m/t/u) main, test or upgrade] [-b github branch/tags] [-d dotnet version]" 1>&2; exit 1; }
 
-while getopts ":f:u:p:n:b:" option; do
+while getopts ":f:u:p:n:b:d:" option; do
     case "${option}" in
         f) FORK=${OPTARG};;
         u) RPCUSER=${OPTARG};;
