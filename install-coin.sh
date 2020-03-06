@@ -14,7 +14,7 @@ ARCH="linux-x64"
 DATE_STAMP="$(date +%y-%m-%d-%s)"
 NODE_IP=$(curl --silent whatismyip.akamai.com)
 
-usage() { echo "Usage: $0 [-f coin name] [-u rpc username] [-p rpc password] [-n (m/t/u) main, test or upgrade] [-b github branch/tags]" 1>&2; exit 1; }
+usage() { echo "Usage: $0 [-f coin name] [-u rpc username] [-p rpc password] [-n (m/t/u) main, test or upgrade] [-b github branch/tags] [-d dotnet version]" 1>&2; exit 1; }
 
 while getopts ":f:u:p:n:b:" option; do
     case "${option}" in
@@ -23,6 +23,7 @@ while getopts ":f:u:p:n:b:" option; do
         p) RPCPASS=${OPTARG};;
         n) NET=${OPTARG};;
         b) BRANCH=${OPTARG};;
+        d) DOTNETVER=${OPTARG};;
         *) usage ;;
     esac
 done
@@ -32,6 +33,10 @@ source ~/config-${FORK}.sh
 
 if [ "${BRANCH}" = "" ]; then 
 BRANCH="master";
+fi
+
+if [ "${DOTNETVER}" = "" ]; then 
+BRANCH="2.2";
 fi
 
 function check_root() {
@@ -145,7 +150,7 @@ function installDependencies() {
             dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
             apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
             apt-get update -y &>> ${SCRIPT_LOGFILE}
-            apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
+            apt-get install dotnet-sdk-${DOTNETVER} -y &>> ${SCRIPT_LOGFILE}
             echo -e "${NONE}${GREEN}* Done${NONE}";
         fi
         if [[ "${VERSION_ID}" = "18.04" ]]; then
@@ -154,7 +159,7 @@ function installDependencies() {
             add-apt-repository universe -y &>> ${SCRIPT_LOGFILE}
             apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
             apt-get update -y &>> ${SCRIPT_LOGFILE}
-            apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
+            apt-get install dotnet-sdk-${DOTNETVER} -y &>> ${SCRIPT_LOGFILE}
             echo -e "${NONE}${GREEN}* Done${NONE}";
         fi
         if [[ "${VERSION_ID}" = "19.04" ]]; then
@@ -162,7 +167,7 @@ function installDependencies() {
             dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
             apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
             apt-get update -y &>> ${SCRIPT_LOGFILE}
-            apt-get install dotnet-sdk-2.2 -y &>> ${SCRIPT_LOGFILE}
+            apt-get install dotnet-sdk-${DOTNETVER} -y &>> ${SCRIPT_LOGFILE}
             wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
             dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
             echo -e "${NONE}${GREEN}* Done${NONE}";

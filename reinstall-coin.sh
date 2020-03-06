@@ -14,6 +14,7 @@ echo
 read -p "Which Fork (redstone, x42, impleum, city, stratis, obsidian, solaris)? " fork
 read -p "Mainnet (m) or Testnet (t)? " net
 read -p "Which branch (default=master)? " branch
+read -p "What version of dotnet is required default=2.2" dotnetver
 
 if [ "${branch}" == "" ]; then 
 branch="master";
@@ -45,7 +46,7 @@ wget ${COINSERVICEINSTALLER} -O ~/install-coin.sh
 wget ${COINSERVICECONFIG} -O ~/config-${fork}.sh
 chmod +x ~/install-coin.sh
 cd ~
-~/install-coin.sh -f ${fork} -n ${net} -b ${branch}
+~/install-coin.sh -f ${fork} -n ${net} -b ${branch} -d ${dotnetver}
 
 # Install hot wallet setup
 read -p "Hit a key to install hot wallet!" response
