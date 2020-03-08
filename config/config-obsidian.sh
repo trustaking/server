@@ -20,7 +20,7 @@ COINAPIPORT=47221
 
 function setGeneralVars() {
 ## set general variables
-COINRUNCMD="sudo dotnet ./Obsidian.OxD.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.stratisnode -maxblkmem=2 -txindex=1 -hdwallet \${stakeparams}"
+COINRUNCMD="sudo dotnet ./Obsidian.OxD.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.stratisnode -maxblkmem=2 -txindex=1 -hdwallet \${stakeparams} \${rpcparams}"
 COINGITHUB=https://github.com/obsidianproject/Obsidian-StratisNode.git
 COINDSRC=/home/${NODE_USER}/code/src/Obsidian.OxD
 CONF=release

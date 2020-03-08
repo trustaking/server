@@ -20,7 +20,7 @@ COINAPIPORT=62009
 
 function setGeneralVars() {
 ## set general variables
-COINRUNCMD="sudo dotnet ./Stratis.SolarisD.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.${FORK}node -maxblkmem=2 -txindex=1 \${stakeparams}"
+COINRUNCMD="sudo dotnet ./Stratis.SolarisD.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.${FORK}node -maxblkmem=2 -txindex=1 \${stakeparams} \${rpcparams}"
 COINGITHUB=https://github.com/SolarisPlatform/SolarisBitcoinFullNode.git
 COINDSRC=/home/${NODE_USER}/code/src/Stratis.SolarisD
 CONF=release

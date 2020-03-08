@@ -52,25 +52,31 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
     case $fork in
          stratis)
             apiport="38221"; # "37221" <Main Stratis
+            rpcport="26174";
             ;;
          redstone)
             apiport="38222"; # "37222" <Main Redstone
+            rpcport="";
             ;;
         x42)
             apiport="42221"; # "42220" <Main X42
+            rpcport="62343";
             coldstakeui=1;
             payment=1;
             whitelist=1;
            ;;
         city)
            apiport="24335"; # "4335" <Main City
+           rpcport="24334";
            coldstakeui=1;
-        ;; 
+            ;; 
         impleum)
            apiport="38222"; # "39222" <Main Impleum
+           rpcport="";
             ;;
         xds)
-            apiport="48334"; # "47221" <Main Obsidian
+            apiport="48334";
+            rpcport="48333";
             printf -v apiver "%q" "&Segwit=true";
             coldstakeui=1;
             payment=1;
@@ -78,6 +84,7 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
             ;;
         solaris)
             apiport="62009"; # "62000" <Main Solaris
+            rpcport="61009";
             coldstakeui=1;
             ;;
          *)
@@ -89,25 +96,32 @@ else
     case $fork in
         stratis)
             apiport="37221";
+            rpcport="16174";
+
             ;;
          redstone)
             apiport="37222";
+            rpcport="";
             ;;
          x42)
             apiport="42220";
+            rpcport="52343";
             coldstakeui=1;
             payment=1;
             whitelist=1;        
             ;;
          city)
             apiport="4335";
+            rpcport="4334";
             coldstakeui=1;
             ;; 
          impleum)
             apiport="39222";
+            rpcport="";
             ;;
         xds)
             apiport="48334";
+            rpcport="48333";
             printf -v apiver "%q" "&Segwit=true";
             coldstakeui=1;
             payment=1;
@@ -115,6 +129,7 @@ else
             ;;
         solaris)
             apiport="62000";
+            rpcport="61000";
             coldstakeui=1;
             ;;
          *)
@@ -458,16 +473,13 @@ php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-maste
 ## Inject apiport & ticker into /include/config.php
 sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$api_port='\).*/\1$apiport';/" /home/${USER}/${SERVER_NAME}/include/config.php
+sed -i "s/^\(\$rpc_port='\).*/\1$rpcport';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$redirectURL='\).*/\1${REDIRECTURL}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$ipnURL='\).*/\1${IPNURL}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$api_ver='\).*/\1${apiver}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$coldstakeui='\).*/\1${coldstakeui}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$payment='\).*/\1${payment}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$whitelist='\).*/\1${whitelist}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-
-#Inject RPC username & password into config.php
-sed -i "s/^\(\$rpc_user='\).*/\1${RPCUSER}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$rpc_pass='\).*/\1${RPCPASS}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 
 #Inject API port into wallet setup script
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
@@ -484,10 +496,14 @@ cd ~
 read -p "Hit a key to install hot wallet!" response
 /home/${USER}/${DNS_NAME}/scripts/hot-wallet-setup.sh
 
-## Inject hot wallet name & password into keys.php
+## Inject rpc & hot wallet details into keys.php & credentials.sh  
+sed -i "s/^\(\RPCUSER=\).*/\1${RPCUSER}/" /var/secure/credentials.sh
+sed -i "s/^\(\RPCPASS=\).*/\1${RPCPASS}/" /var/secure/credentials.sh
 source /var/secure/credentials.sh
 sed -i "s/^\(\$WalletName='\).*/\1${STAKINGNAME}';/" /var/secure/keys.php
 sed -i "s/^\(\$WalletPassword='\).*/\1${STAKINGPASSWORD}';/" /var/secure/keys.php
+sed -i "s/^\(\$rpcuser='\).*/\1${RPCUSER}';/" /var/secure/keys.php
+sed -i "s/^\(\$rpcpass='\).*/\1${RPCPASS}';/" /var/secure/keys.php
 
 # Display information
 echo

@@ -26,8 +26,6 @@ IPNURL="https:\/\/${SERVER_NAME}\/IPNlogger.php"
 DNS_NAME="${subdomain}.trustaking.com"
 USER="$fork-web"
 WEBFILE="https://github.com/trustaking/node.git"
-RPCUSER=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
-RPCPASS=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 
 #TODO: Replace with config files
 
@@ -35,75 +33,45 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
     case $fork in
          stratis)
             apiport="38221"; # "37221" <Main Stratis
+            rpcport="26174";
             ;;
          redstone)
             apiport="38222"; # "37222" <Main Redstone
+            rpcport="";
             ;;
         x42)
             apiport="42221"; # "42220" <Main X42
+            rpcport="62343";
             coldstakeui=1;
             payment=1;
             whitelist=1;
-            ;;
+           ;;
         city)
-            apiport="24335"; # "4335" <Main City
-            coldstakeui=1
+           apiport="24335"; # "4335" <Main City
+           rpcport="24334";
+           coldstakeui=1;
             ;; 
         impleum)
-            apiport="38222"; # "39222" <Main Impleum
+           apiport="38222"; # "39222" <Main Impleum
+           rpcport="";
             ;;
         xds)
             apiport="48334";
+            rpcport="48333";
             printf -v apiver "%q" "&Segwit=true";
             coldstakeui=1;
             payment=1;
             whitelist=1;
             ;;
         solaris)
-            apiport="62009" # "62000" <Main Solaris
-            coldstakeui=1
+            apiport="62009"; # "62000" <Main Solaris
+            rpcport="61009";
+            coldstakeui=1;
             ;;
          *)
-            echo "$fork has not been configured."
-            exit
-            ;;
-    esac
-else 
-    case $fork in
-        stratis)
-            apiport="37221";
-            ;;
-         redstone)
-            apiport="37222";
-            ;;
-         x42)
-            apiport="42220";
-            coldstakeui=1;
-            payment=1;
-            whitelist=1;
-            ;;
-         city)
-            apiport="4335";
-            coldstakeui=1
-            ;; 
-         impleum)
-            apiport="39222";
-            ;;
-        xds)
-            apiport="48334";
-            printf -v apiver "%q" "&Segwit=true";
-            coldstakeui=1;
-            payment=1;
-            whitelist=1;
-            ;;
-        solaris)
-            apiport="62000"
-            coldstakeui=1
-            ;;
-         *)
-            echo "$fork has not been configured."
-            exit
-            ;;
+           echo "$fork has not been configured."
+           exit
+           ;;
     esac
 fi
 
@@ -210,6 +178,7 @@ php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-maste
 ## Inject apiport & ticker into /include/config.php
 sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$api_port='\).*/\1$apiport';/" /home/${USER}/${SERVER_NAME}/include/config.php
+sed -i "s/^\(\$rpc_port='\).*/\1$rpcport';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$redirectURL='\).*/\1${REDIRECTURL}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$ipnURL='\).*/\1${IPNURL}';/" /home/${USER}/${SERVER_NAME}/include/config.php
 sed -i "s/^\(\$api_ver='\).*/\1${apiver}';/" /home/${USER}/${SERVER_NAME}/include/config.php
@@ -221,10 +190,8 @@ sed -i "s/^\(\$whitelist='\).*/\1${whitelist}';/" /home/${USER}/${SERVER_NAME}/i
 source /var/secure/credentials.sh
 sed -i "s/^\(\$WalletName='\).*/\1${STAKINGNAME}';/" /var/secure/keys.php
 sed -i "s/^\(\$WalletPassword='\).*/\1${STAKINGPASSWORD}';/" /var/secure/keys.php
-
-#Inject RPC username & password into config.php
-sed -i "s/^\(\$rpc_user='\).*/\1${RPCUSER}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$rpc_pass='\).*/\1${RPCPASS}';/" /home/${USER}/${SERVER_NAME}/include/config.php
+sed -i "s/^\(\$rpcuser='\).*/\1${RPCUSER}';/" /var/secure/keys.php
+sed -i "s/^\(\$rpcpass='\).*/\1${RPCPASS}';/" /var/secure/keys.php
 
 #Inject API port into wallet setup script
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
