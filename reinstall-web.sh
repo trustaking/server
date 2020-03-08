@@ -73,7 +73,53 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
            exit
            ;;
     esac
+else 
+    case $fork in
+        stratis)
+            apiport="37221";
+            rpcport="16174";
+
+            ;;
+         redstone)
+            apiport="37222";
+            rpcport="";
+            ;;
+         x42)
+            apiport="42220";
+            rpcport="52343";
+            coldstakeui=1;
+            payment=1;
+            whitelist=1;        
+            ;;
+         city)
+            apiport="4335";
+            rpcport="4334";
+            coldstakeui=1;
+            ;; 
+         impleum)
+            apiport="39222";
+            rpcport="";
+            ;;
+        xds)
+            apiport="48334";
+            rpcport="48333";
+            printf -v apiver "%q" "&Segwit=true";
+            coldstakeui=1;
+            payment=1;
+            whitelist=1;
+            ;;
+        solaris)
+            apiport="62000";
+            rpcport="61000";
+            coldstakeui=1;
+            ;;
+         *)
+            echo "$fork has not been configured."
+            exit
+            ;;
+    esac
 fi
+
 
 # =================== YOUR DATA ========================
 read -p "Are you using DNS(y) or IP(n)?" dns
