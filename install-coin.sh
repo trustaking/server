@@ -125,7 +125,6 @@ function installFirewall() {
     apt-get -y install ufw &>> ${SCRIPT_LOGFILE}
     ufw allow OpenSSH &>> ${SCRIPT_LOGFILE}
     ufw allow $COINPORT/tcp &>> ${SCRIPT_LOGFILE}
-    ufw allow $COINRPCPORT/tcp &>> ${SCRIPT_LOGFILE}
     if [ "${DNSPORT}" != "" ] ; then
         ufw allow ${DNSPORT}/tcp &>> ${SCRIPT_LOGFILE}
         ufw allow ${DNSPORT}/udp &>> ${SCRIPT_LOGFILE}
