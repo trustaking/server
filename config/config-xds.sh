@@ -20,9 +20,10 @@ COINAPIPORT=48334
 
 function setGeneralVars() {
 ## set general variables
-COINRUNCMD="dotnet Daemon.dll ${NETWORK} -agentprefix="trustaking" -datadir=/home/${NODE_USER}/.fullnoderoot -maxblkmem=2 -EnforceStakingFlag=1 \${stakeparams} \${rpcparams}"
-COINGITHUB=https://github.com/sonofsatoshi2020/xds.git
-COINDSRC=/home/${NODE_USER}/code/src/daemon
+COINRUNCMD="dotnet blockcore.xdsd.dll ${NETWORK} -agentprefix="trustaking" -datadir=/home/${NODE_USER}/.blockcore -maxblkmem=2 -EnforceStakingFlag=1 \${stakeparams} \${rpcparams}"
+#COINGITHUB=https://github.com/sonofsatoshi2020/xds.git
+COINGITHUB=https://github.com/dangershony/StratisBitcoinFullNode.git
+COINDSRC=/home/${NODE_USER}/code/src/Xds
 CONF=release
 COINDAEMON=${FORK}d
 COINCONFIG=${FORK}.conf
