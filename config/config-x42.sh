@@ -21,8 +21,8 @@ COINAPIPORT=42221
 function setGeneralVars() {
 ## set general variables
 COINRUNCMD="sudo dotnet ./x42.x42D.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.${FORK}node -maxblkmem=2 -EnforceStakingFlag=1 -txindex \${stakeparams} \${rpcparams} -addnode=52.211.235.48:52342 -addnode=18.179.72.204:52342 -addnode=63.32.82.169:52342 -addnode=34.255.35.42:52342"
-#COINGITHUB=https://github.com/x42protocol/x42-BlockCore.git
-COINGITHUB=https://github.com/x42-Archive/X42-FullNode
+COINGITHUB=https://github.com/x42protocol/x42-BlockCore.git
+#COINGITHUB=https://github.com/x42-Archive/X42-FullNode
 COINDSRC=/home/${NODE_USER}/code/src/x42.x42D
 CONF=release
 COINDAEMON=${FORK}d
