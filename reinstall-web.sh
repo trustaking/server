@@ -42,14 +42,11 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
         x42)
             apiport="42221"; # "42220" <Main X42
             rpcport="62343";
-            coldstakeui=1;
-            payment=1;
             whitelist=1;
            ;;
         city)
            apiport="24335"; # "4335" <Main City
            rpcport="24334";
-           coldstakeui=1;
             ;; 
         impleum)
            apiport="38222"; # "39222" <Main Impleum
@@ -58,15 +55,16 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
         xds)
             apiport="48334";
             rpcport="48333";
-            printf -v apiver "%q" "&Segwit=true";
-            coldstakeui=1;
-            payment=1;
+            segwit=1;
             whitelist=1;
             ;;
         solaris)
             apiport="62009"; # "62000" <Main Solaris
             rpcport="61009";
-            coldstakeui=1;
+            ;;
+        amsterdamcoin)
+            apiport="63009"; # "62000" <Main Amsterdamcoin
+            rpcport="51009";
             ;;
          *)
            echo "$fork has not been configured."
@@ -78,7 +76,7 @@ else
         stratis)
             apiport="37221";
             rpcport="16174";
-
+            payment=1;
             ;;
          redstone)
             apiport="37222";
@@ -87,14 +85,12 @@ else
          x42)
             apiport="42220";
             rpcport="52343";
-            coldstakeui=1;
             payment=1;
-            whitelist=1;        
+            whitelist=1;
             ;;
          city)
             apiport="4335";
             rpcport="4334";
-            coldstakeui=1;
             ;; 
          impleum)
             apiport="39222";
@@ -103,15 +99,17 @@ else
         xds)
             apiport="48334";
             rpcport="48333";
-            printf -v apiver "%q" "&Segwit=true";
-            coldstakeui=1;
+            segwit=1;
             payment=1;
             whitelist=1;
             ;;
         solaris)
             apiport="62000";
             rpcport="61000";
-            coldstakeui=1;
+            ;;
+        amsterdamcoin)
+            apiport="63000";
+            rpcport="51000";
             ;;
          *)
             echo "$fork has not been configured."
@@ -221,26 +219,34 @@ cd /home/${USER}/${SERVER_NAME}
 #php /usr/local/bin/composer btcpayserver/btcpayserver-php-client
 php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
 
-## Inject apiport & ticker into /include/config.php
-sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$api_port='\).*/\1$apiport';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$rpc_port='\).*/\1$rpcport';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$redirectURL='\).*/\1${REDIRECTURL}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$ipnURL='\).*/\1${IPNURL}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$api_ver='\).*/\1${apiver}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$coldstakeui='\).*/\1${coldstakeui}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$payment='\).*/\1${payment}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$whitelist='\).*/\1${whitelist}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-
-## Inject hot wallet name & password into keys.php
+## Grab hot wallet name & password
 source /var/secure/credentials.sh
-sed -i "s/^\(\$WalletName='\).*/\1${STAKINGNAME}';/" /var/secure/keys.php
-sed -i "s/^\(\$WalletPassword='\).*/\1${STAKINGPASSWORD}';/" /var/secure/keys.php
-sed -i "s/^\(\$rpcuser='\).*/\1${RPCUSER}';/" /var/secure/keys.php
-sed -i "s/^\(\$rpcpass='\).*/\1${RPCPASS}';/" /var/secure/keys.php
 
 #Inject API port into wallet setup script
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
+
+## Re-build the config.ini file and inject parameters
+rm /var/secure/config.ini
+cat > /var/secure/config.ini << EOF
+### Web Settings ###
+redirectURL='${REDIRECTURL}';
+ipnURL='${IPNURL}';
+whitelist='${whitelist}'
+payment='${payment}'
+exchange='${exchange}'
+### Wallet name ###
+AccountName='coldStakingHotAddresses'
+WalletName='${STAKINGNAME}
+WalletPassword='${STAKINGPASSWORD}'
+### RPC Details ###
+rpcuser='${RPCUSER}' 
+rpcpass='${RPCPASS}'
+### Coin Details ###
+ticker='${fork}'
+api_port='${apiport}'
+rpc_port='${rpcport}'
+segwit='${segwit}'
+EOF
 
 # Display information
 echo

@@ -11,7 +11,7 @@ fi
 clear
 echo -e "${UNDERLINE}${BOLD}Trustaking Server & Node Installation Guide${NONE}"
 echo
-read -p "Which Fork (redstone, x42, impleum, city, stratis, xds, solaris)? " fork
+read -p "Which Fork (redstone, x42, impleum, city, stratis, xds, solaris, amsterdamcoin)? " fork
 read -p "What sub-domain (default=${fork})? " subdomain
 read -p "Mainnet (m) or Testnet (t)? " net
 read -p "Which branch (default=master)? " branch
@@ -38,8 +38,6 @@ REDIRECTURL="https:\/\/${SERVER_NAME}\/activate.php"
 IPNURL="https:\/\/${SERVER_NAME}\/IPNlogger.php"
 DNS_NAME="${subdomain}.trustaking.com"
 USER="$fork-web"
-SUDO_PASSWORD="$fork-web" ## TODO: create random password
-MYSQL_ROOT_PASSWORD="$fork-web" ## TODO: create random password
 COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustaking/server/master/install-coin.sh"
 COINSERVICECONFIG="https://raw.githubusercontent.com/trustaking/server/master/config/config-$fork.sh"
 WEBFILE="https://github.com/trustaking/node.git"
@@ -61,14 +59,11 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
         x42)
             apiport="42221"; # "42220" <Main X42
             rpcport="62343";
-            coldstakeui=1;
-            payment=1;
             whitelist=1;
            ;;
         city)
            apiport="24335"; # "4335" <Main City
            rpcport="24334";
-           coldstakeui=1;
             ;; 
         impleum)
            apiport="38222"; # "39222" <Main Impleum
@@ -77,15 +72,16 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
         xds)
             apiport="48334";
             rpcport="48333";
-            printf -v apiver "%q" "&Segwit=true";
-            coldstakeui=1;
-            payment=1;
+            segwit=1;
             whitelist=1;
             ;;
         solaris)
             apiport="62009"; # "62000" <Main Solaris
             rpcport="61009";
-            coldstakeui=1;
+            ;;
+        amsterdamcoin)
+            apiport="63009"; # "62000" <Main Amsterdamcoin
+            rpcport="51009";
             ;;
          *)
            echo "$fork has not been configured."
@@ -97,7 +93,7 @@ else
         stratis)
             apiport="37221";
             rpcport="16174";
-
+            payment=1;
             ;;
          redstone)
             apiport="37222";
@@ -106,14 +102,12 @@ else
          x42)
             apiport="42220";
             rpcport="52343";
-            coldstakeui=1;
             payment=1;
-            whitelist=1;        
+            whitelist=1;
             ;;
          city)
             apiport="4335";
             rpcport="4334";
-            coldstakeui=1;
             ;; 
          impleum)
             apiport="39222";
@@ -122,15 +116,17 @@ else
         xds)
             apiport="48334";
             rpcport="48333";
-            printf -v apiver "%q" "&Segwit=true";
-            coldstakeui=1;
+            segwit='true';
             payment=1;
             whitelist=1;
             ;;
         solaris)
             apiport="62000";
             rpcport="61000";
-            coldstakeui=1;
+            ;;
+        amsterdamcoin)
+            apiport="63000";
+            rpcport="51000";
             ;;
          *)
             echo "$fork has not been configured."
@@ -470,21 +466,10 @@ cd /home/${USER}/${SERVER_NAME}
 #php /usr/local/bin/composer btcpayserver/btcpayserver-php-client
 php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
 
-## Inject apiport & ticker into /include/config.php
-sed -i "s/^\(\$ticker='\).*/\1$fork';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$api_port='\).*/\1$apiport';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$rpc_port='\).*/\1$rpcport';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$redirectURL='\).*/\1${REDIRECTURL}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$ipnURL='\).*/\1${IPNURL}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$api_ver='\).*/\1${apiver}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$coldstakeui='\).*/\1${coldstakeui}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$payment='\).*/\1${payment}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-sed -i "s/^\(\$whitelist='\).*/\1${whitelist}';/" /home/${USER}/${SERVER_NAME}/include/config.php
-
 #Inject API port into wallet setup script
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
-# Install Coins Service
+## Install Coin Service
 read -p "Hit a key to install Coin service!" response
 wget ${COINSERVICEINSTALLER} -O ~/install-coin.sh
 wget ${COINSERVICECONFIG} -O ~/config-${fork}.sh
@@ -492,18 +477,36 @@ chmod +x ~/install-coin.sh
 cd ~
 ~/install-coin.sh -f ${fork} -n ${net} -b ${branch} -d ${dotnetver}
 
-# Install hot wallet setup
+### Install hot wallet setup
 read -p "Hit a key to install hot wallet!" response
+# This script builds credentials.sh 
 /home/${USER}/${DNS_NAME}/scripts/hot-wallet-setup.sh
 
 ## Inject rpc & hot wallet details into keys.php & credentials.sh  
 sed -i "s/^\(\RPCUSER=\).*/\1${RPCUSER}/" /var/secure/credentials.sh
 sed -i "s/^\(\RPCPASS=\).*/\1${RPCPASS}/" /var/secure/credentials.sh
-source /var/secure/credentials.sh
-sed -i "s/^\(\$WalletName='\).*/\1${STAKINGNAME}';/" /var/secure/keys.php
-sed -i "s/^\(\$WalletPassword='\).*/\1${STAKINGPASSWORD}';/" /var/secure/keys.php
-sed -i "s/^\(\$rpcuser='\).*/\1${RPCUSER}';/" /var/secure/keys.php
-sed -i "s/^\(\$rpcpass='\).*/\1${RPCPASS}';/" /var/secure/keys.php
+
+## Build the config.ini file and inject parameters
+cat > /var/secure/config.ini << EOF
+### Web Settings ###
+redirectURL='${REDIRECTURL}';
+ipnURL='${IPNURL}';
+whitelist='${whitelist}'
+payment='${payment}'
+exchange='${exchange}'
+### Wallet name ###
+AccountName='coldStakingHotAddresses'
+WalletName='${STAKINGNAME}
+WalletPassword='${STAKINGPASSWORD}'
+### RPC Details ###
+rpcuser='${RPCUSER}' 
+rpcpass='${RPCPASS}'
+### Coin Details ###
+ticker='${fork}'
+api_port='${apiport}'
+rpc_port='${rpcport}'
+segwit='${segwit}'
+EOF
 
 # Display information
 echo
@@ -517,4 +520,4 @@ echo "certbot --nginx --non-interactive --agree-tos --email admin@trustaking.com
 echo
 echo "Website URL: "${DNS_NAME}
 [ ! -d /var/secure ] && mkdir -p /var/secure 
-echo "Requires keys.php, btcpayserver.pri & pub in /var/secure/ - run transfer.sh"
+echo "Requires keys.ini, btcpayserver.pri & pub in /var/secure/ - run transfer.sh"
