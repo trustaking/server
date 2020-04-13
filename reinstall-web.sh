@@ -11,7 +11,7 @@ fi
 clear
 echo -e "${UNDERLINE}${BOLD}Trustaking Web Server Installation Guide${NONE}"
 echo
-read -p "Which Fork (redstone, x42, impleum, city, stratis, xds, solaris)? " fork
+read -p "Which Fork (redstone, x42, impleum, city, stratis, xds, solaris, amsterdamcoin)? " fork
 read -p "What sub-domain (default=${fork})? " subdomain
 read -p "Mainnet (m) or Testnet (t)? " net
 
@@ -26,6 +26,8 @@ IPNURL="https:\/\/${SERVER_NAME}\/IPNlogger.php"
 DNS_NAME="${subdomain}.trustaking.com"
 USER="$fork-web"
 WEBFILE="https://github.com/trustaking/node.git"
+RPCUSER=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
+RPCPASS=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 
 #TODO: Replace with config files
 
