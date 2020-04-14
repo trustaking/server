@@ -229,14 +229,14 @@ sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-
 rm /var/secure/config.ini
 cat > /var/secure/config.ini << EOF
 ### Web Settings ###
-redirectURL='${REDIRECTURL}';
-ipnURL='${IPNURL}';
+redirectURL='${REDIRECTURL}'
+ipnURL='${IPNURL}'
 whitelist='${whitelist}'
 payment='${payment}'
 exchange='${exchange}'
 ### Wallet name ###
 AccountName='coldStakingHotAddresses'
-WalletName='${STAKINGNAME}
+WalletName='${STAKINGNAME}'
 WalletPassword='${STAKINGPASSWORD}'
 ### RPC Details ###
 rpcuser='${RPCUSER}'

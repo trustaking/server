@@ -487,17 +487,17 @@ sed -i "s/^\(\RPCPASS=\).*/\1${RPCPASS}/" /var/secure/credentials.sh
 ## Build the config.ini file and inject parameters
 cat > /var/secure/config.ini << EOF
 ### Web Settings ###
-redirectURL='${REDIRECTURL}';
-ipnURL='${IPNURL}';
+redirectURL='${REDIRECTURL}'
+ipnURL='${IPNURL}'
 whitelist='${whitelist}'
 payment='${payment}'
 exchange='${exchange}'
 ### Wallet name ###
 AccountName='coldStakingHotAddresses'
-WalletName='${STAKINGNAME}
+WalletName='${STAKINGNAME}'
 WalletPassword='${STAKINGPASSWORD}'
 ### RPC Details ###
-rpcuser='${RPCUSER}' 
+rpcuser='${RPCUSER}'
 rpcpass='${RPCPASS}'
 ### Coin Details ###
 ticker='${fork}'
