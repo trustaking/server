@@ -21,8 +21,8 @@ if [ "${DOTNETVER}" = "" ]; then
 DOTNETVER="2.2";
 fi
 
-echo "Add your SSH public key here: "
-read -p "" PUBLIC_SSH_KEYS
+#echo "Add your SSH public key here: "
+#read -p "" PUBLIC_SSH_KEYS
 
 if [[ ${subdomain} == '' ]]; then 
     subdomain="${fork}"
@@ -237,11 +237,10 @@ echo "${USER} ALL=(ALL) NOPASSWD: ALL" &>> /etc/sudoers
 
 # Build Formatted Keys & Copy Keys To User
 
-cat > /root/.ssh/authorized_keys << EOF
-$PUBLIC_SSH_KEYS
-EOF
-
-cp /root/.ssh/authorized_keys /home/$USER/.ssh/authorized_keys
+#cat > /root/.ssh/authorized_keys << EOF
+#$PUBLIC_SSH_KEYS
+#EOF
+#cp /root/.ssh/authorized_keys /home/$USER/.ssh/authorized_keys
 
 # Create The Server SSH Key
 
