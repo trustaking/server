@@ -26,8 +26,6 @@ IPNURL="https:\/\/${SERVER_NAME}\/IPNlogger.php"
 DNS_NAME="${subdomain}.trustaking.com"
 USER="$fork-web"
 WEBFILE="https://github.com/trustaking/node.git"
-RPCUSER=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
-RPCPASS=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 
 #TODO: Replace with config files
 
@@ -241,7 +239,7 @@ AccountName='coldStakingHotAddresses'
 WalletName='${STAKINGNAME}
 WalletPassword='${STAKINGPASSWORD}'
 ### RPC Details ###
-rpcuser='${RPCUSER}' 
+rpcuser='${RPCUSER}'
 rpcpass='${RPCPASS}'
 ### Coin Details ###
 ticker='${fork}'
