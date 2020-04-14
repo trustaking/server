@@ -186,15 +186,14 @@ unzip whois zsh mc p7zip-full htop
 
 # Disable Password Authentication Over SSH & switch default port
 
-sed -ri 's/#Port 22/Port 7777/g' /etc/ssh/sshd_config
-sed -ri 's/X11Forwarding yes/X11Forwarding no/g' /etc/ssh/sshd_config
-sed -ri 's/#AllowTcpForwarding yes/AllowTcpForwarding no/g' /etc/ssh/sshd_config
-sed -ri 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
-sed -ri 's/#UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
-sed -ri 's/#PermitEmptyPasswords no/PermitEmptyPasswords yes/g' /etc/ssh/sshd_config
-echo 'PermitRootLogin no' &>> /etc/ssh/sshd_config
-
-ufw allow 7777 ## check vps provider has port 7777 open
+#sed -ri 's/#Port 22/Port 7777/g' /etc/ssh/sshd_config
+#sed -ri 's/X11Forwarding yes/X11Forwarding no/g' /etc/ssh/sshd_config
+#sed -ri 's/#AllowTcpForwarding yes/AllowTcpForwarding no/g' /etc/ssh/sshd_config
+#sed -ri 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+#sed -ri 's/#UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
+#sed -ri 's/#PermitEmptyPasswords no/PermitEmptyPasswords yes/g' /etc/ssh/sshd_config
+#echo 'PermitRootLogin no' &>> /etc/ssh/sshd_config
+#ufw allow 7777 ## check vps provider has port 7777 open
 
 # Restart SSH
 
