@@ -146,7 +146,7 @@ fi
 
 # SSH access via password will be disabled. Use keys instead.
 ###### add manually for aruba
-PUBLIC_SSH_KEYS=""
+#PUBLIC_SSH_KEYS=""
 
 # if vps not contains swap file - create it
 SWAP_SIZE="1G"
@@ -203,7 +203,7 @@ service ssh restart
 # Set The Hostname If Necessary
 
 echo "${SERVER_NAME}" > /etc/hostname
-sed -i "s/127\.0\.0\.1.*localhost/127.0.0.1	${SERVER_NAME} localhost/" /etc/hosts
+sed -i "s/127\.0\.0\.1.*localhost/127.0.0.1	${SERVER_NAME}/" /etc/hosts
 hostname ${SERVER_NAME}
 
 # Set The Timezone
@@ -481,11 +481,11 @@ read -p "Hit a key to install hot wallet!" response
 /home/${USER}/${DNS_NAME}/scripts/hot-wallet-setup.sh
 
 ## Inject rpc & hot wallet details into keys.php & credentials.sh  
-sed -i "s/^\(\RPCUSER=\).*/\1${RPCUSER}/" /var/secure/credentials.sh
-sed -i "s/^\(\RPCPASS=\).*/\1${RPCPASS}/" /var/secure/credentials.sh
+sed -i "s/^\(\RPCUSER=\).*/\1${RPCUSER}/" /var/secure/cred-${fork}.sh
+sed -i "s/^\(\RPCPASS=\).*/\1${RPCPASS}/" /var/secure/cred-${fork}.sh
 
 ## Build the config.ini file and inject parameters
-cat > /var/secure/config.ini << EOF
+cat > /home/${USER}/${SERVER_NAME}/include/config.ini << EOF
 ### Web Settings ###
 redirectURL='${REDIRECTURL}'
 ipnURL='${IPNURL}'

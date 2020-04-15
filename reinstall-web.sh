@@ -220,14 +220,14 @@ cd /home/${USER}/${SERVER_NAME}
 php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
 
 ## Grab hot wallet name & password
-source /var/secure/credentials.sh
+source /var/secure/cred-${fork}.sh
 
 #Inject API port into wallet setup script
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 ## Re-build the config.ini file and inject parameters
-rm /var/secure/config.ini
-cat > /var/secure/config.ini << EOF
+rm /home/${USER}/${SERVER_NAME}/include/config.ini
+cat > /home/${USER}/${SERVER_NAME}/include/config.ini << EOF
 ### Web Settings ###
 redirectURL='${REDIRECTURL}'
 ipnURL='${IPNURL}'
