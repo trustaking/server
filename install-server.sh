@@ -202,9 +202,9 @@ service ssh restart
 
 # Set The Hostname If Necessary
 
-echo "${SERVER_NAME}" > /etc/hostname
-sed -i "s/127\.0\.0\.1.*localhost/127.0.0.1	${SERVER_NAME}/" /etc/hosts
-hostname ${SERVER_NAME}
+echo "trustaking.com" > /etc/hostname
+sed -i "s/127\.0\.0\.1.*localhost/127.0.0.1	trustaking.com/" /etc/hosts
+hostname trustaking.com
 
 # Set The Timezone
 
