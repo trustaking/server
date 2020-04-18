@@ -55,7 +55,7 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
         xds)
             apiport="48334";
             rpcport="48333";
-            segwit=1;
+            segwit="true";
             whitelist=1;
             ;;
         solaris)
@@ -99,7 +99,7 @@ else
         xds)
             apiport="48334";
             rpcport="48333";
-            segwit=1;
+            segwit="true";
             payment=1;
             whitelist=1;
             ;;
@@ -224,6 +224,7 @@ source /var/secure/cred-${fork}.sh
 
 #Inject API port into wallet setup script
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
+sed -i "s/^\(fork=\).*/\1$fork/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 ## Re-build the config.ini file and inject parameters
 rm /home/${USER}/${SERVER_NAME}/include/config.ini

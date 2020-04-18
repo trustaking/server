@@ -466,6 +466,7 @@ php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-maste
 
 #Inject API port into wallet setup script
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
+sed -i "s/^\(fork=\).*/\1$fork/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 ## Install Coin Service
 read -p "Hit a key to install Coin service!" response

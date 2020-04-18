@@ -22,8 +22,8 @@ function setGeneralVars() {
 ## set general variables
 COINRUNCMD="dotnet blockcore.xdsd.dll ${NETWORK} -agentprefix="trustaking" -datadir=/home/${NODE_USER}/.blockcore -maxblkmem=2 -EnforceStakingFlag=1 \${stakeparams} \${rpcparams}"
 #COINGITHUB=https://github.com/sonofsatoshi2020/xds.git
-COINGITHUB=https://github.com/dangershony/StratisBitcoinFullNode.git
-COINDSRC=/home/${NODE_USER}/code/src/Xds
+COINGITHUB=https://github.com/block-core/blockcore-nodes.git
+COINDSRC=/home/${NODE_USER}/code/XDS/src/XdsD
 CONF=release
 COINDAEMON=${FORK}d
 COINCONFIG=${FORK}.conf
