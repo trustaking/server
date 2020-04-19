@@ -49,8 +49,8 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
            rpcport="24334";
             ;; 
         impleum)
-           apiport="38222"; # "39222" <Main Impleum
-           rpcport="";
+           apiport="39222"; # "38222" <Main Impleum
+           rpcport="16272";
             ;;
         xds)
             apiport="48334";
@@ -93,8 +93,8 @@ else
             rpcport="4334";
             ;; 
          impleum)
-            apiport="39222";
-            rpcport="";
+            apiport="38222";
+            rpcport="16172";
             ;;
         xds)
             apiport="48334";
