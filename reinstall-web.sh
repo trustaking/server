@@ -119,8 +119,13 @@ else
 fi
 
 
+
 # =================== YOUR DATA ========================
 read -p "Are you using DNS(y) or IP(n)?" dns
+
+if [[ "$segwit" = "" ]]; then
+    segwit="false"
+fi
 
 if [[ "$dns" =~ ^([nN])+$ ]]; then
     DNS_NAME=$(curl --silent ipinfo.io/ip)
@@ -219,7 +224,7 @@ cd /home/${USER}/${SERVER_NAME}
 #php /usr/local/bin/composer btcpayserver/btcpayserver-php-client
 php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
 
-## Grab hot wallet name & password
+## Grab credentials
 source /var/secure/cred-${fork}.sh
 
 #Inject API port into wallet setup script
