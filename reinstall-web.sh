@@ -123,12 +123,12 @@ fi
 # =================== YOUR DATA ========================
 read -p "Are you using DNS(y) or IP(n)?" dns
 
-if [[ "$segwit" = "" ]]; then
-    segwit="false"
-fi
-
 if [[ "$dns" =~ ^([nN])+$ ]]; then
     DNS_NAME=$(curl --silent ipinfo.io/ip)
+fi
+
+if [[ "$segwit" = "" ]]; then
+    segwit="false"
 fi
 
 ## Add site-available and enable the website

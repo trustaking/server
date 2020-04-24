@@ -144,6 +144,10 @@ if [[ "$dns" =~ ^([nN])+$ ]]; then
     read -p "Before you continue ensure that your DNS has an 'A' record for ${SERVER_IP} - press any key to continue" response
 fi
 
+if [[ "$segwit" = "" ]]; then
+    segwit="false"
+fi
+
 # SSH access via password will be disabled. Use keys instead.
 ###### add manually for aruba
 #PUBLIC_SSH_KEYS=""
