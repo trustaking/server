@@ -252,6 +252,8 @@ ticker='${fork}'
 api_port='${apiport}'
 rpc_port='${rpcport}'
 segwit='${segwit}'
+### Debug set to 1 for detailed errors ###
+debug='' 
 EOF
 
 # Display information
