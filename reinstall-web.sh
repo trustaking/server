@@ -234,7 +234,7 @@ sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-
 sed -i "s/^\(fork=\).*/\1$fork/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 ## Re-build the config.ini file and inject parameters
-rm /home/${USER}/${SERVER_NAME}/include/config.ini
+#rm /home/${USER}/${SERVER_NAME}/include/config.ini
 cat > /home/${USER}/${SERVER_NAME}/include/config.ini << EOF
 ### Web Settings ###
 redirectURL='${REDIRECTURL}'
