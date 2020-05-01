@@ -259,10 +259,10 @@ debug=''
 EOF
 
 # Display information
-echo
-echo -e "Running a simulation for SSL renewal"
-echo 
-certbot renew --dry-run
+#echo
+#echo -e "Running a simulation for SSL renewal"
+#echo 
+#certbot renew --dry-run
 echo && echo
 echo "Website URL: "${DNS_NAME}
 echo
