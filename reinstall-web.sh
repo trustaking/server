@@ -106,6 +106,8 @@ else
         solaris)
             apiport="62000";
             rpcport="61000";
+            payment=1;
+            whitelist=1;
             ;;
         amsterdamcoin)
             apiport="63000";
