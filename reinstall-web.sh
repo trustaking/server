@@ -21,8 +21,8 @@ fi
 
 # =================== YOUR DATA ========================
 SERVER_NAME="${subdomain}.trustaking.com"
-REDIRECTURL="https:\/\/${SERVER_NAME}\/activate.php"
-IPNURL="https:\/\/${SERVER_NAME}\/IPNlogger.php"
+REDIRECTURL="https://${SERVER_NAME}/activate.php"
+IPNURL="https://${SERVER_NAME}/IPNlogger.php"
 DNS_NAME="${subdomain}.trustaking.com"
 USER="$fork-web"
 WEBFILE="https://github.com/trustaking/node.git"
@@ -255,7 +255,8 @@ api_port='${apiport}'
 rpc_port='${rpcport}'
 segwit='${segwit}'
 ### Debug set to 1 for detailed errors ###
-debug='' 
+debug=''
+maintenance=''
 EOF
 
 # Display information
