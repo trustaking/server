@@ -59,9 +59,9 @@ function create_user() {
 }
 
 function set_permissions() {
-    chown -R ${NODE_USER}:${NODE_USER} ${COINCORE} ${COINSTARTUP} ${COINDLOC} &>> ${SCRIPT_LOGFILE}
+    chown -R ${NODE_USER}:${NODE_USER} ${COINSTARTUP} ${COINDLOC} &>> ${SCRIPT_LOGFILE}
     # make group permissions same as user, so vps-user can be added to node group
-    chmod -R g=u ${COINCORE} ${COINSTARTUP} ${COINDLOC} ${COINSERVICELOC} &>> ${SCRIPT_LOGFILE}
+    chmod -R g=u ${COINSTARTUP} ${COINDLOC} ${COINSERVICELOC} &>> ${SCRIPT_LOGFILE}
 }
 
 function checkOSVersion() {
@@ -167,6 +167,16 @@ function installDependencies() {
             dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
             echo -e "${NONE}${GREEN}* Done${NONE}";
         fi
+        if [[ "${VERSION_ID}" = "20.04" ]]; then
+            wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
+            dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
+            apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
+            apt-get update -y &>> ${SCRIPT_LOGFILE}
+            apt-get install dotnet-sdk-${DOTNETVER} -y &>> ${SCRIPT_LOGFILE}
+            wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
+            dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
+            echo -e "${NONE}${GREEN}* Done${NONE}";
+        fi
         else
         echo -e "${NONE}${RED}* Version: ${VERSION_ID} not supported.${NONE}";
     fi
@@ -195,21 +205,10 @@ function installWallet() {
     cd /home/${NODE_USER}/
     echo -e "#!/bin/bash\nexport DOTNET_CLI_TELEMETRY_OPTOUT=1\nexport LANG=en_US.UTF-8\nif [ -f /var/secure/cred-${FORK}.sh ]; then\nsource /var/secure/cred-${FORK}.sh\nstakeparams=\"-stake -walletname=\${STAKINGNAME} -walletpassword=\${STAKINGPASSWORD}\"\nrpcparams=\"-server -rpcuser=\${RPCUSER} -rpcpassword=\${RPCPASS}\"\nfi\ncd $COINDLOC\n$COINRUNCMD" > ${COINSTARTUP}
     echo -e "[Unit]\nDescription=${COINDAEMON}\nAfter=network-online.target\n\n[Service]\nType=simple\nUser=${NODE_USER}\nGroup=${NODE_USER}\nExecStart=${COINSTARTUP}\nTimeoutStopSec=180\nExecStop=/bin/kill -2 $MAINPID\nRestart=always\nRestartSec=5\nPrivateTmp=true\nTimeoutStopSec=60s\nTimeoutStartSec=5s\nStartLimitInterval=120s\nStartLimitBurst=15\n\n[Install]\nWantedBy=multi-user.target" >${COINSERVICENAME}.service
-    chown -R ${NODE_USER}:${NODE_USER} ${COINSERVICELOC} &>> ${SCRIPT_LOGFILE}
     mv $COINSERVICENAME.service ${COINSERVICELOC} &>> ${SCRIPT_LOGFILE}
     chmod 777 ${COINSTARTUP} &>> ${SCRIPT_LOGFILE}
     systemctl --system daemon-reload &>> ${SCRIPT_LOGFILE}
     systemctl enable ${COINSERVICENAME} &>> ${SCRIPT_LOGFILE}
-    echo -e "${NONE}${GREEN}* Done${NONE}";
-}
-
-function configureWallet() {
-    echo
-    echo -e "* Configuring wallet. Please wait..."
-    cd /home/${NODE_USER}/
-    [ ! -d ${COINCORE} ] && mkdir -p ${COINCORE}
-    echo -e "externalip=${NODE_IP}\ntxindex=1\nlisten=1\ndaemon=1\nmaxconnections=64" > $COINCONFIG
-    mv $COINCONFIG $COINCORE
     echo -e "${NONE}${GREEN}* Done${NONE}";
 }
 
@@ -277,7 +276,6 @@ if [[ "$NET" =~ ^([mM])+$ ]]; then
     installDependencies
     compileWallet
     installWallet
-    #configureWallet ### commented out so uses the default configuration
     installUnattendedUpgrades
     startWallet
     set_permissions
@@ -303,7 +301,6 @@ echo -e "${GREEN} thecrypt0hunter(2019)${NONE}"
         installDependencies
         compileWallet
         installWallet
-        #configureWallet ### commented out so uses the default configuration
         installUnattendedUpgrades
         startWallet
         set_permissions
