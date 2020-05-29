@@ -23,7 +23,7 @@ function setGeneralVars() {
 #COINDSRC=/home/${NODE_USER}/code/src/City.Chain
 COINRUNCMD="dotnet ./City.Node.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.blockcore -maxblkmem=2 \${stakeparams} \${rpcparams}"
 COINGITHUB=https://github.com/block-core/blockcore.git
-COINDSRC=/home/${NODE_USER}/code/src/Networks/city/City.Node
+COINDSRC=/home/${NODE_USER}/code/src/Networks/City/City.Node
 CONF=release
 COINDAEMON=${FORK}d
 COINCONFIG=${FORK}.conf
