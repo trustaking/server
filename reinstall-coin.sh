@@ -18,9 +18,9 @@ if [ "${branch}" == "" ]; then
 branch="master";
 fi
 
-read -p "What version of dotnet is required (default=2.2)? " dotnetver
+read -p "What version of dotnet is required (default=3.1)? " dotnetver
 if [ "${dotnetver}" = "" ]; then 
-dotnetver="2.2";
+dotnetver="3.1";
 fi
 
 # =================== YOUR DATA ========================
