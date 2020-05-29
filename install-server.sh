@@ -108,6 +108,8 @@ else
          city)
             apiport="4335";
             rpcport="4334";
+            payment=1;
+            whitelist=1;
             ;; 
          impleum)
             apiport="39222";
