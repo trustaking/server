@@ -112,6 +112,8 @@ else
         amsterdamcoin)
             apiport="63000";
             rpcport="51000";
+            payment=1;
+            whitelist=1;
             ;;
          *)
             echo "$fork has not been configured."
