@@ -19,9 +19,12 @@ COINAPIPORT=38221
 
 function setGeneralVars() {
 ## set general variables
-COINRUNCMD="dotnet ./Stratis.StratisD.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.${FORK}node -maxblkmem=2 \${stakeparams} \${rpcparams}"
-COINGITHUB=https://github.com/stratisproject/StratisBitcoinFullNode.git
-COINDSRC=/home/${NODE_USER}/code/src/Stratis.StratisD
+# COINRUNCMD="dotnet ./Stratis.StratisD.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.${FORK}node -maxblkmem=2 \${stakeparams} \${rpcparams}"
+# COINGITHUB=https://github.com/stratisproject/StratisBitcoinFullNode.git
+# COINDSRC=/home/${NODE_USER}/code/src/Stratis.StratisD
+COINRUNCMD="dotnet ./StratisD.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.blockcore -maxblkmem=2 \${stakeparams} \${rpcparams}"
+COINGITHUB=https://github.com/block-core/blockcore.git
+COINDSRC=/home/${NODE_USER}/code/src/Networks/Stratis/Stratisd
 CONF=release
 COINDAEMON=${FORK}d
 COINCONFIG=${FORK}.conf

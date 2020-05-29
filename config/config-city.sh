@@ -18,12 +18,12 @@ COINAPIPORT=24335
 
 function setGeneralVars() {
 ## set general variables
-COINRUNCMD="dotnet ./City.Chain.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.${FORK}chain -maxblkmem=2 -txindex=1 \${stakeparams} \${rpcparams}"
-COINGITHUB=https://github.com/CityChainFoundation/city-chain.git
-COINDSRC=/home/${NODE_USER}/code/src/City.Chain
-#COINRUNCMD="dotnet ./City.Node.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.blockcore -maxblkmem=2 \${stakeparams} \${rpcparams}"
-#COINGITHUB=https://github.com/block-core/blockcore-nodes.git
-#COINDSRC=/home/${NODE_USER}/code/CITY/src/City.Node
+#COINRUNCMD="dotnet ./City.Chain.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.${FORK}chain -maxblkmem=2 -txindex=1 \${stakeparams} \${rpcparams}"
+#COINGITHUB=https://github.com/CityChainFoundation/city-chain.git
+#COINDSRC=/home/${NODE_USER}/code/src/City.Chain
+COINRUNCMD="dotnet ./City.Node.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.blockcore -maxblkmem=2 \${stakeparams} \${rpcparams}"
+COINGITHUB=https://github.com/block-core/blockcore.git
+COINDSRC=/home/${NODE_USER}/code/src/Networks/city/City.Node
 CONF=release
 COINDAEMON=${FORK}d
 COINCONFIG=${FORK}.conf
