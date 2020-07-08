@@ -167,7 +167,7 @@ TIMEZONE="Etc/GMT+0" # list of avaiable timezones: ls -R --group-directories-fir
 
 # Prefer IPv4 over IPv6 - make apt-get faster
 
-sudo sed -i "s/#precedence ::ffff:0:0\/96  100/precedence ::ffff:0:0\/96  100/" /etc/gai.conf
+sed -i "s/#precedence ::ffff:0:0\/96  100/precedence ::ffff:0:0\/96  100/" /etc/gai.conf
 
 # Upgrade The Base Packages
 
@@ -316,7 +316,7 @@ fi
 
 # Install Base PHP Packages
 
-sudo apt -qy install php7.3-fpm php7.3-common php7.3-mysql php7.3-xml \
+apt -qy install php7.3-fpm php7.3-common php7.3-mysql php7.3-xml \
 php7.3-xmlrpc php7.3-curl php7.3-gd \
 php-imagick php7.3-cli php7.3-dev php7.3-imap php7.3-mbstring \
 php7.3-sqlite3 php-memcached php7.1-mcrypt php7.3-bcmath php7.3-intl php7.3-readline \
@@ -326,15 +326,15 @@ gcc make re2c libpcre3-dev software-properties-common build-essential
 # Install Phalcon
 
 #curl -s "https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh" | sudo bash
-#sudo apt -qy install php7.3-phalcon
-#sudo apt update
+#apt -qy install php7.3-phalcon
+#apt update
 
 # Misc. PHP CLI Configuration
 
-sudo sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.3/cli/php.ini
-sudo sed -i "s/display_errors = .*/display_errors = On/" /etc/php/7.3/cli/php.ini
-sudo sed -i "s/memory_limit = .*/memory_limit = 512M/" /etc/php/7.3/cli/php.ini
-sudo sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.3/cli/php.ini
+sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.3/cli/php.ini
+sed -i "s/display_errors = .*/display_errors = On/" /etc/php/7.3/cli/php.ini
+sed -i "s/memory_limit = .*/memory_limit = 512M/" /etc/php/7.3/cli/php.ini
+sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.3/cli/php.ini
 
 # Configure Sessions Directory Permissions
 
