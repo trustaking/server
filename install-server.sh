@@ -471,8 +471,8 @@ chown ${USER}:www-data /home/${USER}/${SERVER_NAME} -R
 chmod g+rw /home/${USER}/${SERVER_NAME} -R
 chmod g+s /home/${USER}/${SERVER_NAME} -R
 cd /home/${USER}/${SERVER_NAME}
-#php /usr/local/bin/composer btcpayserver/btcpayserver-php-client
-php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
+php /usr/local/bin/composer require btcpayserver/btcpayserver-php-client
+#php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
 
 #Inject API port into wallet setup script
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
