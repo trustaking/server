@@ -51,4 +51,4 @@ read -p "Hit a key to install hot wallet!" response
 
 # Display information
 echo
-echo -e "Re-install Complete!
+echo -e "Re-install Complete!"

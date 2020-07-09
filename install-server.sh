@@ -13,24 +13,23 @@ echo -e "${UNDERLINE}${BOLD}Trustaking Server & Node Installation Guide${NONE}"
 echo
 read -p "Which Fork (redstone, x42, impleum, city, stratis, xds, solaris, amsterdamcoin)? " fork
 read -p "What sub-domain (default=${fork})? " subdomain
-read -p "Mainnet (m) or Testnet (t)? " net
-read -p "Which branch (default=master)? " branch
-read -p "What version of dotnet is required (default=3.1)? " dotnetver
-
-if [ "${DOTNETVER}" = "" ]; then 
-DOTNETVER="3.1";
-fi
-
-#echo "Add your SSH public key here: "
-#read -p "" PUBLIC_SSH_KEYS
-
 if [[ ${subdomain} == '' ]]; then 
     subdomain="${fork}"
 fi
 
+read -p "Mainnet (m) or Testnet (t)? " net
+read -p "Which branch (default=master)? " branch
 if [[ ${branch} == '' ]]; then 
     branch="master"
 fi
+
+read -p "What version of dotnet is required (default=3.1)? " dotnetver
+if [ "${dotnetver}" = "" ]; then 
+dotnetver="3.1";
+fi
+
+#echo "Add your SSH public key here: "
+#read -p "" PUBLIC_SSH_KEYS
 
 # =================== YOUR DATA ========================
 SERVER_NAME="${subdomain}.trustaking.com"
@@ -478,7 +477,8 @@ php /usr/local/bin/composer require btcpayserver/btcpayserver-php-client
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 sed -i "s/^\(fork=\).*/\1$fork/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
-## Install Coin Service
+
+# Install Coins Service
 read -p "Hit a key to install Coin service!" response
 wget ${COINSERVICEINSTALLER} -O ~/install-coin.sh
 wget ${COINSERVICECONFIG} -O ~/config-${fork}.sh
@@ -486,7 +486,7 @@ chmod +x ~/install-coin.sh
 cd ~
 ~/install-coin.sh -f ${fork} -n ${net} -b ${branch} -d ${dotnetver}
 
-### Install hot wallet setup
+# Install hot wallet setup
 read -p "Hit a key to install hot wallet!" response
 # This script builds credentials.sh 
 /home/${USER}/${DNS_NAME}/scripts/hot-wallet-setup.sh
