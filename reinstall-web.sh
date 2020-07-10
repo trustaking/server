@@ -271,11 +271,12 @@ debug=''
 maintenance=''
 EOF
 
+# Install hot wallet setup
+read -p "Hit a key to install hot wallet!" response
+# This script builds credentials.sh 
+/home/${USER}/${DNS_NAME}/scripts/hot-wallet-setup.sh
+
 # Display information
-#echo
-#echo -e "Running a simulation for SSL renewal"
-#echo 
-#certbot renew --dry-run
 echo && echo
 echo "Website URL: "${DNS_NAME}
 echo

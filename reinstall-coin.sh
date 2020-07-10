@@ -45,15 +45,6 @@ chmod +x ~/install-coin.sh
 cd ~
 ~/install-coin.sh -f ${fork} -n ${net} -b ${branch} -d ${dotnetver}
 
-# Install hot wallet setup
-read -p "Hit a key to install hot wallet!" response
-# This script builds credentials.sh 
-/home/${USER}/${DNS_NAME}/scripts/hot-wallet-setup.sh
-
-## Inject rpc & hot wallet details into keys.php & credentials.sh  
-#sed -i "s/^\(\RPCUSER=\).*/\1${RPCUSER}/" /var/secure/cred-${fork}.sh
-#sed -i "s/^\(\RPCPASS=\).*/\1${RPCPASS}/" /var/secure/cred-${fork}.sh
-
 # Display information
 echo
 echo -e "Re-install Complete!"
