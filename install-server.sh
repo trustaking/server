@@ -458,7 +458,7 @@ if [[ "$dns" =~ ^([yY])+$ ]]; then
 certbot --nginx \
   --non-interactive \
   --agree-tos \
-  --email admin@trustaking.com \
+  --email trustaking@protonmail.com \
   --domains ${SERVER_NAME}
 fi
 
@@ -527,7 +527,7 @@ certbot renew --dry-run
 echo && echo
 echo "If the dry run was unsuccessful you may need to register & install your SSL certificate manually by running the following command: "
 echo
-echo "certbot --nginx --non-interactive --agree-tos --email admin@trustaking.com --domains ${DNS_NAME}"
+echo "certbot --nginx --non-interactive --agree-tos --email trustaking@protonmail.com --domains ${DNS_NAME}"
 echo
 echo "Website URL: "${DNS_NAME}
 [ ! -d /var/secure ] && mkdir -p /var/secure 

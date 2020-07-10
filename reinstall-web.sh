@@ -206,6 +206,11 @@ useradd $USER
 mkdir -p /home/$USER/
 adduser $USER sudo
 
+# Add User To www-data Group
+usermod -a -G www-data $USER
+id $USER
+groups $USER
+
 # Setup Bash For User
 chsh -s /bin/bash $USER
 cp /root/.profile /home/$USER/.profile
@@ -213,6 +218,9 @@ cp /root/.bashrc /home/$USER/.bashrc
 
 # Remove Sudo Password For User
 echo "${USER} ALL=(ALL) NOPASSWD: ALL" &>> /etc/sudoers
+
+# Allow FPM Restart
+echo "${USER} ALL=NOPASSWD: /usr/sbin/service php7.3-fpm reload" &>> /etc/sudoers.d/php-fpm
 
 # Setup Site Directory Permissions
 chown -R $USER:$USER /home/$USER
