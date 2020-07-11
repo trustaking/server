@@ -239,11 +239,23 @@ php /usr/local/bin/composer require btcpayserver/btcpayserver-php-client
 #php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
 
 ## Grab credentials
-source /var/secure/cred-${fork}.sh
+if [ ! -f /var/secure/cred-${fork}.sh] then
+    source /var/secure/cred-${fork}.sh
+fi
 
 #Inject API port into wallet setup script
 sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 sed -i "s/^\(fork=\).*/\1$fork/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
+
+# Install hot wallet setup
+read -p "Hit a key to install hot wallet!" response
+# This script builds credentials.sh 
+/home/${USER}/${DNS_NAME}/scripts/hot-wallet-setup.sh
+
+## Grab credentials
+if [ ! -f /var/secure/cred-${fork}.sh] then
+    source /var/secure/cred-${fork}.sh
+fi
 
 ## Re-build the config.ini file and inject parameters
 #rm /home/${USER}/${SERVER_NAME}/include/config.ini
@@ -267,18 +279,14 @@ api_port='${apiport}'
 rpc_port='${rpcport}'
 segwit='${segwit}'
 ### Debug set to 1 for detailed errors ###
-debug=''
-maintenance=''
+debug='1'
+maintenance='1'
 EOF
-
-# Install hot wallet setup
-read -p "Hit a key to install hot wallet!" response
-# This script builds credentials.sh 
-/home/${USER}/${DNS_NAME}/scripts/hot-wallet-setup.sh
 
 # Display information
 echo && echo
 echo "Website URL: "${DNS_NAME}
+echo "nano /home/${USER}/${DNS_NAME}/include/config.ini"
 echo
 echo "If the dry run was unsuccessful you may need to register & install your SSL certificate manually by running the following command: "
 echo
