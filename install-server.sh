@@ -34,7 +34,8 @@ fi
 # =================== YOUR DATA ========================
 SERVER_NAME="${subdomain}.trustaking.com"
 REDIRECTURL="https:\/\/${SERVER_NAME}\/activate.php"
-IPNURL="https:\/\/${SERVER_NAME}\/IPNlogger.php"
+IPNURL=""
+#"https:\/\/${SERVER_NAME}\/IPNlogger.php"
 DNS_NAME="${subdomain}.trustaking.com"
 USER="$fork-web"
 COINSERVICEINSTALLER="https://raw.githubusercontent.com/trustaking/server/master/install-coin.sh"
