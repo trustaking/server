@@ -14,7 +14,13 @@ echo
 read -p "Which Fork (redstone, x42, impleum, city, stratis, xds, solaris, amsterdamcoin)? " fork
 read -p "What sub-domain (default=${fork})? " subdomain
 read -p "Mainnet (m) or Testnet (t)? " net
-read -p "Install hot wallet (y/n)?" hot
+#read -p "Are you using DNS(y) or IP(n)? " dns
+dns="y"
+read -p "Install hot wallet (y/n)? " hot
+
+if [[ "$dns" =~ ^([nN])+$ ]]; then
+    DNS_NAME=$(curl --silent ipinfo.io/ip)
+fi
 
 if [[ ${subdomain} == '' ]]; then 
     subdomain="${fork}"
@@ -126,15 +132,7 @@ else
     esac
 fi
 
-
-
 # =================== YOUR DATA ========================
-read -p "Are you using DNS(y) or IP(n)?" dns
-
-if [[ "$dns" =~ ^([nN])+$ ]]; then
-    DNS_NAME=$(curl --silent ipinfo.io/ip)
-fi
-
 if [[ "$segwit" = "" ]]; then
     segwit="false"
 fi
@@ -250,7 +248,7 @@ sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-
 sed -i "s/^\(fork=\).*/\1$fork/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 # Install hot wallet setup
-if [[ ${hot} == ^([yY])+$ ]]; then
+if [[ "${hot}" =~ ^([yY])+$ ]]; then
     # This script builds credentials.sh 
     /home/${USER}/${DNS_NAME}/scripts/hot-wallet-setup.sh
 fi
