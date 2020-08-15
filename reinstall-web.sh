@@ -228,6 +228,7 @@ chown -R $USER:$USER /home/$USER
 chmod -R 755 /home/$USER
 
 # Re-Install Website
+cd /
 rm -rf /home/${USER}/${SERVER_NAME}
 mkdir -p /home/${USER}/${SERVER_NAME}
 cd /home/${USER}/
