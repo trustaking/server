@@ -2,6 +2,7 @@
 # ============================================================================================
 #bash <( curl -s https://raw.githubusercontent.com/trustaking/server/master/reinstall-web.sh )
 # ============================================================================================
+
 if [ "$(id -u)" != "0" ]; then
     echo -e "${RED}* Sorry, this script needs to be run as root. Do \"sudo su root\" and then re-run this script${NONE}"
     exit 1
@@ -16,15 +17,14 @@ read -p "Mainnet (m) or Testnet (t)? " net
 #read -p "Are you using DNS(y) or IP(n)? " dns
 read -p "Install hot wallet (y/n)? " hot
 
-# ============================================================================================
+if [[ ${subdomain} == '' ]]; then 
+    subdomain="${fork}"
+fi
+
 SERVER_IP=$(curl --silent whatismyip.akamai.com) #$(curl --silent ipinfo.io/ip)
 SERVER_NAME="${subdomain}.trustaking.com"
 REDIRECTURL="https://${SERVER_NAME}/activate.php"
 IPNURL="" #"https://${SERVER_NAME}/IPNlogger.php"
-
-if [[ ${subdomain} == '' ]]; then 
-    subdomain="${fork}"
-fi
 
 dns="y"
 
