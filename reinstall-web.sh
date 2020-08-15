@@ -1,8 +1,7 @@
 #!/bin/bash
-# =================== YOUR DATA ========================
+# ============================================================================================
 #bash <( curl -s https://raw.githubusercontent.com/trustaking/server/master/reinstall-web.sh )
-SERVER_IP=$(curl --silent whatismyip.akamai.com)
-# =================== YOUR DATA ========================
+# ============================================================================================
 if [ "$(id -u)" != "0" ]; then
     echo -e "${RED}* Sorry, this script needs to be run as root. Do \"sudo su root\" and then re-run this script${NONE}"
     exit 1
@@ -15,24 +14,26 @@ read -p "Which Fork (redstone, x42, impleum, city, stratis, xds, solaris, amster
 read -p "What sub-domain (default=${fork})? " subdomain
 read -p "Mainnet (m) or Testnet (t)? " net
 #read -p "Are you using DNS(y) or IP(n)? " dns
-dns="y"
 read -p "Install hot wallet (y/n)? " hot
 
-if [[ "$dns" =~ ^([nN])+$ ]]; then
-    DNS_NAME=$(curl --silent ipinfo.io/ip)
-fi
+# ============================================================================================
+SERVER_IP=$(curl --silent whatismyip.akamai.com) #$(curl --silent ipinfo.io/ip)
+SERVER_NAME="${subdomain}.trustaking.com"
+REDIRECTURL="https://${SERVER_NAME}/activate.php"
+IPNURL="" #"https://${SERVER_NAME}/IPNlogger.php"
 
 if [[ ${subdomain} == '' ]]; then 
     subdomain="${fork}"
 fi
 
-# =================== YOUR DATA ========================
-SERVER_NAME="${subdomain}.trustaking.com"
-REDIRECTURL="https://${SERVER_NAME}/activate.php"
-IPNURL="" 
-#"https://${SERVER_NAME}/IPNlogger.php"
+dns="y"
+
+if [[ "${dns}" =~ ^([nN])+$ ]]; then
+    DNS_NAME=${SERVER_IP}
+fi
+
 DNS_NAME="${subdomain}.trustaking.com"
-USER="$fork-web"
+USER="${fork}-web"
 WEBFILE="https://github.com/trustaking/node.git"
 
 #TODO: Replace with config files
@@ -275,7 +276,7 @@ WalletPassword='${STAKINGPASSWORD}'
 rpcuser='${RPCUSER}'
 rpcpass='${RPCPASS}'
 ### Coin Details ###
-ticker='${fork}'
+ticker='${subdomain}'
 api_port='${apiport}'
 rpc_port='${rpcport}'
 segwit='${segwit}'
