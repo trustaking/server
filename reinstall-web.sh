@@ -240,7 +240,7 @@ php /usr/local/bin/composer require btcpayserver/btcpayserver-php-client
 #php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
 
 ## Grab credentials
-if [ ! -f /var/secure/cred-${fork}.sh] then
+if [ -f "/var/secure/cred-${fork}.sh"]; then
     source /var/secure/cred-${fork}.sh
 fi
 
@@ -254,7 +254,7 @@ read -p "Hit a key to install hot wallet!" response
 /home/${USER}/${DNS_NAME}/scripts/hot-wallet-setup.sh
 
 ## Grab credentials
-if [ ! -f /var/secure/cred-${fork}.sh] then
+if [ -f "/var/secure/cred-${fork}.sh"]; then
     source /var/secure/cred-${fork}.sh
 fi
 
