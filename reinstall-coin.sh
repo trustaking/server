@@ -10,7 +10,7 @@ fi
 clear
 echo -e "${UNDERLINE}${BOLD}Blockcore Node Installation Guide${NONE}"
 echo
-read -p "Which Fork (redstone, x42, impleum, city, stratis, xds, solaris, amsterdamcoin)? " fork
+read -p "Which Fork (redstone, x42, impleum, city, strax, xds, solaris, amsterdamcoin)? " fork
 read -p "Mainnet (m) or Testnet (t)? " net
 read -p "Which branch (default=master)? " branch
 
