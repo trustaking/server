@@ -43,7 +43,6 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
          strax)
             apiport="27103"; # "17103" <Main Stratis
             rpcport="27104"; 
-            segwit="true";
             ;;
          redstone)
             apiport="38222"; # "37222" <Main Redstone
@@ -86,7 +85,6 @@ else
         strax)
             apiport="17103";
             rpcport="17104";
-            segwit="true";
             ;;
          redstone)
             apiport="37222";

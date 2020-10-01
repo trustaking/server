@@ -185,6 +185,9 @@ function installDependencies() {
 function compileWallet() {
     echo
     echo -e "* Compiling wallet. Please wait, this might take a while to complete..."
+    if [ ! -d /home/${NODE_USER} ]; then 
+        mkdir /home/${NODE_USER} 
+    fi
     cd /home/${NODE_USER}/
     git clone --recurse-submodules --branch=${BRANCH} ${COINGITHUB} code &>> ${SCRIPT_LOGFILE}
     cd /home/${NODE_USER}/code
