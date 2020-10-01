@@ -11,7 +11,7 @@ fi
 clear
 echo -e "${UNDERLINE}${BOLD}Trustaking Server & Node Installation Guide${NONE}"
 echo
-read -p "Which Fork (redstone, x42, impleum, city, stratis, xds, solaris, amsterdamcoin)? " fork
+read -p "Which Fork (redstone, x42, impleum, city, strax, xds, solaris, amsterdamcoin)? " fork
 read -p "What sub-domain (default=${fork})? " subdomain
 if [[ ${subdomain} == '' ]]; then 
     subdomain="${fork}"
@@ -48,9 +48,10 @@ RPCPASS=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 
 if [[ "$net" =~ ^([tT])+$ ]]; then
     case $fork in
-         stratis)
-            apiport="38221"; # "37221" <Main Stratis
-            rpcport="26174";
+         strax)
+            apiport="27103"; # "17103" <Main Strax
+            rpcport="27104"; 
+            segwit="true";
             ;;
          redstone)
             apiport="38222"; # "37222" <Main Redstone
@@ -90,28 +91,28 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
     esac
 else 
     case $fork in
-        stratis)
-            apiport="37221";
-            rpcport="16174";
-            payment=1;
+        strax)
+            apiport="17103";
+            rpcport="17104";
+            segwit="true";
             ;;
-         redstone)
+        redstone)
             apiport="37222";
             rpcport="";
             ;;
-         x42)
+        x42)
             apiport="42220";
             rpcport="52343";
             payment=1;
             whitelist=1;
             ;;
-         city)
+        city)
             apiport="4335";
             rpcport="4334";
             payment=1;
             whitelist=1;
             ;; 
-         impleum)
+        impleum)
             apiport="39222";
             rpcport="";
             ;;

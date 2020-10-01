@@ -11,7 +11,7 @@ fi
 clear
 echo -e "${UNDERLINE}${BOLD}Trustaking Web Server Installation Guide${NONE}"
 echo
-read -p "Which Fork (redstone, x42, impleum, city, stratis, xds, solaris, amsterdamcoin)? " fork
+read -p "Which Fork (redstone, x42, impleum, city, strax, xds, solaris, amsterdamcoin)? " fork
 read -p "What sub-domain (default=${fork})? " subdomain
 read -p "Mainnet (m) or Testnet (t)? " net
 #read -p "Are you using DNS(y) or IP(n)? " dns
@@ -40,9 +40,10 @@ WEBFILE="https://github.com/trustaking/node.git"
 
 if [[ "$net" =~ ^([tT])+$ ]]; then
     case $fork in
-         stratis)
-            apiport="38221"; # "37221" <Main Stratis
-            rpcport="26174";
+         strax)
+            apiport="27103"; # "17103" <Main Stratis
+            rpcport="27104"; 
+            segwit="true";
             ;;
          redstone)
             apiport="38222"; # "37222" <Main Redstone
@@ -82,10 +83,10 @@ if [[ "$net" =~ ^([tT])+$ ]]; then
     esac
 else 
     case $fork in
-        stratis)
-            apiport="37221";
-            rpcport="16174";
-            payment=1;
+        strax)
+            apiport="17103";
+            rpcport="17104";
+            segwit="true";
             ;;
          redstone)
             apiport="37222";
