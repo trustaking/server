@@ -145,7 +145,8 @@ function installDependencies() {
             dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
             apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
             apt-get update -y &>> ${SCRIPT_LOGFILE}
-            apt-get install dotnet-sdk-${DOTNETVER} -y &>> ${SCRIPT_LOGFILE}
+#            apt-get install dotnet-sdk-${DOTNETVER} -y &>> ${SCRIPT_LOGFILE}
+            apt-get install -y --no-install-recommends dotnet-sdk-${DOTNETVER} --allow-downgrades
             echo -e "${NONE}${GREEN}* Done${NONE}";
         fi
         if [[ "${VERSION_ID}" = "18.04" ]]; then
@@ -154,7 +155,8 @@ function installDependencies() {
             add-apt-repository universe -y &>> ${SCRIPT_LOGFILE}
             apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
             apt-get update -y &>> ${SCRIPT_LOGFILE}
-            apt-get install dotnet-sdk-${DOTNETVER} -y &>> ${SCRIPT_LOGFILE}
+#            apt-get install dotnet-sdk-${DOTNETVER} -y &>> ${SCRIPT_LOGFILE}
+            apt-get install -y --no-install-recommends dotnet-sdk-${DOTNETVER} --allow-downgrades
             echo -e "${NONE}${GREEN}* Done${NONE}";
         fi
         if [[ "${VERSION_ID}" = "19.04" ]]; then
@@ -162,7 +164,8 @@ function installDependencies() {
             dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
             apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
             apt-get update -y &>> ${SCRIPT_LOGFILE}
-            apt-get install dotnet-sdk-${DOTNETVER} -y &>> ${SCRIPT_LOGFILE}
+#            apt-get install dotnet-sdk-${DOTNETVER} -y &>> ${SCRIPT_LOGFILE}
+            apt-get install -y --no-install-recommends dotnet-sdk-${DOTNETVER} --allow-downgrades
             wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
             dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
             echo -e "${NONE}${GREEN}* Done${NONE}";
@@ -172,7 +175,8 @@ function installDependencies() {
             dpkg -i packages-microsoft-prod.deb &>> ${SCRIPT_LOGFILE}
             apt-get install apt-transport-https -y &>> ${SCRIPT_LOGFILE}
             apt-get update -y &>> ${SCRIPT_LOGFILE}
-            apt-get install dotnet-sdk-${DOTNETVER} -y &>> ${SCRIPT_LOGFILE}
+ #           apt-get install dotnet-sdk-${DOTNETVER} -y &>> ${SCRIPT_LOGFILE}
+            apt-get install -y --no-install-recommends dotnet-sdk-${DOTNETVER} --allow-downgrades
             wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
             dpkg -i libssl1.0.0_1.0.2n-1ubuntu6_amd64.deb &>> ${SCRIPT_LOGFILE}
             echo -e "${NONE}${GREEN}* Done${NONE}";
