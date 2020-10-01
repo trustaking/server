@@ -18,7 +18,7 @@ if [ "${branch}" == "" ]; then
 branch="master";
 fi
 
-read -p "What version of dotnet is required (default=3.1) if you want to specify a downgrade here's an example 3.1=3.1.102-1 " dotnetver
+read -p "What version of dotnet is required - if you want to specify a downgrade here's an example \"3.1=3.1.102-1\" (default=3.1)? " dotnetver
 if [ "${dotnetver}" = "" ]; then 
 dotnetver="3.1";
 fi
