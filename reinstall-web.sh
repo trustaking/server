@@ -29,10 +29,10 @@ DNS_NAME="${subdomain}.trustaking.com"
 USER="${fork}-web"
 WEBFILE="https://github.com/trustaking/node.git"
 
-#TODO: Replace with config files
+#Import Web Config
 
 wget https://raw.githubusercontent.com/trustaking/server/master/config/config-$fork.sh -O ~/config-${fork}.sh
-source ~/config-${FORK}.sh
+source ~/config-${fork}.sh
 
 if [[ "$NET" =~ ^([mM])+$ ]]; then
     setMainVars
