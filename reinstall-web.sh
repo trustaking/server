@@ -167,6 +167,10 @@ cat > /home/${USER}/${SERVER_NAME}/include/config.ini << EOF
 redirectURL='${REDIRECTURL}'
 ipnURL='${IPNURL}'
 howtourl='${howtourl}'
+withdrawurl='${withdrawurl}';
+addurl='${addurl}';
+howtovpsurl='${howtovpsurl}';
+walleturl='${walleturl}'
 whitelist='${whitelist}'
 payment='${payment}'
 exchange='${exchange}'

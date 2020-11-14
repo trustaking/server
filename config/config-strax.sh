@@ -34,6 +34,11 @@ COINSERVICENAME=${COINDAEMON}@${NODE_USER}
 SWAPSIZE="1024" ## =1GB
 # variables for node website
 howtourl="https:/strax.trustaking.com";
+walleturl="https://github.com/stratisproject/StraxUI/releases";
+withdrawurl="";
+addurl="";
+howtovpsurl="";
+vpsurl="";
 segwit="false";
 whitelist=1;
 payment=0;

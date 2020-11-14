@@ -34,6 +34,11 @@ COINSERVICENAME=${COINDAEMON}@${NODE_USER}
 SWAPSIZE="1024" ## =1GB
 # variables for node website
 howtourl="https://www.solarisplatform.com/howto-trustaking.html";
+withdrawurl="https://www.solarisplatform.com/howto-withdraw.html";
+addurl="https://www.solarisplatform.com/howto-addmorecoins.html";
+howtovpsurl="https://www.solarisplatform.com/howto-coldstakingvps.html";
+walleturl="https://www.solarisplatform.com/wallets.html";
+vpsurl="https://github.com/thecrypt0hunter/node-installer";
 segwit="false";
 whitelist=1;
 payment=1;

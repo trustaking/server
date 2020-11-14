@@ -31,6 +31,11 @@ COINSERVICENAME=${COINDAEMON}@${NODE_USER}
 SWAPSIZE="1024" ## =1GB
 # variables for node website
 howtourl="";
+withdrawurl="";
+addurl="";
+howtovpsurl="";
+walleturl="";
+vpsurl="";
 segwit="false";
 whitelist=0;
 payment=0;
