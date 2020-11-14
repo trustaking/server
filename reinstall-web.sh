@@ -30,9 +30,8 @@ USER="${fork}-web"
 WEBFILE="https://github.com/trustaking/node.git"
 
 #Import Web Config
-
-wget https://raw.githubusercontent.com/trustaking/server/master/config/config-$fork.sh -O ~/config-${fork}.sh
-source ~/config-${fork}.sh
+wget https://raw.githubusercontent.com/trustaking/server/master/config/config-${fork}.sh -O /root/config-${fork}.sh
+source /root/config-${fork}.sh
 
 if [[ "$NET" =~ ^([mM])+$ ]]; then
     setMainVars
