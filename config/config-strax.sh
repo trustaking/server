@@ -39,7 +39,7 @@ withdrawurl="";
 addurl="";
 vpsurl="https://github.com/thecrypt0hunter/node-installer";
 segwit="false";
-whitelist=1;
+whitelist=0;
 payment=0;
 exchange=0;
 }
