@@ -29,4 +29,10 @@ COINDLOC=/home/${NODE_USER}/${FORK}node
 COINSERVICELOC=/etc/systemd/system/
 COINSERVICENAME=${COINDAEMON}@${NODE_USER}
 SWAPSIZE="1024" ## =1GB
+# variables for node website
+howtourl="";
+segwit="false";
+whitelist=0;
+payment=0;
+exchange=0;
 }

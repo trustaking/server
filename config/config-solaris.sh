@@ -32,4 +32,10 @@ COINDLOC=/home/${NODE_USER}/${FORK}node
 COINSERVICELOC=/etc/systemd/system/
 COINSERVICENAME=${COINDAEMON}@${NODE_USER}
 SWAPSIZE="1024" ## =1GB
+# variables for node website
+howtourl="https://www.solarisplatform.com/howto-trustaking.html";
+segwit="false";
+whitelist=1;
+payment=1;
+exchange=0;
 }

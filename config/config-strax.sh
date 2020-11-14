@@ -17,7 +17,7 @@ COINAPIPORT=27103
 }
 
 function setGeneralVars() {
-## set general variables 
+## set general variables for coin install 
 COINRUNCMD="sudo dotnet ./Stratis.StraxD.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.${FORK}node -maxblkmem=2 \${stakeparams} \${rpcparams}"
 COINGITHUB=https://github.com/stratisproject/StratisFullNode.git
 COINDSRC=/home/${NODE_USER}/code/src/Stratis.StraxD
@@ -32,4 +32,10 @@ COINDLOC=/home/${NODE_USER}/${FORK}node
 COINSERVICELOC=/etc/systemd/system/
 COINSERVICENAME=${COINDAEMON}@${NODE_USER}
 SWAPSIZE="1024" ## =1GB
+# variables for node website
+howtourl="https:/strax.trustaking.com";
+segwit="false";
+whitelist=1;
+payment=0;
+exchange=0;
 }

@@ -14,7 +14,6 @@ echo
 read -p "Which Fork (redstone, x42, impleum, city, strax, xds, solaris, amsterdamcoin)? " fork
 read -p "What sub-domain (default=${fork})? " subdomain
 read -p "Mainnet (m) or Testnet (t)? " net
-#read -p "Are you using DNS(y) or IP(n)? " dns
 read -p "Install hot wallet (y/n)? " hot
 
 if [[ ${subdomain} == '' ]]; then 
@@ -26,116 +25,22 @@ SERVER_NAME="${subdomain}.trustaking.com"
 REDIRECTURL="https://${SERVER_NAME}/activate.php"
 IPNURL="" #"https://${SERVER_NAME}/IPNlogger.php"
 
-dns="y"
-
-if [[ "${dns}" =~ ^([nN])+$ ]]; then
-    DNS_NAME=${SERVER_IP}
-fi
-
 DNS_NAME="${subdomain}.trustaking.com"
 USER="${fork}-web"
 WEBFILE="https://github.com/trustaking/node.git"
 
 #TODO: Replace with config files
 
-if [[ "$net" =~ ^([tT])+$ ]]; then
-    case $fork in
-         strax)
-            apiport="27103"; # "17103" <Main Stratis
-            rpcport="27104"; 
-            ;;
-         redstone)
-            apiport="38222"; # "37222" <Main Redstone
-            rpcport="";
-            ;;
-        x42)
-            apiport="42221"; # "42220" <Main X42
-            rpcport="62343";
-            whitelist=1;
-           ;;
-        city)
-           apiport="24335"; # "4335" <Main City
-           rpcport="24334";
-            ;; 
-        impleum)
-           apiport="39222"; # "38222" <Main Impleum
-           rpcport="16272";
-            ;;
-        xds)
-            apiport="48334";
-            rpcport="48333";
-            segwit="true";
-            whitelist=1;
-            ;;
-        solaris)
-            apiport="62009"; # "62000" <Main Solaris
-            rpcport="61009";
-            ;;
-        amsterdamcoin)
-            apiport="63009"; # "62000" <Main Amsterdamcoin
-            rpcport="51009";
-            ;;
-         *)
-           echo "$fork has not been configured."
-           exit
-           ;;
-    esac
-else 
-    case $fork in
-        strax)
-            apiport="17103";
-            rpcport="17104";
-            ;;
-         redstone)
-            apiport="37222";
-            rpcport="";
-            ;;
-         x42)
-            apiport="42220";
-            rpcport="52343";
-            payment=1;
-            whitelist=1;
-            ;;
-         city)
-            apiport="4335";
-            rpcport="4334";
-            payment=1;
-            whitelist=1;
-            ;; 
-         impleum)
-            apiport="38222";
-            rpcport="16172";
-            ;;
-        xds)
-            apiport="48334";
-            rpcport="48333";
-            segwit="true";
-            payment=1;
-            whitelist=1;
-            ;;
-        solaris)
-            apiport="62000";
-            rpcport="61000";
-            payment=1;
-            whitelist=1;
-            ;;
-        amsterdamcoin)
-            apiport="63000";
-            rpcport="51000";
-            payment=1;
-            whitelist=1;
-            ;;
-         *)
-            echo "$fork has not been configured."
-            exit
-            ;;
-    esac
+wget https://raw.githubusercontent.com/trustaking/server/master/config/config-$fork.sh -O ~/config-${fork}.sh
+source ~/config-${FORK}.sh
+
+if [[ "$NET" =~ ^([mM])+$ ]]; then
+    setMainVars
+ else
+    setTestVars
 fi
 
-# =================== YOUR DATA ========================
-if [[ "$segwit" = "" ]]; then
-    segwit="false"
-fi
+setGeneralVars
 
 ## Add site-available and enable the website
 if [ ! -f /etc/nginx/sites-available/${SERVER_NAME} ]; then
@@ -191,15 +96,12 @@ service nginx reload
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 
-# Install SSL certificate if using DNS
-
-if [[ "$dns" =~ ^([yY])+$ ]]; then
+# Install SSL certificate
 certbot --nginx \
   --non-interactive \
   --agree-tos \
   --email admin@trustaking.com \
   --domains ${SERVER_NAME}
-fi
 
 # Setup User
 useradd $USER
@@ -245,7 +147,7 @@ if [[ -f /var/secure/cred-${fork}.sh ]]; then
 fi
 
 #Inject API port into wallet setup script
-sed -i "s/^\(apiport=\).*/\1$apiport/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
+sed -i "s/^\(COINAPIPORT=\).*/\1$COINAPIPORT/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 sed -i "s/^\(fork=\).*/\1$fork/" /home/${USER}/${SERVER_NAME}/scripts/hot-wallet-setup.sh
 
 # Install hot wallet setup
@@ -265,6 +167,7 @@ cat > /home/${USER}/${SERVER_NAME}/include/config.ini << EOF
 ### Web Settings ###
 redirectURL='${REDIRECTURL}'
 ipnURL='${IPNURL}'
+howtourl='${howtourl}'
 whitelist='${whitelist}'
 payment='${payment}'
 exchange='${exchange}'
@@ -277,8 +180,8 @@ rpcuser='${RPCUSER}'
 rpcpass='${RPCPASS}'
 ### Coin Details ###
 ticker='${subdomain}'
-api_port='${apiport}'
-rpc_port='${rpcport}'
+api_port='${COINAPIPORT}'
+rpc_port='${COINRPCPORT}'
 segwit='${segwit}'
 ### Debug set to 1 for detailed errors ###
 debug='1'
