@@ -38,6 +38,7 @@ walleturl="https://github.com/stratisproject/StraxUI/releases";
 withdrawurl="";
 addurl="";
 vpsurl="https://github.com/thecrypt0hunter/node-installer";
+rewardsurl="https://gostrax.com";
 segwit="false";
 whitelist=0;
 payment=0;
