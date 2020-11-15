@@ -33,7 +33,7 @@ COINSERVICELOC=/etc/systemd/system/
 COINSERVICENAME=${COINDAEMON}@${NODE_USER}
 SWAPSIZE="1024" ## =1GB
 # variables for node website
-howtourl="https:/strax.trustaking.com";
+howtourl="";
 walleturl="https://github.com/stratisproject/StraxUI/releases";
 withdrawurl="";
 addurl="";
