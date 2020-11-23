@@ -138,7 +138,7 @@ chmod g+rw /home/${USER}/${SERVER_NAME} -R
 chmod g+s /home/${USER}/${SERVER_NAME} -R
 cd /home/${USER}/${SERVER_NAME}
 #php /usr/local/bin/composer require btcpayserver/btcpayserver-php-client --no-plugins --no-scripts
-php /usr/local/bin/composer require trustaking/btcpayserver-php-client:dev-master
+php /usr/local/bin/composer require trustaking/btcpayserver-php-client --no-plugins --no-scripts
 
 ## Grab credentials
 if [[ -f /var/secure/cred-${fork}.sh ]]; then
