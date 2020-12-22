@@ -11,7 +11,7 @@ fi
 clear
 echo -e "${UNDERLINE}${BOLD}Trustaking Web Server Installation Guide${NONE}"
 echo
-read -p "Which Fork (redstone, x42, impleum, city, strax, xds, solaris, amsterdamcoin)? " fork
+read -p "Which Fork (redstone, x42, impleum, city, strax, xds, x1, solaris, amsterdamcoin)? " fork
 read -p "What sub-domain (default=${fork})? " subdomain
 read -p "Mainnet (m) or Testnet (t)? " net
 read -p "Install hot wallet (y/n)? " hot
