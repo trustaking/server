@@ -2,7 +2,7 @@ function setMainVars() {
 ## set network dependent variables
 NETWORK=""
 NODE_USER=${FORK}${NETWORK}
-COINPORT=38333
+COINPORT=23333
 COINRPCPORT=48333
 COINAPIPORT=48334
 }
@@ -18,9 +18,9 @@ COINAPIPORT=48335
 
 function setGeneralVars() {
 ## set general variables
-COINRUNCMD="dotnet blockcore.xdsd.dll ${NETWORK} -agentprefix="trustaking" -datadir=/home/${NODE_USER}/.blockcore -maxblkmem=2 -EnforceStakingFlag=1 \${stakeparams} \${rpcparams}"
+COINRUNCMD="dotnet X1.X1Daemon.dll ${NETWORK} -agentprefix="trustaking" -datadir=/home/${NODE_USER}/.blockcore -maxblkmem=2 -EnforceStakingFlag=1 \${stakeparams} \${rpcparams}"
 COINGITHUB=https://github.com/x1crypto/x1-blockcore.git
-COINDSRC=/home/${NODE_USER}/code/src/Networks/Xds/Xdsd
+COINDSRC=/home/${NODE_USER}/code/src/X1/X1Daemon
 CONF=release
 COINDAEMON=${FORK}d
 COINCONFIG=${FORK}.conf
