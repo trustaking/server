@@ -18,7 +18,7 @@ COINAPIPORT=48335
 
 function setGeneralVars() {
 ## set general variables
-COINRUNCMD="dotnet X1.X1Daemon.dll ${NETWORK} -agentprefix="trustaking" -datadir=/home/${NODE_USER}/.blockcore -maxblkmem=2 -EnforceStakingFlag=1 \${stakeparams} \${rpcparams}"
+COINRUNCMD="dotnet x1d.dll ${NETWORK} -agentprefix="trustaking" -datadir=/home/${NODE_USER}/.blockcore -maxblkmem=2 -EnforceStakingFlag=1 \${stakeparams} \${rpcparams}"
 COINGITHUB=https://github.com/x1crypto/x1-blockcore.git
 COINDSRC=/home/${NODE_USER}/code/src/X1/X1Daemon
 CONF=release
