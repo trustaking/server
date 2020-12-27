@@ -21,7 +21,7 @@ function setGeneralVars() {
 #COINRUNCMD="dotnet ./City.Chain.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.${FORK}chain -maxblkmem=2 -txindex=1 \${stakeparams} \${rpcparams}"
 #COINGITHUB=https://github.com/CityChainFoundation/city-chain.git
 #COINDSRC=/home/${NODE_USER}/code/src/City.Chain
-COINRUNCMD="dotnet ./City.Node.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.blockcore -maxblkmem=2 \${stakeparams} \${rpcparams}"
+COINRUNCMD="dotnet ./City.Node.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.blockcore -maxblkmem=2 -minimumsplitcoinvalue=15000000000 -enablecoinstakesplitting=1 \${stakeparams} \${rpcparams}"
 COINGITHUB=https://github.com/block-core/blockcore.git
 COINDSRC=/home/${NODE_USER}/code/src/Networks/City/City.Node
 CONF=release

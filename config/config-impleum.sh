@@ -18,7 +18,7 @@ COINAPIPORT=39222
 
 function setGeneralVars() {
 ## set general variables
-COINRUNCMD="dotnet ./Impleum.ImpleumD.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.${FORK}node -maxblkmem=2 -txindex=1 \${stakeparams} \${rpcparams} "
+COINRUNCMD="dotnet ./Impleum.ImpleumD.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.${FORK}node -maxblkmem=2 -minimumsplitcoinvalue=15000000000 -enablecoinstakesplitting=1 \${stakeparams} \${rpcparams} "
 COINDSRC=/home/${NODE_USER}/code/src/Impleum.ImpleumD
 COINGITHUB=https://github.com/impleum/ImpleumBitcoinFullNode.git
 CONF=release

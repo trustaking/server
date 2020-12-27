@@ -18,7 +18,7 @@ COINAPIPORT=27103
 
 function setGeneralVars() {
 ## set general variables for coin install 
-COINRUNCMD="sudo dotnet ./Stratis.StraxD.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.${FORK}node -maxblkmem=2 \${stakeparams} \${rpcparams}"
+COINRUNCMD="sudo dotnet ./Stratis.StraxD.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.${FORK}node -maxblkmem=2 -minimumsplitcoinvalue=15000000000 -enablecoinstakesplitting=1 \${stakeparams} \${rpcparams}"
 COINGITHUB=https://github.com/stratisproject/StratisFullNode.git
 COINDSRC=/home/${NODE_USER}/code/src/Stratis.StraxD
 #COINRUNCMD="dotnet ./StratisD.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.blockcore -maxblkmem=2 \${stakeparams} \${rpcparams}"
