@@ -33,12 +33,12 @@ COINSERVICELOC=/etc/systemd/system/
 COINSERVICENAME=${COINDAEMON}@${NODE_USER}
 SWAPSIZE="1024" ## =1GB
 # variables for node website
-howtourl="";
+howtourl="https://www.stratisplatform.com/wp-content/uploads/2020/12/Stratis-Cold-Staking-Guide-v1.0.pdf";
 walleturl="https://github.com/stratisproject/StraxUI/releases";
 withdrawurl="";
 addurl="";
 vpsurl="https://github.com/thecrypt0hunter/node-installer";
-rewardsurl="https://gostrax.com";
+rewardsurl="";
 segwit="false";
 whitelist=0;
 payment=0;
