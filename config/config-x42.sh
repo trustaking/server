@@ -23,7 +23,7 @@ function setGeneralVars() {
 #COINGITHUB=https://github.com/x42-Archive/X42-FullNode
 COINRUNCMD="dotnet ./x42.Node.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.blockcore -maxblkmem=2 -minimumsplitcoinvalue=15000000000 -enablecoinstakesplitting=1 \${stakeparams} \${rpcparams}"
 COINGITHUB=https://github.com/block-core/blockcore.git
-COINDSRC=/home/${NODE_USER}/code/src/Networks/x42/x42.Node
+COINDSRC=/home/${NODE_USER}/code/src/Networks/Blockcore.Networks.x42/
 CONF=release
 COINDAEMON=${FORK}d
 COINCONFIG=${FORK}.conf

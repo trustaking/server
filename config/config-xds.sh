@@ -21,7 +21,7 @@ function setGeneralVars() {
 COINRUNCMD="dotnet blockcore.xdsd.dll ${NETWORK} -agentprefix="trustaking" -datadir=/home/${NODE_USER}/.blockcore -maxblkmem=2 -EnforceStakingFlag=1 -minimumsplitcoinvalue=15000000000 -enablecoinstakesplitting=1 \${stakeparams} \${rpcparams}"
 #COINGITHUB=https://github.com/sonofsatoshi2020/xds.git
 COINGITHUB=https://github.com/block-core/blockcore-nodes.git
-COINDSRC=/home/${NODE_USER}/code/XDS/src/XdsD
+COINDSRC=/home/${NODE_USER}/code/XDS/src/Blockcore.Networks.Xds/
 CONF=release
 COINDAEMON=${FORK}d
 COINCONFIG=${FORK}.conf
