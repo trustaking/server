@@ -18,10 +18,9 @@ COINAPIPORT=39222
 
 function setGeneralVars() {
 ## set general variables
-COINRUNCMD="dotnet ./Impleum.ImpleumD.dll ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.${FORK}node -maxblkmem=2 -minimumsplitcoinvalue=15000000000 -enablecoinstakesplitting=1 \${stakeparams} \${rpcparams} "
-COINDSRC=/home/${NODE_USER}/code/src/Impleum.ImpleumD
+COINRUNCMD="dotnet Blockcore.Node.dll --chain=IMPLX ${NETWORK} -agentprefix=trustaking -datadir=/home/${NODE_USER}/.blockcore -maxblkmem=2 -minimumsplitcoinvalue=15000000000 -enablecoinstakesplitting=1 -EnforceStakingFlag=1 \${stakeparams} \${rpcparams}"
 COINGITHUB=https://github.com/block-core/blockcore.git
-COINDSRC=/home/${NODE_USER}/code/src/Networks/Blockcore.Networks.Impleum/
+COINDSRC=/home/${NODE_USER}/code/src/Node/Blockcore.Node/
 CONF=release
 COINDAEMON=${FORK}d
 COINCONFIG=${FORK}.conf
